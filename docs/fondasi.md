@@ -4,7 +4,7 @@
 
 > **Versi 1.0 (1 Nov 2026), hasil sesi strategi.** Dokumen fitur pertama; dokumen fitur lain bergantung pada ini.
 > **Status:** F1 sampai F13 disepakati tim (ketua ikut di Zoom, 1 Nov 2026). Dosen (via WA, 1 Nov 2026) menyetujui GitHub Actions dan folder `.github/` (asal folder wajib tetap ada), menyatakan struktur `supabase/` sudah sesuai, dan meminta deploy Edge Function lewat terminal dengan `--no-verify-jwt`. Belum ada yang dikerjakan.
-> **Cara pakai sesi kode:** lampirkan **`AGENTS.md` + berkas ini saja**. Kerjakan langkah di bagian 5 satu per satu. Sesi kode tidak menyunting berkas ini kecuali ada kejadian di lapangan (bagian 9).
+> **Cara pakai sesi kode:** lampirkan **`AGENTS.md` + berkas ini saja**. Kerjakan langkah di bagian 5 satu per satu. Sesi kode **tidak merapikan atau menulis ulang berkas ini**; hanya menambah blok di bagian 9 bila ada kejadian di lapangan.
 > **Berkas yang diminta AI di awal sesi** (sebut nama dan alasan sekaligus, jangan menebak isinya): sesuai langkah yang dikerjakan, yaitu versi terbaru `public/index.html`, `public/config.js`, `public/sw.js`, `public/manifest.json`, atau `.github/workflows/pages.yml`.
 > **Tanpa kode dan tanpa isi SQL.** Detail yang sudah ditangani GitHub atau Supabase tidak ditulis ulang.
 > **Selisih:** `AGENTS.md` menang atas berkas ini. Yang paling akhir menang.
@@ -122,4 +122,42 @@ Satu langkah per giliran. Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua 
 
 ## 9. Catatan susulan dan Handoff
 
-_(Kosong. Blok baru berjudul `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC` ditempel di bawah, append-only, hanya bila ada kejadian di lapangan atau user memintanya. Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+_(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### Handoff #1 | 2026-11-01 | (isi nama PIC yang berhenti)
+
+**Tugas:** FND.01 (repo, kerangka folder, git di Mac) dan FND.02 (project Supabase). Status di sheet: keduanya **Berjalan**, belum Selesai.
+
+**Sudah beres:**
+
+- Git di Mac terpasang (versi 2.39.0).
+- Repo GitHub MANCING (public, cabang `main` saja) sudah dibuat dan berisi `AGENTS.md`, folder `docs/`, dan satu berkas uji `todo-kartu.tsv`.
+- Project Supabase `mancingpwa` sudah dibuat, wilayah `ap-southeast-1` (Singapura), paket gratis.
+- Semua md versi final sudah disalin ke folder MANCING di Mac, **belum di-commit**.
+
+**File yang diubah:** tidak ada yang di-commit. Perubahan baru ada di folder lokal (5 md menimpa yang lama, 5 md baru).
+
+**Keputusan baru:**
+
+- Akun GitHub dan Supabase memakai **akun ketua**, dibuka lewat profil browser khusus supaya tanpa mengetik password.
+- Laptop Mac milik keluarga teman tim. **Dilarang** mengubah folder atau pengaturan milik pemilik: jangan jalankan `git config --global ...`, jangan menyentuh folder di luar MANCING.
+- Pengaturan email git hanya boleh diubah khusus untuk folder MANCING (tanpa `--global`).
+
+**Masalah yang belum beres (jangan commit dulu):**
+
+1. **Email commit bukan alamat noreply GitHub.** Kedua commit lama di repo public memakai email yang berasal dari pengaturan global Mac. Belum diketahui email siapa. Jangan `git add .`, `commit`, atau `push` sebelum email khusus folder ini diatur.
+2. **Alamat repo di Mac memuat teks panjang sebelum `@`** (kemungkinan token akses). Jangan jalankan `git remote -v` atau menempel alamat repo ke chat. Jenis dan masa berlaku token belum dicek.
+3. Keputusan **user Mac baru (A)** atau **tetap di user pemilik dengan hati-hati (B)** belum dijawab.
+4. **URL project dan kunci publik Supabase** belum dicatat (bagian dari FND.02).
+5. **`todo-kartu.tsv`** di repo bukan bagian rancangan; menghapusnya butuh "OK" ketua.
+6. 2FA di akun GitHub dan Supabase ketua belum diaktifkan.
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. Di Terminal, folder MANCING: `git log -1 --format=%ae`. Baca di layar, **jangan ditempel ke chat**. Tanya pemilik Mac atau ketua itu email siapa.
+2. Putuskan bersama ketua: terima riwayat apa adanya, atau buat ulang repo (baru 2 commit; menghapus data, butuh "OK" ketua).
+3. Atur email noreply khusus folder MANCING (alamatnya ada di GitHub, Settings, Emails). Cek hasilnya tanpa menampilkan email.
+4. Cek jenis dan masa berlaku token tanpa menampilkannya.
+5. Baru lalu: kerangka folder dengan `.gitkeep`, `git status`, `git add .`, `commit`, `push`. Tutup FND.01.
+6. Catat URL project dan kunci publik Supabase (hanya kunci publik). Tutup FND.02.
+7. Jalankan FND.03 (`index.html` dan `config.js`).

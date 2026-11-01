@@ -217,3 +217,40 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 1. FND.06: cek Homebrew dan Node di Mac, pasang Supabase CLI, login satu kali. Token akses tidak boleh ditempel ke chat.
 2. Sebelum FND.07 (butuh "OK" ketua): putuskan siapa yang membuat ikon aplikasi.
 3. Sebelum tiap `git add .`, jalankan `git status` dulu.
+
+### Handoff #4 | 2026-11-01 | (isi nama PIC)
+
+**Tugas:** FND.06 (Supabase CLI). Selesai, tinggal dicentang di sheet.
+
+**File yang diubah:** tidak ada. Tidak ada file repo yang dibuat atau diubah, tidak ada yang di-commit.
+
+**Hasil:**
+
+- Supabase CLI **sudah terpasang** di Mac (versi 2.121.0, milik pemilik laptop). Tidak ada yang dipasang atau di-update.
+- Tes baca-saja berhasil: `supabase functions list --project-ref` ke project `mancingpwa` mengembalikan daftar kosong tanpa error (belum ada fungsi yang di-deploy).
+- Jendela Terminal ditutup setelah tes. Variabel token dicek kosong di jendela baru.
+
+**Keputusan baru (menggantikan F11 bagian "login satu kali"):**
+
+- Mac juga dipakai pemilik laptop untuk project Supabase miliknya, dengan akun yang sudah login di CLI. `supabase login` akan menimpa login itu, jadi **dilarang dijalankan di Mac ini**.
+- Sebagai gantinya, token akses ketua dipakai lewat variabel `SUPABASE_ACCESS_TOKEN` **hanya di satu jendela Terminal** (ditempel dengan `read -rs` agar tidak tampil dan tidak masuk riwayat), lalu jendelanya ditutup. Tidak ada yang tersimpan di Mac.
+- Tiap perintah CLI wajib memakai `--project-ref` (kode project `mancingpwa`, dibaca dari `public/config.js`), supaya tidak nyasar ke project pemilik laptop. Jangan jalankan `supabase login`, `supabase projects list`, atau `brew upgrade` di Mac ini.
+- Token akses Supabase: nama `mancing-deploy`, akun ketua, dibatasi ke project `mancingpwa`, izin **Edge Functions (Read-write)** dan **Project Settings (Read)**, kedaluwarsa **30 Jan 2027**. Izin token tidak bisa diubah setelah dibuat; bila ada izin kurang (galat 403), buat token baru.
+- Perintah deploy yang diizinkan tetap satu: `supabase functions deploy <nama> --use-api --no-verify-jwt`, ditambah `--project-ref`, dijalankan dari folder MANCING (CLI mencari `supabase/functions/` dari situ).
+
+**Masalah yang belum beres:**
+
+1. **Ikon aplikasi belum ada yang membuat dan tim belum sepakat.** Ini penghalang FND.07 (`manifest.json` butuh nama berkas ikon). Opsi yang dibahas: ikon sementara sederhana dulu (ikon yang dipoles masuk daftar ditunda).
+2. Token Supabase di atas dihapus setelah penilaian selesai. Tanggal kedaluwarsa dicatat di sheet.
+3. Pemilik laptop belum diminta mencoba deploy kebiasaannya setelah Terminal ditutup (opsional, bukan syarat).
+4. Dari handoff sebelumnya masih berlaku: `todo-kartu.tsv` di repo (hapus butuh "OK" ketua), 2FA GitHub dan Supabase belum aktif, token GitHub classic dicek di FND.08, dan pustaka Supabase (CDN) belum dicek termuat tanpa error
+
+**Cara pakai CLI di Mac ini (ringkas, urut):**
+
+1. Buka Terminal baru, masuk ke folder MANCING (`cd` ke folder itu).
+2. Ambil kode project: `PROJECT_REF=$(grep -o '[a-z0-9]*\.supabase\.co' public/config.js | cut -d. -f1)`
+3. Tempel token tanpa tampil di layar (sintaks zsh, bawaan Mac): `read -rs "SUPABASE_ACCESS_TOKEN?Tempel token lalu tekan Enter: "; export SUPABASE_ACCESS_TOKEN; echo`
+4. Deploy (belum pernah dites, deploy fungsi High-Risk, butuh "OK" ketua dan dijalankan di folder MANCING): `supabase functions deploy <nama> --use-api --no-verify-jwt --project-ref "$PROJECT_REF"`
+5. Selesai: tutup jendela Terminal. Cek bersih di jendela baru: `echo "[${SUPABASE_ACCESS_TOKEN:+ada}]"` harus menampilkan `[]`.
+
+Token ada di penyimpanan aman ketua (bukan di Mac, repo, atau chat). Bila hilang, buat token baru dengan izin yang sama.

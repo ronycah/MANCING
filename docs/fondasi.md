@@ -254,3 +254,37 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 5. Selesai: tutup jendela Terminal. Cek bersih di jendela baru: `echo "[${SUPABASE_ACCESS_TOKEN:+ada}]"` harus menampilkan `[]`.
 
 Token ada di penyimpanan aman ketua (bukan di Mac, repo, atau chat). Bila hilang, buat token baru dengan izin yang sama.
+
+### Handoff #5 | 2026-11-01 | (isi nama PIC)
+
+**Tugas:** FND.07 (PWA) dan FND.08 (cek repo bersih, SEC-15). Keduanya selesai, tinggal dicentang di sheet.
+
+**File yang diubah (sudah di-push, FND.07 di commit 0e1f643, lalu satu commit tes update):**
+
+- `public/manifest.json` (baru): nama "Mancing Santuy", nama pendek "Santuy", mode standalone, dua ikon (192 dan 512).
+- `public/sw.js` (baru): network first, hanya GET dari domain sendiri, tidak menyentuh Supabase dan CDN. Nama cache `santuy-v1`.
+- `public/index.html`: ditambah tautan ikon dan pendaftaran `sw.js`.
+- `public/img/`: 6 ikon dari favicon.io (apple-touch-icon, favicon 96/ico/svg, web-app-manifest 192 dan 512). `site.webmanifest` bawaan generator sengaja tidak dipakai.
+
+**Hasil tes:**
+
+- FND.07: terpasang di HP dan ikon muncul, layar penuh; halaman awal terbuka saat internet mati (HP dan DevTools Offline); perubahan teks di `index.html` langsung muncul setelah push (HP dan desktop); Console bersih, 404 `manifest.json` hilang.
+- FND.08: tidak ada pola token Supabase/GitHub di berkas sekarang maupun semua riwayat commit; `config.js` baris 4 hanya komentar (tanpa kunci); `todo-kartu.tsv` sudah tidak di repo dan isinya tanpa email atau nomor telepon; email non-noreply tetap 2 commit lama (sudah diterima ketua).
+
+**Keputusan baru:** tidak ada. Ikon dipoles tetap ditunda.
+
+**Kejadian di lapangan:** `supabase/.temp/` (berkas otomatis CLI) sempat ter-commit ke riwayat. Isinya hanya kode project, nama project, ID dan slug organisasi, tanpa kunci atau token, dan kode project cocok dengan `mancingpwa`. Sekarang folder itu sudah diabaikan lewat `.gitignore`.
+
+**Masalah yang belum beres:**
+
+1. Token GitHub classic belum dicek jenis, izin, dan kedaluwarsanya (di dashboard GitHub ketua). Catat tanggalnya di sheet.
+2. 2FA GitHub dan Supabase ketua belum aktif.
+3. Teks "(tes update)" masih ada di `index.html`; ikut berganti saat halaman diubah.
+4. Pustaka Supabase dari CDN tidak di-cache, jadi saat offline tidak termuat. Kode login dan game harus tahan bila pustakanya tidak ada.
+
+**Saran giliran berikutnya:**
+
+1. Kabari ketua soal poin 1 dan 2 di atas.
+2. Mulai AKN.01 (butuh OK ketua; lampirkan `AGENTS.md` dan `docs/akun.md`).
+3. Tiap menambah berkas game baru (`*.js`, `*.css`), tambahkan juga ke daftar berkas dasar di `sw.js` supaya ikut terbuka offline. Mengubah `sw.js` butuh OK ketua.
+4. Sebelum tiap `git add .`, jalankan `git status` dulu.

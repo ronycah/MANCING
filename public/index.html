@@ -1,0 +1,45 @@
+<!--public/index.html -->
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Mancing Santuy</title>
+        <meta name="theme-color" content="#2a9d8f" />
+        <!-- Path relatif (tanpa awalan /) supaya jalan di GitHub Pages -->
+        <link rel="manifest" href="manifest.json" />
+        <style>
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: #bde6f2;
+                color: #1d3557;
+                font-family: system-ui, sans-serif;
+                text-align: center;
+                padding: 16px;
+                box-sizing: border-box;
+            }
+            h1 {
+                font-size: 2rem;
+                margin: 0 0 8px;
+            }
+            p {
+                font-size: 1.1rem;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>🎣 Mancing Santuy</h1>
+        <p>Game mancing santai. Segera hadir!</p>
+
+        <!-- Pengaturan publik (URL project dan kunci publik) -->
+        <script src="config.js"></script>
+        <!-- Pustaka Supabase, versi dipatok (bukan latest) -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    </body>
+</html>

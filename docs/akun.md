@@ -224,3 +224,34 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 2. Layar Pilih nama menggantikan layar sementara di `akun.js`. Panggil `status` sekali setelah masuk; bila `ada: false`, tampilkan layar Pilih nama (aturan 3 sampai 20 karakter: huruf, angka, spasi, garis bawah). Token login dikirim sebagai Bearer; aplikasi tidak pernah mengirim ID, umpan, atau koin.
 3. Berkas JS baru wajib didaftarkan di `sw.js` (butuh "OK" ketua). Semua teks dari server dan input pemain lewat `textContent`, pesan galat Bahasa Indonesia tanpa galat mentah.
 4. Sebelum tiap `git add .`, jalankan `git status` dulu.
+
+### Handoff #4 | 2026-11-01 | (isi nama PIC)
+
+**Tugas:** AKN.05 (layar Pilih nama dan Ganti nama). Selesai dengan bukti tampilan, tinggal dicentang di sheet.
+
+**File yang diubah (semua sudah di-copas; push bila belum):**
+
+- `public/nama.js` (baru): layar Pilih nama, Ganti nama, dan layar utama sederhana (nama, umpan, koin, tombol Ganti nama dan Keluar). Memanggil Edge Function `mancing` (aksi `status` sekali setelah masuk, `ganti_nama` saat simpan) dengan token login sebagai Bearer; aplikasi hanya mengirim nama aksi dan nama.
+- `public/akun.js`: `tampilSudahMasuk` sekarang menyerahkan layar sesudah masuk ke `window.MANCING_NAMA.mulai(...)`. Layar sementara "Kamu sudah masuk" tetap ada sebagai cadangan bila `nama.js` tidak termuat. Tidak ada kode lama yang dihapus.
+- `public/index.html`: ditambah `<script src="nama.js">` sebelum `akun.js`.
+- `public/sw.js`: hanya menambah `nama.js` ke daftar berkas dasar. Versi cache tetap `santuy-v1`.
+- `public/style.css`: ditambah `.aksi`, `.statistik`, dan jarak teks/pesan di dalam kartu (sekalian membereskan catatan P2 Handoff #3 soal kartu "Butuh internet").
+
+**Keputusan baru:** fitur nama dibuat di berkas baru `nama.js`, bukan di `akun.js`, supaya `akun.js` tidak melewati ~300 baris. Persetujuan "OK" ketua untuk `index.html` dan `sw.js` diberikan di sesi (1 Nov 2026). Alasan lain belum tercatat.
+
+**Hasil (tes di production, akun dummy `tes2@example.com`):** akun tanpa nama memunculkan layar Pilih nama; nama `ab` dan `<b>x</b>` ditolak dengan pesan aturan nama; nama valid membuka layar utama (umpan 10/20, koin 0); Ganti nama berhasil; refresh dan Keluar lalu Masuk lagi langsung ke layar utama dengan nama tersimpan (sesi tersimpan, tidak diminta nama lagi).
+
+**Masalah yang belum beres:**
+
+1. Belum dites: jalur sesi habis (401), galat internet saat `status`, dan tombol Keluar dari layar Pilih nama. Masuk ke sesi tes AKN.07.
+2. PWA di iPhone (ikon layar utama) menyimpan sesi terpisah dari Safari; belum dites di HP.
+3. Pemulihan umpan seiring waktu belum terbukti (AKN.07).
+4. Akun dummy `tes1` dan `tes2` masih ada; password tidak ada di repo/chat/md, tanyakan ke pembuatnya.
+5. Dari handoff sebelumnya masih berlaku: jawaban dosen soal `_headers`, 2FA GitHub dan Supabase ketua belum aktif, dan token GitHub classic belum dicek.
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. Mulai **AKN.06 ⚠️** (Ganti password dan tautan "Lupa password?"). Lampirkan `AGENTS.md`, `docs/akun.md`, `public/akun.js`, `public/nama.js`, `public/style.css`, dan `public/index.html`. Butuh penjelasan dampak dan "OK" ketua.
+2. Tombol Ganti password cocoknya ditaruh di layar utama (`nama.js`) di samping Ganti nama; alurnya login ulang dengan password lama dulu (AK7).
+3. Cek di dashboard Supabase (menu pengguna) apakah ada pilihan atur password langsung, minta screenshot (AK8).
+4. Bila berkas JS baru ditambah, daftarkan di `sw.js` (butuh "OK" ketua). Sebelum tiap `git add .`, jalankan `git status`.

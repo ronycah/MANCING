@@ -51,6 +51,12 @@ Panduan utama & aturan interaksi AI Agent untuk repository ini.
 - **Satu environment saja: production.** Tidak ada development/testing terpisah (arahan dosen). Karena itu perubahan berisiko wajib dijelaskan dulu dan ada salinan SQL di repo sebelum dijalankan.
 - **Dilarang menyarankan Docker, VPS, atau self-host.** Tidak ada setup lokal Supabase. Semua kerja langsung ke project Supabase cloud lewat dashboard.
 - **CLI:** hanya satu perintah yang diizinkan, **`supabase functions deploy <nama> --use-api --no-verify-jwt`** (arahan dosen). Migration CLI (misal `supabase db push`) dilarang.
+- **Deploy di Mac bersama (aturan Handoff #4 `fondasi.md`, menang atas "login satu kali" di F11):** Mac ini juga dipakai pemilik laptop untuk project Supabase miliknya yang sudah login di CLI. **Dilarang** menjalankan `supabase login`, `supabase projects list`, `supabase link`, dan `brew upgrade` (abaikan pemberitahuan "versi CLI baru"). Urutan deploy, satu langkah per giliran, dari folder MANCING:
+  1. Ambil kode project: `PROJECT_REF=$(grep -o '[a-z0-9]*\.supabase\.co' public/config.js | cut -d. -f1)`, lalu cek hasilnya.
+  2. Ketua menempel token akses dari penyimpanan amannya, hanya di satu jendela Terminal, tanpa tampil di layar: `read -rs "SUPABASE_ACCESS_TOKEN?Tempel token lalu tekan Enter: "; export SUPABASE_ACCESS_TOKEN; echo`. Token **tidak boleh** ditempel ke chat, repo, atau md.
+  3. Deploy: `supabase functions deploy <nama> --use-api --no-verify-jwt --project-ref "$PROJECT_REF"`. Perintah ini wajib memakai `--project-ref` supaya tidak nyasar ke project pemilik laptop.
+  4. Tutup jendela Terminal, lalu cek di jendela baru: `echo "[${SUPABASE_ACCESS_TOKEN:+ada}]"` harus menampilkan `[]`.
+     AI tidak boleh memberi perintah deploy tanpa urutan ini.
 - **Git lewat terminal** di Mac bersama (`git status`, `git add .`, `commit`, `push`). Gambar ikut di-push dari terminal bersama berkas lain.
 - Tampilan: CSS/SVG/Canvas, gaya **kartun flat**, dipakai konsisten oleh semua giliran.
 

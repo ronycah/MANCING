@@ -123,7 +123,7 @@ Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua.
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
 
-### Handoff #1 | 2026-11-01 | (isi nama PIC yang berhenti)
+### Handoff #1 | 2026-11-01 | (miemoe)
 
 **Tugas:** AKN.01 (pengaturan Auth di dashboard Supabase). Selesai, tinggal dicentang di sheet.
 
@@ -149,3 +149,47 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 1. Mulai **AKN.02 ⚠️** (migration tabel `pengaturan` dan `pemain`, hak, RLS, fungsi pembuat pemain). Lampirkan `AGENTS.md`, `docs/akun.md`, dan `docs/database.md`. Butuh penjelasan dampak dan "OK" ketua.
 2. SQL disalin dulu ke `supabase/migrations/`, baru dijalankan manual di SQL Editor.
 3. Sebelum tiap `git add .`, jalankan `git status` dulu.
+
+### 2026-11-01: AKN.03 selesai, fungsi status_pemain dan Edge Function mancing versi pertama
+
+- Migration baru: `supabase/migrations/2026-11-01_status-pemain.sql`, berisi fungsi SQL baca-saja `public.status_pemain(p_id uuid)`. Fungsi ini menghitung umpan terkini dari jam server (`now()`), dibatasi `umpan_maks`, dan mengembalikan nama, umpan, koin, sisa detik ke umpan berikutnya, serta jam server. Bila baris pemain belum ada, hasilnya `ada: false` (supaya layar Pilih nama muncul lagi). `EXECUTE` hanya untuk `service_role`. Alasan fungsi ini dibuat terpisah: waktu hanya boleh dari jam server database.
+- Edge Function `mancing` versi pertama di-deploy: `supabase/functions/mancing/index.ts`, aksi `status` dan `ganti_nama`. Token diverifikasi paling awal (401 bila tanpa token atau tidak valid). Pengecualian: permintaan OPTIONS (izin dari browser) dijawab kosong sebelum cek token. `ganti_nama` memanggil `simpan_nama_pemain`, lalu membalas status terbaru.
+- Keputusan baru: CORS dibuka `*` karena akses dijaga token Bearer, bukan cookie. Bila nanti dikunci ke alamat GitHub Pages saja, itu keputusan baru. Alasan lain belum tercatat.
+- Kejadian: instruksi deploy awal dari AI sempat tidak mengikuti aturan Mac bersama (Handoff #4 `fondasi.md`) karena sesi akun tidak melampirkan `fondasi.md`. Terdeteksi sebelum ada perintah deploy yang dijalankan. Pencegahan: aturan deploy di Mac bersama sudah ditambahkan ke `AGENTS.md` bagian 3.
+- Bukti tes (1 Nov 2026, akun dummy `tes1@example.com`): tanpa token, token palsu, dan kunci publik (anon) sebagai token semuanya 401. Dengan token sah: `status` sebelum punya nama = `ada:false`; nama `<b>x</b>` ditolak 400; `ganti_nama` "Penguji Satu" = 200 dengan umpan 10, `umpan_maks` 20, koin 0, sisa 3600 detik; `status` sesudahnya konsisten; aksi `tambah_koin` ditolak 400 ("Aksi tidak dikenal").
+- Belum terbukti: pemulihan umpan seiring waktu (butuh menunggu atau mengubah waktu hitung di akun dummy). Dites di AKN.07 dengan penjelasan dampak dan "OK".
+- Token akses CLI sudah dibersihkan dari jendela Terminal setelah deploy (dicek `[]`).
+
+### Handoff #2 | 2026-11-01 | (fren)
+
+**Tugas:** AKN.02 (migration tabel, hak, RLS, fungsi) dan AKN.03 (Edge Function `mancing` versi pertama). Keduanya selesai dengan bukti, tinggal dicentang di sheet.
+
+**File yang diubah (semua sudah di-push):**
+
+- `supabase/migrations/2026-11-01_akun-pemain-pengaturan.sql` (baru): tabel `pengaturan` (baris umpan) dan `pemain`, RLS tanpa policy, fungsi `simpan_nama_pemain`.
+- `supabase/migrations/2026-11-01_cabut-hak-berlebih.sql` (baru): mencabut hak berlebih `service_role` (DELETE dan lainnya). Hak akhir: `pemain` = SELECT, INSERT, UPDATE; `pengaturan` = SELECT.
+- `supabase/migrations/2026-11-01_status-pemain.sql` (baru): fungsi baca-saja `status_pemain`.
+- `supabase/functions/mancing/index.ts` (baru): aksi `status` dan `ganti_nama`, sudah di-deploy ke project `mancingpwa`.
+- `AGENTS.md` (bagian 3): ditambah aturan deploy di Mac bersama.
+- `docs/database.md` dan `docs/akun.md`: blok catatan susulan.
+
+**Keputusan baru:** fungsi `simpan_nama_pemain` (buat pemain dan ganti nama dalam satu fungsi), `pemain.id` terhubung ke akun login dengan hapus berantai, CORS Edge Function dibuka `*` (akses dijaga token Bearer). Rinciannya ada di blok catatan susulan `database.md` dan `akun.md`.
+
+**Hasil:** semua tes lulus dan sudah dicatat di blok catatan susulan: hak dan RLS terbukti lewat query cek, serta tanpa token, token palsu, dan kunci publik semuanya 401. Dengan akun dummy, nama berisi tag ditolak 400, `ganti_nama` dan `status` konsisten (umpan 10, koin 0), dan aksi `tambah_koin` ditolak 400.
+
+**Kejadian di lapangan:** Supabase otomatis memberi `service_role` semua hak di tabel baru, jadi tiap migration tabel baru wajib mencabut hak berlebih dan dicek dengan query baca-saja. Instruksi deploy awal dari AI sempat tidak sesuai aturan Mac bersama karena `fondasi.md` tidak dilampirkan. Terdeteksi sebelum ada perintah yang dijalankan, dan aturannya sudah masuk `AGENTS.md`.
+
+**Masalah yang belum beres:**
+
+1. Pemulihan umpan seiring waktu belum terbukti. Dites di AKN.07 (mengubah waktu hitung akun dummy lewat SQL Editor, butuh penjelasan dampak dan "OK").
+2. Akun dummy `tes1@example.com` dan baris pemainnya masih ada, dipakai lagi di AKN.07. Passwordnya tidak ada di repo, chat, atau md; tanyakan ke pembuatnya.
+3. Token CLI `mancing-deploy` kedaluwarsa 30 Jan 2027 dan dihapus setelah penilaian. Di jendela Terminal sudah dicek bersih (`[]`).
+4. Dari handoff sebelumnya masih berlaku: jawaban dosen soal `_headers`, 2FA GitHub dan Supabase ketua belum aktif, token GitHub classic belum dicek, teks "(tes update)" masih di `index.html`, dan pustaka Supabase dari CDN tidak ikut cache saat offline (kode login harus tahan bila pustakanya tidak ada).
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. Mulai **AKN.04 ⚠️** (layar Daftar, Masuk, Keluar). Lampirkan `AGENTS.md`, `docs/akun.md`, `public/index.html`, `public/config.js`, dan `public/sw.js`. Butuh "OK" ketua.
+2. Berkas JS dan CSS baru wajib didaftarkan di daftar berkas dasar `sw.js` supaya terbuka offline. Mengubah `sw.js` butuh "OK" ketua.
+3. Semua teks dari server dan input pemain lewat `textContent`. Pesan galat memakai Bahasa Indonesia tanpa galat mentah.
+4. Deploy fungsi (bila ada) mengikuti aturan Mac bersama di `AGENTS.md` bagian 3. Jangan jalankan `supabase login`.
+5. Sebelum tiap `git add .`, jalankan `git status` dulu.

@@ -161,3 +161,34 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 5. Baru lalu: kerangka folder dengan `.gitkeep`, `git status`, `git add .`, `commit`, `push`. Tutup FND.01.
 6. Catat URL project dan kunci publik Supabase (hanya kunci publik). Tutup FND.02.
 7. Jalankan FND.03 (`index.html` dan `config.js`).
+
+### 2026-11-01: Email commit, user Mac, dan token (FND.01 dan FND.02 selesai)
+
+- **Email commit:** commit baru memakai alamat noreply GitHub akun ronycah, dipasang lokal di folder MANCING tanpa `--global`. Dua commit lama masih memakai email pribadi (tidak sesuai F6); ketua menerima itu dan repo tidak dihapus. Alasan ketua: yang penting email commit berikutnya tersembunyi. Untuk commit baru, F6 tetap berlaku.
+- **User Mac:** tetap di user pemilik laptop (opsi B), hanya folder MANCING yang disentuh. Dilarang mengubah pengaturan global git atau folder lain.
+- **Token akses GitHub:** satu token jenis classic (izin repo dan workflow) tertanam di alamat repo lokal Mac. Tidak ada di repo. Push pertama berhasil. Dicek ulang di FND.08.
+- **Selesai:** FND.01 (kerangka folder, `.gitkeep`, md final, push pertama) dan FND.02 (project `mancingpwa`, wilayah Singapura; URL dan kunci publik sudah didapat, dipakai di `config.js` pada FND.03).
+
+### Handoff #2 | 2026-11-01 | (cocciplaz)
+
+**Tugas:** FND.01 dan FND.02. Keduanya selesai, tinggal dicentang di sheet.
+
+**File yang diubah (satu commit, sudah di-push ke GitHub, 9ed9119):**
+
+- `AGENTS.md` dan 4 md di `docs/` (database, features, fondasi, security) diperbarui ke versi final.
+- 5 md baru di `docs/`: akun, bonus, mancing, pemandangan-ikan, tas-jual.
+- Kerangka folder dengan `.gitkeep`: `archive/`, `public/img/`, `supabase/migrations/`, `supabase/functions/`.
+
+**Keputusan baru:** lihat blok Catatan Susulan 2026-11-01 di atas (email commit noreply, user Mac tetap di pemilik, token GitHub).
+
+**Masalah yang belum beres:**
+
+1. `todo-kartu.tsv` (berkas latihan) masih di repo. Menghapusnya butuh "OK" ketua.
+2. URL project dan kunci publik Supabase sudah didapat tapi **belum ditulis ke berkas mana pun**. Ambil lagi dari dashboard (Project Settings, API Keys) saat mengerjakan FND.03. Hanya URL dan kunci publik, jangan kunci secret/service_role.
+3. Git email dan nama sudah diatur khusus folder MANCING. Jangan diubah ke `--global`.
+
+**Saran giliran berikutnya:**
+
+1. FND.03: `public/index.html` dan `public/config.js` (butuh kode, minta eksplisit). Tempel URL dan kunci publik dulu.
+2. Sebelum tiap `git add .`, jalankan `git status` dulu.
+3. FND.04 dan FND.05 butuh "OK" ketua (lewat WA bila ketua tidak giliran).

@@ -255,3 +255,22 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 2. Tombol Ganti password cocoknya ditaruh di layar utama (`nama.js`) di samping Ganti nama; alurnya login ulang dengan password lama dulu (AK7).
 3. Cek di dashboard Supabase (menu pengguna) apakah ada pilihan atur password langsung, minta screenshot (AK8).
 4. Bila berkas JS baru ditambah, daftarkan di `sw.js` (butuh "OK" ketua). Sebelum tiap `git add .`, jalankan `git status`.
+
+### 2026-11-02: AK8 diganti, reset password lewat link email
+
+**Keputusan baru (ketua):** menggantikan AK8. Reset manual lewat dashboard tidak mungkin (tidak ada pilihan atur password langsung, dicek lewat screenshot). Diganti reset lewat link email dengan Gmail SMTP tim. Rincian aturan keamanan ada di blok `security.md` tanggal yang sama.
+
+**Alur:** pemain hubungi tim, ketua tekan "Send password recovery" di dashboard, pemain klik link di email, layar **Buat password baru**, lalu masuk dengan password baru. Aturan password baru sama dengan AK3.
+
+**Menggantikan isi lama:** AK8 dan bagian 5 butir 5. Tautan "Lupa password?" di layar Masuk tetap berisi petunjuk menghubungi tim, **tanpa menyebut daftar ulang** dan tanpa nomor atau email di repo. AK2 dan AK13 tetap berlaku.
+
+**Halaman tujuan:** layar baru di `index.html` yang sama (bukan berkas HTML terpisah), ditampilkan saat kejadian pemulihan dari `supabase-js` muncul. Perlu dibuktikan di tes.
+
+**Rencana (⚠️ semua butuh "OK" ketua, urutan usulan, ID sheet ditentukan tim):**
+
+1. Ganti password (AK7): `password.js` baru, tombol di layar utama (`nama.js`), `index.html`, `sw.js`.
+2. Dashboard: pasang SMTP Gmail tim, isi Site URL dan Redirect URL dengan alamat GitHub Pages.
+3. Layar Buat password baru (pemulihan): `akun.js` menangkap kejadian pemulihan sebelum menampilkan layar utama; layar bisa dipakai bersama `password.js`.
+4. Tes di sesi tes (AKN.07): reset penuh dengan akun dummy dan bukti.
+
+**Belum diputuskan:** jumlah dan nama berkas pasti; nama berkas JS menyusul saat dikerjakan.

@@ -153,3 +153,7 @@ Aplikasi non-komersial, jadi pengetesan **disederhanakan**. Tes dilakukan langsu
 - **Sesi kode:** lampirkan `AGENTS.md` + dokumen fitur terkait + file terbaru yang relevan. Kerjakan langkah dari bagian "Urutan pekerjaan" dokumen fitur. Tes: tambah dokumen tes. Handoff hanya bila diminta.
 - Awal sesi, AI membaca: `AGENTS.md`, dokumen fitur, lalu catatan susulan dan handoff paling akhir.
 - Satu giliran = satu tugas kecil dan 1 sampai 3 file.
+
+### 2026-11-02: Reset password lewat email (menggantikan "reset manual oleh tim")
+
+Keputusan ketua: reset password lewat link email dengan Gmail SMTP tim, ditekan dari dashboard Supabase. Menggantikan butir "reset manual oleh tim" di bagian 1 (goal akun) dan aturan password sementara. "Confirm email" tetap mati (bagian 8). App password Gmail termasuk rahasia (bagian 7): hanya di dashboard Supabase. Rincian di blok `akun.md` dan `security.md` tanggal yang sama.

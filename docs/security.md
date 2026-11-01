@@ -69,3 +69,33 @@ Kasus tes fitur lainnya ada di dokumen tes masing-masing fitur (dibuat di sesi t
 > Tempel blok baru di bawah garis ini. Format: `### YYYY-MM-DD: topik`. Temuan keamanan urgent tetap disampaikan langsung di chat. Yang paling akhir menang.
 
 ---
+
+### 2026-11-02: Reset password lewat email (Gmail SMTP), akses dashboard
+
+**Keputusan baru (ketua):** reset password dilakukan lewat link email. Tim memakai Gmail milik tim sebagai SMTP di Supabase. Pemain yang lupa menghubungi anggota tim, ketua menekan "Send password recovery" di dashboard, dan pemain membuat password baru lewat link. Alasan perubahan: visibilitas terbatas saat md awal dibuat; dashboard ternyata tidak punya pilihan atur password langsung.
+
+**Menggantikan isi lama (yang paling akhir menang):**
+
+- Bagian 1 butir 8: "reset manual dilakukan di dashboard, password sementara lewat WA/Telegram" tidak dipakai lagi. Password sementara tidak diperlukan.
+- Bagian 2 butir "Reset password manual: tim tidak bisa membuktikan identitas": digantikan, identitas dibuktikan lewat kepemilikan email. Pemain yang daftar dengan email asal-asalan tetap tidak bisa direset (risiko diterima).
+
+**Aturan tambahan:**
+
+- App password Gmail hanya diketik di dashboard Supabase. Tidak di chat, md, repo, atau WA. Pakai Gmail khusus tim (bukan pribadi) dengan verifikasi 2 langkah aktif.
+- Game tidak punya tombol kirim email; pengiriman hanya dari dashboard, jadi tidak ada risiko "bom email" dari game.
+- Akses dashboard: selama fase dev, siapa saja yang memakai laptop ketua yang sudah login boleh menekan tombol. Setelah fase dev selesai, hanya ketua. Saran: 2FA Supabase ketua diaktifkan sebelum itu (belum aktif, lihat handoff `akun.md`).
+- Batas email per jam dan "Minimum interval per user" dicek ulang di Rate Limits setelah SMTP dipasang.
+
+**Tes keamanan baru (ID ditentukan tim di sheet; butuh bukti):** link pemulihan tidak membuka layar utama tanpa membuat password baru; link yang sudah dipakai atau kedaluwarsa ditolak; password baru yang melanggar aturan AK3 ditolak; setelah reset, password lama tidak bisa dipakai; alamat GitHub Pages terdaftar di URL Auth (SEC-16).
+
+**Belum dicek:** masa berlaku link, dan nama persis setelan di dashboard.
+
+### 2026-11-02: SMTP Gmail terpasang, tes kirim pemulihan
+
+**Pengaturan dashboard (disetujui ketua):** custom SMTP Gmail milik tim aktif (host `smtp.gmail.com`, port 465, nama pengirim "Mancing Santuy App"); app password hanya diketik di dashboard. Batas email otomatis naik ke 30 per jam. Site URL dan Redirect URLs sudah berisi alamat GitHub Pages dan tidak diubah.
+
+**Hasil tes (akun tes dengan alamat Gmail tim):** email "Reset your password" masuk Inbox, pengirim "Mancing Santuy App", isi masih bahasa Inggris (template bawaan). Klik link saat belum login langsung membuka layar utama tanpa meminta password baru, karena `akun.js` belum menangani kejadian pemulihan.
+
+**Catatan:** tes dengan pengirim dan penerima akun yang sama belum membuktikan email masuk Inbox di akun lain; perlu satu tes ke Gmail anggota tim yang lain sebelum demo.
+
+**Belum beres:** layar Buat password baru, terjemahan template email (tanpa kode), tes ke Gmail lain.

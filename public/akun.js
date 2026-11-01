@@ -12,7 +12,17 @@
   // Password: hanya huruf dan angka, minimal 8 karakter (AK3).
   const ATURAN_PASSWORD = /^[A-Za-z0-9]{8,}$/;
 
+  // AKN.06: link reset password dari email. Alamat dibaca SEKARANG (sebelum pustaka
+  // Supabase memprosesnya) supaya link pemulihan tidak berubah jadi masuk biasa.
+  const HASH_AWAL = window.location.hash || "";
+  const LINK_PEMULIHAN = /[#&]type=recovery(&|$)/.test(HASH_AWAL);
+  const LINK_GALAT = !LINK_PEMULIHAN && /[#&]error(_code)?=/.test(HASH_AWAL);
+  let sedangPemulihan = LINK_PEMULIHAN;
+  let sudahMulai = false;
+
   const PESAN = {
+    linkKedaluwarsa:
+      "Link reset sudah kedaluwarsa atau sudah dipakai. Hubungi tim untuk dikirim ulang",
     aturanPassword: "Password minimal 8 karakter, hanya huruf dan angka",
     gagalMemuat: "Gagal memuat. Periksa internet lalu coba lagi",
     loginSalah: "Email atau password salah",
@@ -148,7 +158,7 @@
     wadah.appendChild(kartu);
   }
 
-  function tampilForm(mode) {
+  function tampilForm(mode, pesanAwal) {
     kosongkan();
     const kartu = buatEl("div", "kartu");
 
@@ -207,6 +217,7 @@
 
     const pesan = buatEl("p", "pesan");
     pesan.setAttribute("role", "alert");
+    if (pesanAwal) aturPesan(pesan, pesanAwal, true);
     form.appendChild(pesan);
 
     const tombol = buatEl(
@@ -254,6 +265,42 @@
 
     kartu.appendChild(form);
     wadah.appendChild(kartu);
+  }
+
+  // AKN.06: pemain membuka link reset dari email. Wajib membuat password baru dulu;
+  // tidak boleh langsung masuk ke layar utama.
+  function tampilPemulihan() {
+    const modul = window.MANCING_PASSWORD;
+    if (!modul || typeof modul.tampilBaru !== "function") {
+      // password.js tidak termuat: jangan biarkan link berubah jadi masuk biasa.
+      sedangPemulihan = false;
+      const kembali = function () {
+        tampilForm("masuk", PESAN.gagalMemuat);
+      };
+      klien.auth.signOut().then(kembali, kembali);
+      return;
+    }
+    modul.tampilBaru({
+      wadah: wadah,
+      klien: klien,
+      buatEl: buatEl,
+      kosongkan: kosongkan,
+      aturPesan: aturPesan,
+      buatKolom: buatKolom,
+      selesai: function (email) {
+        sedangPemulihan = false;
+        tampilSudahMasuk(email);
+      },
+      batal: async function () {
+        sedangPemulihan = false;
+        try {
+          await klien.auth.signOut();
+        } catch (e) {
+          // Diabaikan: tetap kembali ke layar Masuk.
+        }
+        tampilForm("masuk");
+      },
+    });
   }
 
   function tampilSudahMasuk(email) {
@@ -327,16 +374,38 @@
     // Bila sesi berakhir dari tab lain, kembali ke layar Masuk.
     klien.auth.onAuthStateChange(function (kejadian) {
       if (kejadian === "SIGNED_OUT") tampilForm("masuk");
+      // AKN.06: pustaka mengenali link pemulihan.
+      if (kejadian === "PASSWORD_RECOVERY") {
+        sedangPemulihan = true;
+        if (sudahMulai) tampilPemulihan();
+      }
     });
 
     try {
       const hasil = await klien.auth.getSession();
+      sudahMulai = true;
       if (hasil.data && hasil.data.session) {
-        tampilSudahMasuk(hasil.data.session.user.email);
+        if (sedangPemulihan) {
+          tampilPemulihan();
+        } else {
+          tampilSudahMasuk(hasil.data.session.user.email);
+        }
         return;
       }
     } catch (e) {
       // Gagal membaca sesi: lanjut ke layar Masuk.
+    }
+    sudahMulai = true;
+
+    // Link reset yang kedaluwarsa atau sudah dipakai: beri tahu dan bersihkan alamat.
+    if (LINK_GALAT) {
+      try {
+        window.history.replaceState(null, "", window.location.pathname);
+      } catch (e) {
+        // Diabaikan: hanya merapikan alamat.
+      }
+      tampilForm("masuk", PESAN.linkKedaluwarsa);
+      return;
     }
     tampilForm("masuk");
   }

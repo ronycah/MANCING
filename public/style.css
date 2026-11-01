@@ -152,3 +152,32 @@
     display: block;
     width: 100%;
 }
+
+/* ===== Pilih nama, Ganti nama, layar utama (AKN.05) ===== */
+
+/* Jarak antar teks, pesan, dan tombol yang langsung di dalam kartu
+   (sekalian membereskan jarak kartu "Butuh internet" yang terlalu rapat). */
+.kartu > .petunjuk,
+.kartu > .pesan {
+    margin-bottom: var(--jarak);
+}
+
+/* Kelompok tombol bertumpuk (Ganti nama, Keluar / Coba lagi, Keluar). */
+.aksi {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Umpan dan koin di layar utama. */
+.statistik {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: var(--jarak);
+    font-weight: 600;
+}
+
+.statistik .petunjuk {
+    font-size: 1rem;
+}

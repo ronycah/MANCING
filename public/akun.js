@@ -2,6 +2,7 @@
 // Layar Daftar, Masuk, dan Keluar (AKN.04).
 // Memakai Supabase Auth dengan kunci publik dari config.js.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
+// AKN.05: setelah masuk, layar Pilih nama / layar utama diambil alih nama.js bila termuat.
 (function () {
   "use strict";
 
@@ -256,6 +257,27 @@
   }
 
   function tampilSudahMasuk(email) {
+    // AKN.05: bila nama.js termuat, dia yang mengurus layar sesudah masuk
+    // (Pilih nama, layar utama, Ganti nama, Keluar).
+    if (
+      window.MANCING_NAMA &&
+      typeof window.MANCING_NAMA.mulai === "function"
+    ) {
+      window.MANCING_NAMA.mulai({
+        wadah: wadah,
+        klien: klien,
+        email: email,
+        buatEl: buatEl,
+        kosongkan: kosongkan,
+        aturPesan: aturPesan,
+        keMasuk: function () {
+          tampilForm("masuk");
+        },
+      });
+      return;
+    }
+
+    // Cadangan (layar sementara AKN.04) bila nama.js belum termuat.
     kosongkan();
     const kartu = buatEl("div", "kartu");
     kartu.appendChild(buatEl("h2", "judul", "Kamu sudah masuk 🎣"));

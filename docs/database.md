@@ -106,3 +106,12 @@ Satu Edge Function bernama **`mancing`** dengan banyak aksi, hanya untuk pemain 
 > Tempel blok baru di bawah garis ini bila ada perubahan struktur atau kejadian di lapangan. Format: `### YYYY-MM-DD: topik`. Jangan menyunting bagian lain. Yang paling akhir menang.
 
 ---
+
+### 2026-11-01: AKN.02 selesai, hak service_role dan fungsi simpan_nama_pemain
+
+- Migration yang dijalankan di SQL Editor: `2026-11-01_akun-pemain-pengaturan.sql` (tabel `pengaturan` dengan baris umpan, tabel `pemain`, RLS tanpa policy, fungsi) dan `2026-11-01_cabut-hak-berlebih.sql` (perbaikan hak).
+- Kejadian: Supabase otomatis memberi `service_role` semua hak (termasuk DELETE dan TRUNCATE) pada tabel baru. Migration pertama hanya menambah hak, jadi hak berlebih tetap ada. Terdeteksi lewat query cek, lalu dicabut. Pencegahan: **setiap migration tabel baru (`ikan`, `tangkapan`, dan seterusnya) wajib mencabut semua hak `service_role` lalu memberi ulang hanya yang perlu**, dan dicek dengan query baca-saja.
+- Hak akhir `service_role`: `pemain` = SELECT, INSERT, UPDATE; `pengaturan` = SELECT saja (angka diubah lewat dashboard).
+- Keputusan baru: satu fungsi SQL `public.simpan_nama_pemain(p_id uuid, p_nama text)` membuat baris pemain bila belum ada (umpan awal dari `pengaturan`, koin 0, waktu hitung = jam server) dan hanya mengganti nama bila baris sudah ada (umpan dan koin tidak tersentuh). Dipakai aksi `ganti_nama` supaya Edge Function tidak menulis ke tabel langsung. Nama dicek lagi di fungsi (3 sampai 20 karakter, huruf, angka, spasi, garis bawah).
+- Keputusan baru: `pemain.id` terhubung ke akun login dengan hapus berantai (baris pemain ikut terhapus bila akun dihapus dari dashboard), supaya pembersihan akun dummy tidak macet. Alasan lain belum tercatat.
+- Bukti: query cek 1 Nov 2026 menunjukkan RLS aktif di kedua tabel, 0 policy, tidak ada hak untuk `anon` dan `authenticated`, `EXECUTE` fungsi hanya `service_role`, pengaturan 10 / 20 / 60.

@@ -225,7 +225,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 3. Berkas JS baru wajib didaftarkan di `sw.js` (butuh "OK" ketua). Semua teks dari server dan input pemain lewat `textContent`, pesan galat Bahasa Indonesia tanpa galat mentah.
 4. Sebelum tiap `git add .`, jalankan `git status` dulu.
 
-### Handoff #4 | 2026-11-01 | (isi nama PIC)
+### Handoff #4 | 2026-11-01 | (baby)
 
 **Tugas:** AKN.05 (layar Pilih nama dan Ganti nama). Selesai dengan bukti tampilan, tinggal dicentang di sheet.
 

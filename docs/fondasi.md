@@ -192,3 +192,28 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 1. FND.03: `public/index.html` dan `public/config.js` (butuh kode, minta eksplisit). Tempel URL dan kunci publik dulu.
 2. Sebelum tiap `git add .`, jalankan `git status` dulu.
 3. FND.04 dan FND.05 butuh "OK" ketua (lewat WA bila ketua tidak giliran).
+
+### Handoff #3 | 2026-11-01 | (rac)
+
+**Tugas:** FND.03, FND.04, FND.05. Ketiganya selesai, tinggal dicentang di sheet.
+
+**File yang diubah (sudah di-push ke GitHub):**
+
+- `public/index.html` dan `public/config.js` (commit 01b9fdf). Halaman awal "Mancing Santuy"; `config.js` berisi URL project dan kunci publik (anon) saja; pustaka Supabase dari CDN dengan versi dipatok (2.45.4).
+- `.github/workflows/pages.yml`. Menerbitkan folder `public/` ke GitHub Pages tiap push ke `main`. Sumber Pages di GitHub sudah diatur ke "GitHub Actions".
+
+**Hasil:** halaman awal sudah terbuka online di `https://ronycah.github.io/MANCING/` (dicek di layar penuh dan mode HP). Alamat itu sudah didaftarkan di Supabase (Authentication, URL Configuration) sebagai Site URL dan Redirect URLs. Kedua pengaturan sudah dicek tersimpan setelah refresh dan disetujui ketua.
+
+**Keputusan baru:** tidak ada.
+
+**Masalah yang belum beres:**
+
+1. `manifest.json` belum ada, jadi Console browser menampilkan 404 untuk berkas itu. Wajar, dibuat di FND.07.
+2. Belum dicek di Console apakah pustaka Supabase (CDN) termuat tanpa error.
+3. Dari handoff sebelumnya masih berlaku: `todo-kartu.tsv` di repo (hapus butuh "OK" ketua), 2FA GitHub dan Supabase belum aktif, dan token GitHub classic dicek ulang di FND.08.
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. FND.06: cek Homebrew dan Node di Mac, pasang Supabase CLI, login satu kali. Token akses tidak boleh ditempel ke chat.
+2. Sebelum FND.07 (butuh "OK" ketua): putuskan siapa yang membuat ikon aplikasi.
+3. Sebelum tiap `git add .`, jalankan `git status` dulu.

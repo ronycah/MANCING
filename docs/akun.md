@@ -122,3 +122,30 @@ Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua.
 ## 9. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### Handoff #1 | 2026-11-01 | (isi nama PIC yang berhenti)
+
+**Tugas:** AKN.01 (pengaturan Auth di dashboard Supabase). Selesai, tinggal dicentang di sheet.
+
+**File yang diubah:** tidak ada. Semua dikerjakan di dashboard Supabase (project `mancingpwa`), tidak ada berkas repo yang dibuat atau diubah.
+
+**Hasil (dicek lewat refresh, sudah tersimpan):**
+
+- "Confirm email" **dimatikan** (AK2). "Allow new users to sign up" tetap menyala; "Allow manual linking" dan "Allow anonymous sign-ins" tetap mati.
+- "Minimum password length" diubah dari **6 menjadi 8** (AK3). "Password requirements" dibiarkan kosong, sesuai AK3 (tanpa syarat kerumitan).
+- "Secure password change" dicek: **mati**, jadi ganti password tidak butuh verifikasi email. Tidak diubah. Alur AK7 (login ulang dengan password lama) tetap dipakai karena "Require current password when updating" juga mati dan pengecekan password lama dilakukan di game.
+- "Prevent use of leaked passwords" hanya tersedia di paket Pro; diabaikan.
+- Persetujuan "OK" ketua untuk AKN.01 diberikan langsung di tempat (1 Nov 2026).
+
+**Keputusan baru:** tidak ada. Metode pendaftaran tetap signup mandiri dari game (bukan Add user di dashboard); menu Add user hanya dipakai untuk akun dummy tes dan reset manual (AK8, AK14).
+
+**Masalah yang belum beres:**
+
+1. Jawaban dosen soal `_headers` belum ada. Penjelasan ke dosen: GitHub Pages tidak membaca `_headers`; cache ditangani `sw.js` network first, keamanan lewat RLS dan Edge Function. Bila dosen meminta pengaturan header (misal lewat tag `<meta>` di `index.html`), itu keputusan baru dan butuh "OK" ketua.
+2. Dari handoff fondasi yang masih berlaku: token GitHub classic belum dicek jenis dan kedaluwarsanya, 2FA GitHub dan Supabase ketua belum aktif, teks "(tes update)" masih di `index.html`, dan pustaka Supabase dari CDN tidak ikut cache saat offline.
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. Mulai **AKN.02 ⚠️** (migration tabel `pengaturan` dan `pemain`, hak, RLS, fungsi pembuat pemain). Lampirkan `AGENTS.md`, `docs/akun.md`, dan `docs/database.md`. Butuh penjelasan dampak dan "OK" ketua.
+2. SQL disalin dulu ke `supabase/migrations/`, baru dijalankan manual di SQL Editor.
+3. Sebelum tiap `git add .`, jalankan `git status` dulu.

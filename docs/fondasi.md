@@ -218,7 +218,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 2. Sebelum FND.07 (butuh "OK" ketua): putuskan siapa yang membuat ikon aplikasi.
 3. Sebelum tiap `git add .`, jalankan `git status` dulu.
 
-### Handoff #4 | 2026-11-01 | (isi nama PIC)
+### Handoff #4 | 2026-11-01 | (aik)
 
 **Tugas:** FND.06 (Supabase CLI). Selesai, tinggal dicentang di sheet.
 
@@ -255,7 +255,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 
 Token ada di penyimpanan aman ketua (bukan di Mac, repo, atau chat). Bila hilang, buat token baru dengan izin yang sama.
 
-### Handoff #5 | 2026-11-01 | (isi nama PIC)
+### Handoff #5 | 2026-11-01 | (germano)
 
 **Tugas:** FND.07 (PWA) dan FND.08 (cek repo bersih, SEC-15). Keduanya selesai, tinggal dicentang di sheet.
 

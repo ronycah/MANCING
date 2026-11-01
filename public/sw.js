@@ -12,6 +12,8 @@ const BERKAS_DASAR = [
   "./",
   "index.html",
   "config.js",
+  "style.css",
+  "akun.js",
   "manifest.json",
   "img/web-app-manifest-192x192.png",
   "img/web-app-manifest-512x512.png",

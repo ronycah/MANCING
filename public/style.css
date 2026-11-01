@@ -146,3 +146,9 @@
     color: var(--warna-utama);
     border: 2px solid var(--warna-utama);
 }
+
+/* Tombol langsung di dalam kartu (misal Keluar) selebar kartu, sama seperti di form. */
+.kartu > .tombol {
+    display: block;
+    width: 100%;
+}

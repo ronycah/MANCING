@@ -1,0 +1,148 @@
+/* public/style.css */
+/* CSS terpusat Mancing Santuy. Ditulis sendiri, tanpa CDN, font bawaan sistem. */
+/* Warna dan ukuran diatur sekali di bagian :root supaya tampilan konsisten. */
+/* Fitur berikutnya (Mancing, Tas) cukup menambah bagian baru di berkas ini. */
+
+:root {
+    --warna-utama: #2a9d8f;
+    --warna-utama-gelap: #21867a;
+    --warna-latar: #bde6f2;
+    --warna-teks: #1d3557;
+    --warna-kartu: #ffffff;
+    --warna-garis: #a8dadc;
+    --warna-galat: #b00020;
+    --warna-info: #1d3557;
+    --radius: 12px;
+    --jarak: 12px;
+}
+
+/* ===== Layar akun (AKN.04) ===== */
+
+.akun {
+    width: 100%;
+    max-width: 360px;
+    margin-top: 16px;
+}
+
+.kartu {
+    background: var(--warna-kartu);
+    border: 2px solid var(--warna-garis);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: left;
+}
+
+.judul {
+    font-size: 1.3rem;
+    margin: 0 0 var(--jarak);
+    text-align: center;
+}
+
+.tab {
+    display: flex;
+    gap: 8px;
+    margin-bottom: var(--jarak);
+}
+
+.tab-tombol {
+    flex: 1;
+    min-height: 44px;
+    border: 2px solid var(--warna-utama);
+    border-radius: var(--radius);
+    background: var(--warna-kartu);
+    color: var(--warna-utama);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tab-tombol.aktif {
+    background: var(--warna-utama);
+    color: #ffffff;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--jarak);
+}
+
+.kolom {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.kolom label {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.kolom input {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 2px solid var(--warna-garis);
+    border-radius: var(--radius);
+    font: inherit;
+    color: var(--warna-teks);
+    background: #ffffff;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.kolom input:focus-visible,
+.tab-tombol:focus-visible,
+.tombol:focus-visible {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 2px;
+}
+
+.lihat {
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.petunjuk {
+    font-size: 0.9rem;
+    margin: 0;
+    text-align: left;
+}
+
+.pesan {
+    min-height: 1.2em;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--warna-galat);
+    text-align: left;
+}
+
+.pesan.info {
+    color: var(--warna-info);
+}
+
+.tombol {
+    min-height: 44px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--warna-utama);
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.tombol:hover {
+    background: var(--warna-utama-gelap);
+}
+
+.tombol:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.tombol.sekunder {
+    background: var(--warna-kartu);
+    color: var(--warna-utama);
+    border: 2px solid var(--warna-utama);
+}

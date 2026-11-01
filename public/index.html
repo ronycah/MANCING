@@ -42,15 +42,22 @@
                 margin: 0;
             }
         </style>
+        <!-- CSS terpusat game (ditulis sendiri, tanpa CDN) -->
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <h1>🎣 Mancing Santuy</h1>
-        <p>Game mancing santai. Segera hadir! (tes update)</p>
+        <p>Game mancing santai.</p>
+
+        <!-- Wadah layar akun (Daftar, Masuk, Keluar), diisi oleh akun.js -->
+        <main id="akun" class="akun"></main>
 
         <!-- Pengaturan publik (URL project dan kunci publik) -->
         <script src="config.js"></script>
         <!-- Pustaka Supabase, versi dipatok (bukan latest) -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+        <!-- Layar akun: Daftar, Masuk, Keluar (AKN.04) -->
+        <script src="akun.js"></script>
         <!-- Daftarkan service worker (PWA) -->
         <script>
             if ("serviceWorker" in navigator) {

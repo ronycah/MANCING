@@ -193,3 +193,34 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 3. Semua teks dari server dan input pemain lewat `textContent`. Pesan galat memakai Bahasa Indonesia tanpa galat mentah.
 4. Deploy fungsi (bila ada) mengikuti aturan Mac bersama di `AGENTS.md` bagian 3. Jangan jalankan `supabase login`.
 5. Sebelum tiap `git add .`, jalankan `git status` dulu.
+
+### Handoff #3 | 2026-11-01 | (kevin)
+
+**Tugas:** AKN.04 (layar Daftar, Masuk, Keluar). Selesai dengan bukti, tinggal dicentang di sheet.
+
+**File yang diubah (semua perlu di-push bila belum):**
+
+- `public/style.css` (baru): CSS terpusat semua layar, ditulis sendiri tanpa CDN.
+- `public/akun.js` (baru): layar Daftar, Masuk, Keluar. Klien Supabase disimpan di `window.MANCING_KLIEN` untuk dipakai fitur berikutnya.
+- `public/index.html`: teks "Segera hadir! (tes update)" diganti wadah `#akun`; ditambah `style.css` dan `akun.js`.
+- `public/sw.js`: hanya menambah `style.css` dan `akun.js` ke daftar berkas dasar.
+- `AGENTS.md` (bagian 3 dan 6) dan `docs/akun.md`: disesuaikan untuk CSS terpusat.
+
+**Keputusan baru:** semua CSS terpusat di satu berkas `public/style.css`, tanpa CDN, atas saran dosen. Menggantikan "satu fitur = satu berkas CSS". Alasan lain belum tercatat. Persetujuan "OK" ketua untuk perubahan ini, `index.html`, dan `sw.js` sudah diberikan di sesi.
+
+**Hasil:** semua tes lulus di production dengan akun dummy `tes2@example.com`: password pendek ditolak di game, daftar langsung masuk, Keluar, password salah ditolak dengan pesan aman, Masuk benar, sesi tersimpan, dan offline menampilkan "Butuh internet" lalu pulih saat internet menyala.
+
+**Masalah yang belum beres:**
+
+1. Jarak kalimat dan tombol di kartu "Butuh internet" terlalu rapat (P2, tampilan saja; bisa dibereskan di `style.css` bersama perubahan CSS berikutnya).
+2. Layar sesudah masuk masih sementara ("Kamu sudah masuk"); diganti di AKN.05.
+3. Akun dummy `tes1@example.com` dan `tes2@example.com` masih ada. Passwordnya tidak ada di repo, chat, atau md; tanyakan ke pembuatnya.
+4. Pemulihan umpan seiring waktu belum terbukti (dites di AKN.07).
+5. Dari handoff sebelumnya masih berlaku: jawaban dosen soal `_headers`, 2FA GitHub dan Supabase ketua belum aktif, dan token GitHub classic belum dicek. Pustaka Supabase dari CDN tidak ikut cache offline sudah ditangani (layar "Butuh internet").
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. Mulai **AKN.05** (Pilih nama dan Ganti nama). Lampirkan `AGENTS.md`, `docs/akun.md`, `public/index.html`, `public/config.js`, `public/sw.js`, `public/style.css`, `public/akun.js`, dan `supabase/functions/mancing/index.ts` (untuk memastikan bentuk kiriman aksi `status` dan `ganti_nama`).
+2. Layar Pilih nama menggantikan layar sementara di `akun.js`. Panggil `status` sekali setelah masuk; bila `ada: false`, tampilkan layar Pilih nama (aturan 3 sampai 20 karakter: huruf, angka, spasi, garis bawah). Token login dikirim sebagai Bearer; aplikasi tidak pernah mengirim ID, umpan, atau koin.
+3. Berkas JS baru wajib didaftarkan di `sw.js` (butuh "OK" ketua). Semua teks dari server dan input pemain lewat `textContent`, pesan galat Bahasa Indonesia tanpa galat mentah.
+4. Sebelum tiap `git add .`, jalankan `git status` dulu.

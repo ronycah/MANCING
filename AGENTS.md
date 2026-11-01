@@ -58,7 +58,7 @@ Panduan utama & aturan interaksi AI Agent untuk repository ini.
   4. Tutup jendela Terminal, lalu cek di jendela baru: `echo "[${SUPABASE_ACCESS_TOKEN:+ada}]"` harus menampilkan `[]`.
      AI tidak boleh memberi perintah deploy tanpa urutan ini.
 - **Git lewat terminal** di Mac bersama (`git status`, `git add .`, `commit`, `push`). Gambar ikut di-push dari terminal bersama berkas lain.
-- Tampilan: CSS/SVG/Canvas, gaya **kartun flat**, dipakai konsisten oleh semua giliran.
+- Tampilan: CSS/SVG/Canvas, gaya **kartun flat**, dipakai konsisten oleh semua giliran. **CSS ditulis sendiri tanpa CDN** (tanpa Bootstrap, Tailwind, atau Google Fonts; font bawaan sistem), dan **semua gaya terpusat di satu berkas `public/style.css`** supaya tampilan konsisten dan mudah dirawat (arahan dosen, 1 Nov 2026).
 
 ## 4. Skala & Rekomendasi
 
@@ -94,7 +94,8 @@ Tiap dokumen fitur memuat tabel keputusan bernomor, alur, **"aturan yang paling 
 /.github/workflows/pages.yml  (penerbitan folder public/ ke GitHub Pages)
 /public            (root web; semua file game)
 ├── index.html, manifest.json, sw.js, config.js
-├── *.js, *.css    (satu fitur = satu berkas kecil, usahakan di bawah ~300 baris)
+├── style.css      (CSS terpusat semua layar, ditulis sendiri, tanpa CDN)
+├── *.js           (satu fitur = satu berkas kecil, usahakan di bawah ~300 baris)
 └── img/           (aset gambar)
 /docs              (md fitur, database, security, tes)
 /archive           (md versi lama, diisi saat penilaian 2)

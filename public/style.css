@@ -761,3 +761,112 @@ button.kotak-ikan:focus-visible {
     flex: 1;
     min-width: 0;
 }
+
+/* ===== DANAU (VIS.01) ===== */
+/* Pemandangan danau dari img/danau.svg yang ditempelkan oleh lokasi-danau.js. */
+/* Warna diatur lewat variabel di wadah .danau. Suasana lain (sore, malam)
+   cukup mengganti variabel lewat kelas tambahan di wadah yang sama. */
+/* Sungai dan laut nanti menambah blok sendiri di bawah ini, dengan awalan sungai- dan laut-. */
+
+.danau {
+    /* Suasana siang (bawaan). */
+    --danau-langit: #87ceeb;
+    --danau-matahari: #ffde59;
+    --danau-awan: #ffffff;
+    --danau-awan-opasitas: 0.95;
+    --danau-bukit-jauh: #48a97c;
+    --danau-bukit-dekat: #388e3c;
+    --danau-air: #3a86c8;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--danau-langit);
+}
+
+.danau svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Suasana sore (dipindah dari kelas .sunset di dalam danau.svg). Dipakai di VIS.02. */
+.danau.sore {
+    --danau-langit: #ff7e5f;
+    --danau-matahari: #feb47b;
+    --danau-awan: #ffd3b6;
+    --danau-awan-opasitas: 0.8;
+    --danau-bukit-jauh: #724c66;
+    --danau-bukit-dekat: #52374e;
+    --danau-air: #4a4568;
+}
+
+/* Suasana malam (dipindah dari kelas .night di dalam danau.svg). Dipakai di VIS.02. */
+.danau.malam {
+    --danau-langit: #0f172a;
+    --danau-matahari: #f1f5f9;
+    --danau-awan: #334155;
+    --danau-awan-opasitas: 0.5;
+    --danau-bukit-jauh: #1e293b;
+    --danau-bukit-dekat: #0f172a;
+    --danau-air: #1e293b;
+}
+
+.danau-langit {
+    fill: var(--danau-langit);
+    transition: fill 1.5s ease;
+}
+
+.danau-matahari {
+    fill: var(--danau-matahari);
+    transition: fill 1.5s ease;
+}
+
+.danau-awan {
+    fill: var(--danau-awan);
+    opacity: var(--danau-awan-opasitas);
+    transition:
+        fill 1.5s ease,
+        opacity 1.5s ease;
+}
+
+.danau-bukit-jauh {
+    fill: var(--danau-bukit-jauh);
+    transition: fill 1.5s ease;
+}
+
+.danau-bukit-dekat {
+    fill: var(--danau-bukit-dekat);
+    transition: fill 1.5s ease;
+}
+
+.danau-air {
+    fill: var(--danau-air);
+    transition: fill 1.5s ease;
+}
+
+.danau-riak {
+    stroke: #5aa4e0;
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0.7;
+}
+
+.danau-kayu {
+    fill: #a06535;
+}
+
+.danau-kayu-gelap {
+    fill: #794821;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .danau-langit,
+    .danau-matahari,
+    .danau-awan,
+    .danau-bukit-jauh,
+    .danau-bukit-dekat,
+    .danau-air {
+        transition: none;
+    }
+}

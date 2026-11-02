@@ -18,11 +18,13 @@ const BERKAS_DASAR = [
   "password.js",
   "mancing.js",
   "tas.js",
+  "lokasi-danau.js",
   "manifest.json",
   "img/web-app-manifest-192x192.png",
   "img/web-app-manifest-512x512.png",
   "img/apple-touch-icon.png",
   "img/favicon.svg",
+  "img/danau.svg",
 ];
 
 // Pasang: simpan berkas dasar. Satu berkas gagal tidak membatalkan yang lain.

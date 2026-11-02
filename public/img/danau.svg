@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%" id="lake-landscape">
+  <defs>
+    <!-- CSS Internal untuk mempermudah transisi warna waktu jika dibutuhkan via class -->
+    <style>
+      /* Style bawaan mode Siang (Day) */
+      .sky-color { fill: #87ceeb; transition: fill 1.5s ease; }
+      .sun-moon-color { fill: #ffde59; transition: fill 1.5s ease; }
+      .cloud-color { fill: #ffffff; opacity: 0.95; transition: fill 1.5s ease, opacity 1.5s ease; }
+      .hill-far { fill: #48a97c; transition: fill 1.5s ease; }
+      .hill-near { fill: #388e3c; transition: fill 1.5s ease; }
+      .water-base { fill: #3a86c8; transition: fill 1.5s ease; }
+      .water-ripple { stroke: #5aa4e0; stroke-width: 3; stroke-linecap: round; opacity: 0.7; }
+      .pier-wood { fill: #a06535; }
+      .pier-dark { fill: #794821; }
+      
+      /* Kelas pembantu untuk contoh tema waktu (dapat diubah via JS: elem.classList.add('night')) */
+      .sunset .sky-color { fill: #ff7e5f; }
+      .sunset .sun-moon-color { fill: #feb47b; }
+      .sunset .cloud-color { fill: #ffd3b6; opacity: 0.8; }
+      .sunset .hill-far { fill: #724c66; }
+      .sunset .hill-near { fill: #52374e; }
+      .sunset .water-base { fill: #4a4568; }
+
+      .night .sky-color { fill: #0f172a; }
+      .night .sun-moon-color { fill: #f1f5f9; } /* Bulan */
+      .night .cloud-color { fill: #334155; opacity: 0.5; }
+      .night .hill-far { fill: #1e293b; }
+      .night .hill-near { fill: #0f172a; }
+      .night .water-base { fill: #1e293b; }
+    </style>
+  </defs>
+
+  <!-- ==================== 1. LANGIT (SKY) ==================== -->
+  <rect id="sky-bg" class="sky-color" x="0" y="0" width="800" height="420" />
+
+  <!-- Matahari / Bulan -->
+  <circle id="sun-moon" class="sun-moon-color" cx="640" cy="110" r="45" />
+
+  <!-- ==================== 2. AWAN (CLOUDS) ==================== -->
+  <g id="clouds-group">
+    <!-- Awan Kiri -->
+    <path id="cloud-1" class="cloud-color" d="M 80 130 
+             a 20 20 0 0 1 30 -10 
+             a 30 30 0 0 1 50 0 
+             a 20 20 0 0 1 30 10 
+             a 15 15 0 0 1 -10 25 
+             l -90 0 
+             a 15 15 0 0 1 -10 -25 Z" />
+
+    <!-- Awan Kanan -->
+    <path id="cloud-2" class="cloud-color" d="M 580 90 
+             a 15 15 0 0 1 25 -8 
+             a 25 25 0 0 1 40 0 
+             a 15 15 0 0 1 25 8 
+             a 12 12 0 0 1 -8 20 
+             l -74 0 
+             a 12 12 0 0 1 -8 -20 Z" />
+  </g>
+
+  <!-- ==================== 3. PEGUNUNGAN & POHON (HILLS & TREES) ==================== -->
+  <g id="landscape-hills">
+    <!-- Bukit Jauh -->
+    <path id="hill-far" class="hill-far" d="M 0 310 Q 180 230 380 290 T 800 260 L 800 380 L 0 380 Z" />
+    
+    <!-- Pohon Latar Jauh Kiri -->
+    <path class="hill-far" d="M 30 270 A 25 25 0 0 1 70 270 L 70 320 L 30 320 Z" />
+    <path class="hill-far" d="M 60 260 A 20 20 0 0 1 95 260 L 95 320 L 60 320 Z" />
+
+    <!-- Bukit Dekat -->
+    <path id="hill-near" class="hill-near" d="M 0 330 Q 240 260 480 320 T 800 300 L 800 390 L 0 390 Z" />
+
+    <!-- Dedaunan / Pepohonan Kiri Dekat -->
+    <path class="hill-near" d="M -20 280 Q 40 250 80 330 Z" />
+    <path class="hill-near" d="M 40 270 Q 100 240 140 340 Z" />
+    
+    <!-- Dedaunan / Pepohonan Kanan Dekat -->
+    <path class="hill-near" d="M 680 300 Q 740 230 820 290 Z" />
+    <path class="hill-near" d="M 620 310 Q 680 240 730 340 Z" />
+  </g>
+
+  <!-- ==================== 4. AIR DANAU (LAKE WATER) ==================== -->
+  <g id="lake-group">
+    <!-- Base Air -->
+    <rect id="lake-water" class="water-base" x="0" y="340" width="800" height="260" />
+
+    <!-- Gelombang / Riple Air (Statis) -->
+    <g id="water-ripples">
+      <line class="water-ripple" x1="120" y1="370" x2="220" y2="370" />
+      <line class="water-ripple" x1="550" y1="360" x2="680" y2="360" />
+      <line class="water-ripple" x1="80"  y1="410" x2="260" y2="410" />
+      <line class="water-ripple" x1="480" y1="400" x2="600" y2="400" />
+      <line class="water-ripple" x1="200" y1="460" x2="340" y2="460" />
+      <line class="water-ripple" x1="620" y1="450" x2="740" y2="450" />
+      <line class="water-ripple" x1="50"  y1="510" x2="180" y2="510" />
+      <line class="water-ripple" x1="450" y1="520" x2="570" y2="520" />
+    </g>
+  </g>
+
+  <!-- ==================== 5. DERMAGA KAYU (WOODEN PIER) ==================== -->
+  <g id="wooden-pier">
+    <!-- Perspektif Dermaga Kayu Utama (Trapesium) -->
+    <polygon points="260,600 540,600 470,440 330,440" class="pier-wood" />
+
+    <!-- Garis Papan Kayu -->
+    <polygon points="325,455 475,455 471,460 329,460" class="pier-dark" />
+    <polygon points="315,475 485,475 480,482 320,482" class="pier-dark" />
+    <polygon points="302,498 498,498 492,506 308,506" class="pier-dark" />
+    <polygon points="288,525 512,525 505,534 295,534" class="pier-dark" />
+    <polygon points="273,558 527,558 519,568 281,568" class="pier-dark" />
+
+    <!-- Sisi Samping/Pinggiran Kayu -->
+    <polygon points="260,600 273,600 335,440 330,440" class="pier-dark" />
+    <polygon points="540,600 527,600 465,440 470,440" class="pier-dark" />
+  </g>
+</svg>

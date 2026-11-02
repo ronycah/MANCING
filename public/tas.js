@@ -1,6 +1,9 @@
 // public/tas.js
 // Layar Tas Ikan / album koleksi (TAS.03): 16 kotak (terbuka atau siluet "???"),
 // detail jenis, tombol Jual 1 dan Jual semua jenis ini.
+// TAS.05: album 2 kolom (lihat style.css). Mengetuk kotak membuka POPUP detail (sebelumnya
+// kartu detail di bawah album). Popup tetap terbuka setelah jual supaya bisa jual beruntun.
+// Ditutup lewat tombol silang, tombol Tutup, ketuk area gelap, atau tombol Esc.
 // Dipasang dari nama.js lewat window.MANCING_TAS.tampil(ctx). ctx berisi:
 // wadah, status, buatEl, kosongkan, aturPesan, muatStatus(), jual(ikanId, pilihan),
 // saatKoinBerubah(), sesiHabis(), kembali()
@@ -89,6 +92,7 @@
     const kembali = ctx.buatEl("button", "tombol sekunder", "Kembali");
     kembali.type = "button";
     kembali.addEventListener("click", function () {
+      hapusPopup();
       ctx.kembali();
     });
     aksiBawah.appendChild(kembali);
@@ -97,9 +101,10 @@
     ctx.wadah.appendChild(kartu);
 
     let album = null; // daftar jenis dari server; null bila belum atau gagal dimuat
-    let terpilih = null; // id jenis yang sedang dibuka detailnya
+    let terpilih = null; // id jenis yang sedang dibuka popupnya
     let sibuk = false; // menunggu jawaban jual
     let memuat = false; // menunggu jawaban status
+    let popup = null; // isi popup yang sedang terbuka; null bila tertutup (TAS.05)
 
     function perbaruiKoin() {
       teksKoin.textContent = "Koin: " + status.koin;
@@ -113,10 +118,156 @@
       return null;
     }
 
+    // Pesan ditulis di layar Tas dan, bila popup terbuka, juga di dalam popup.
+    function kabar(teks, galat) {
+      ctx.aturPesan(pesan, teks, galat);
+      if (popup) ctx.aturPesan(popup.pesan, teks, galat);
+    }
+
+    // Tombol Esc menutup popup. Bila layar Tas sudah tidak tampil, pendengar ini melepas dirinya.
+    function saatTombolTekan(ev) {
+      if (!kartu.isConnected) {
+        document.removeEventListener("keydown", saatTombolTekan);
+        return;
+      }
+      if (ev.key === "Escape") tutupPopup();
+    }
+
+    function hapusPopup() {
+      document.removeEventListener("keydown", saatTombolTekan);
+      if (popup && popup.latar.parentNode) {
+        popup.latar.parentNode.removeChild(popup.latar);
+      }
+      popup = null;
+    }
+
+    function tutupPopup() {
+      hapusPopup();
+      terpilih = null;
+      gambarGrid();
+    }
+
+    // Buat popup untuk satu jenis (bagian yang tetap). Angka yang berubah diisi perbaruiPopup().
+    function bukaPopup(e) {
+      hapusPopup();
+      const k = kelasDari(e);
+
+      const latar = ctx.buatEl("div", "popup-latar");
+      const dialog = ctx.buatEl("div", "popup-ikan" + k.css);
+      dialog.setAttribute("role", "dialog");
+      dialog.setAttribute("aria-modal", "true");
+      dialog.setAttribute("aria-labelledby", "popup-nama-ikan");
+      dialog.tabIndex = -1;
+
+      const kepala = ctx.buatEl("div", "popup-kepala");
+      kepala.appendChild(ctx.buatEl("div", "popup-gambar", "🐟"));
+      dialog.appendChild(kepala);
+
+      const tutupX = ctx.buatEl("button", "popup-tutup", "✕");
+      tutupX.type = "button";
+      tutupX.setAttribute("aria-label", "Tutup");
+      tutupX.addEventListener("click", tutupPopup);
+      dialog.appendChild(tutupX);
+
+      const isi = ctx.buatEl("div", "popup-isi");
+      const nama = ctx.buatEl("h3", "popup-nama", String(e.nama || ""));
+      nama.id = "popup-nama-ikan";
+      isi.appendChild(nama);
+      isi.appendChild(ctx.buatEl("p", "popup-kelas", k.nama));
+
+      const stat = ctx.buatEl("div", "popup-stat");
+      const chipJumlah = ctx.buatEl("div", "popup-chip");
+      chipJumlah.appendChild(ctx.buatEl("p", "popup-chip-label", "Dimiliki"));
+      const nilaiJumlah = ctx.buatEl("p", "popup-chip-nilai", "");
+      chipJumlah.appendChild(nilaiJumlah);
+      const chipKoin = ctx.buatEl("div", "popup-chip");
+      chipKoin.appendChild(ctx.buatEl("p", "popup-chip-label", "Koin kamu"));
+      const nilaiKoin = ctx.buatEl("p", "popup-chip-nilai", "");
+      chipKoin.appendChild(nilaiKoin);
+      stat.appendChild(chipJumlah);
+      stat.appendChild(chipKoin);
+      isi.appendChild(stat);
+
+      const habis = ctx.buatEl("p", "petunjuk", PESAN.habis);
+      isi.appendChild(habis);
+
+      const pesanPopup = ctx.buatEl("p", "pesan");
+      pesanPopup.setAttribute("role", "alert");
+      isi.appendChild(pesanPopup);
+
+      const aksi = ctx.buatEl("div", "aksi aksi-jual");
+      const jual1 = ctx.buatEl("button", "tombol", "Jual 1");
+      jual1.type = "button";
+      const jualSemua = ctx.buatEl(
+        "button",
+        "tombol sekunder",
+        "Jual semua jenis ini",
+      );
+      jualSemua.type = "button";
+      const tutupTeks = ctx.buatEl("button", "tautan", "Tutup");
+      tutupTeks.type = "button";
+      // Jenis dicari ulang saat diketuk, supaya yang dijual selalu data album terbaru.
+      jual1.addEventListener("click", function () {
+        const t = cari(e.id);
+        if (t) jual(t, "satu");
+      });
+      jualSemua.addEventListener("click", function () {
+        const t = cari(e.id);
+        if (t) jual(t, "semua");
+      });
+      tutupTeks.addEventListener("click", tutupPopup);
+      aksi.appendChild(jual1);
+      aksi.appendChild(jualSemua);
+      aksi.appendChild(tutupTeks);
+      isi.appendChild(aksi);
+      dialog.appendChild(isi);
+
+      // Ketuk area gelap di luar popup menutupnya.
+      latar.addEventListener("click", function (ev) {
+        if (ev.target === latar) tutupPopup();
+      });
+      latar.appendChild(dialog);
+      kartu.appendChild(latar);
+
+      popup = {
+        id: e.id,
+        latar: latar,
+        pesan: pesanPopup,
+        jumlah: nilaiJumlah,
+        koin: nilaiKoin,
+        habis: habis,
+        jual1: jual1,
+        jualSemua: jualSemua,
+      };
+      document.addEventListener("keydown", saatTombolTekan);
+      dialog.focus();
+    }
+
+    // Perbarui angka dan tombol di popup yang terbuka (jumlah, koin, tombol jual aktif atau mati).
+    function perbaruiPopup() {
+      if (!popup) return;
+      const e = cari(popup.id);
+      if (!album || !e || e.terbuka !== true) {
+        hapusPopup();
+        terpilih = null;
+        gambarGrid();
+        return;
+      }
+      const n = jumlahDari(e);
+      popup.jumlah.textContent = String(n);
+      popup.koin.textContent = String(status.koin);
+      popup.habis.hidden = n >= 1;
+      const mati = sibuk || memuat || n < 1;
+      popup.jual1.disabled = mati;
+      popup.jualSemua.disabled = mati;
+    }
+
     function pilih(id) {
       terpilih = id;
       ctx.aturPesan(pesan, "", false);
       gambarGrid();
+      const e = cari(id);
+      if (e && e.terbuka === true) bukaPopup(e);
       gambarDetail();
     }
 
@@ -155,54 +306,21 @@
       });
     }
 
-    // Detail jenis yang dipilih, dengan tombol Jual 1 dan Jual semua jenis ini.
+    // TAS.05: di bawah album hanya tersisa teks petunjuk; detail dan tombol jual ada di popup.
     function gambarDetail() {
       kosongkanElemen(detail);
-      if (!album) return;
-      const e = terpilih === null ? null : cari(terpilih);
-      if (!e || e.terbuka !== true) {
-        terpilih = null;
-        detail.appendChild(ctx.buatEl("p", "petunjuk", PESAN.petunjukPilih));
+      if (!album) {
+        hapusPopup();
         return;
       }
-
-      const k = kelasDari(e);
-      const n = jumlahDari(e);
-      const panel = ctx.buatEl("div", "panel-ikan" + k.css);
-      panel.appendChild(ctx.buatEl("p", "nama-ikan", String(e.nama || "")));
-      panel.appendChild(ctx.buatEl("p", "kelas-ikan", k.nama));
-      panel.appendChild(ctx.buatEl("p", "jumlah-ikan", "Dimiliki: " + n));
-      if (n < 1) {
-        panel.appendChild(ctx.buatEl("p", "petunjuk", PESAN.habis));
-      }
-
-      const aksi = ctx.buatEl("div", "aksi aksi-jual");
-      const jual1 = ctx.buatEl("button", "tombol", "Jual 1");
-      jual1.type = "button";
-      const jualSemua = ctx.buatEl(
-        "button",
-        "tombol sekunder",
-        "Jual semua jenis ini",
-      );
-      jualSemua.type = "button";
-      const mati = sibuk || memuat || n < 1;
-      jual1.disabled = mati;
-      jualSemua.disabled = mati;
-      jual1.addEventListener("click", function () {
-        jual(e, "satu");
-      });
-      jualSemua.addEventListener("click", function () {
-        jual(e, "semua");
-      });
-      aksi.appendChild(jual1);
-      aksi.appendChild(jualSemua);
-      panel.appendChild(aksi);
-      detail.appendChild(panel);
+      detail.appendChild(ctx.buatEl("p", "petunjuk", PESAN.petunjukPilih));
+      perbaruiPopup();
     }
 
     function tampilGagalAlbum(teks) {
       kosongkanElemen(grid);
       kosongkanElemen(detail);
+      hapusPopup();
       album = null;
       grid.appendChild(ctx.buatEl("p", "petunjuk", teks));
       const ulang = ctx.buatEl("button", "tombol", "Coba lagi");
@@ -257,7 +375,7 @@
     async function jual(e, pilihan) {
       if (sibuk) return;
       sibuk = true;
-      ctx.aturPesan(pesan, PESAN.menjual, false);
+      kabar(PESAN.menjual, false);
       gambarDetail();
 
       const res = await ctx.jual(e.id, pilihan);
@@ -286,7 +404,7 @@
           typeof h.terjual === "number" && typeof h.koin_didapat === "number"
             ? "Terjual " + h.terjual + " ekor. Koin +" + h.koin_didapat
             : PESAN.berhasil;
-        ctx.aturPesan(pesan, teks, false);
+        kabar(teks, false);
         return;
       }
 
@@ -295,17 +413,17 @@
         return;
       }
       if (!res.ok && res.kode === 0) {
-        ctx.aturPesan(pesan, PESAN.gagalTerhubung, true);
+        kabar(PESAN.gagalTerhubung, true);
         gambarDetail();
         return;
       }
       if (!res.ok && res.kode === 429) {
-        ctx.aturPesan(pesan, PESAN.terlaluSering, true);
+        kabar(PESAN.terlaluSering, true);
         gambarDetail();
         return;
       }
       // Gagal lain (misal stok sudah berubah): pesan umum, lalu muat ulang album supaya angka cocok.
-      ctx.aturPesan(pesan, PESAN.gagalJual, true);
+      kabar(PESAN.gagalJual, true);
       muat();
     }
 

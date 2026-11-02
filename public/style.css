@@ -353,11 +353,11 @@
     --latar-kelas: #fff6d6;
 }
 
-/* 16 kotak, 3 kolom. */
+/* 16 kotak. TAS.05: 2 kolom (sebelumnya 3 kolom) supaya kotak lebih besar. */
 .album {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
     margin-bottom: var(--jarak);
 }
 
@@ -367,14 +367,15 @@
     grid-column: 1 / -1;
 }
 
+/* TAS.05: padding diperbesar (sebelumnya 6px 4px) dan jarak antar isi dilebarkan. */
 .kotak-ikan {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     min-width: 0;
     min-height: 44px;
-    padding: 6px 4px;
+    padding: 12px 8px;
     box-sizing: border-box;
     border: 3px solid var(--warna-kelas);
     border-radius: var(--radius);
@@ -410,13 +411,14 @@ button.kotak-ikan:focus-visible {
     color: #5a6b78;
 }
 
+/* TAS.05: gambar kotak diperbesar (sebelumnya 40px, emoji 1.4rem). */
 .gambar-kotak {
-    width: 40px;
-    height: 40px;
+    width: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: 2rem;
     border-radius: 50%;
     background: var(--warna-kelas);
 }
@@ -433,19 +435,20 @@ button.kotak-ikan:focus-visible {
     overflow-wrap: anywhere;
 }
 
+/* TAS.05: tulisan kotak diperbesar (sebelumnya 0.8 / 0.7 / 0.8rem). */
 .nama-kotak {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
 .kelas-kotak {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--warna-kelas);
 }
 
 .jumlah-kotak {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
 }
 
 /* Detail jenis yang dipilih. */
@@ -472,4 +475,263 @@ button.kotak-ikan:focus-visible {
 
 .aksi-jual {
     margin-top: var(--jarak);
+}
+
+/* ===== Popup detail ikan (TAS.05) ===== */
+/* Muncul saat kotak album diketuk. Menggantikan kartu detail di bawah album
+   (aturan .panel-ikan dan .detail-ikan di atas dibiarkan, tidak terpakai lagi). */
+
+.popup-latar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+    background: rgba(29, 53, 87, 0.6);
+    animation: popup-pudar 0.18s ease-out;
+}
+
+/* Warna kelas untuk popup (sama dengan kotak album). */
+.popup-ikan {
+    --warna-kelas: #6c8ea4;
+    --latar-kelas: #eef4f7;
+}
+
+.popup-ikan.kelas-common {
+    --warna-kelas: #6c8ea4;
+    --latar-kelas: #eef4f7;
+}
+
+.popup-ikan.kelas-rare {
+    --warna-kelas: #2f80ed;
+    --latar-kelas: #e8f1fd;
+}
+
+.popup-ikan.kelas-epic {
+    --warna-kelas: #8e44ad;
+    --latar-kelas: #f3e9f8;
+}
+
+.popup-ikan.kelas-legendary {
+    --warna-kelas: #e0a100;
+    --latar-kelas: #fff6d6;
+}
+
+.popup-ikan {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 3px solid var(--warna-kelas);
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    color: var(--warna-teks);
+    text-align: center;
+    animation: popup-muncul 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.popup-ikan:focus {
+    outline: none;
+}
+
+.popup-ikan [hidden] {
+    display: none;
+}
+
+/* Kepala berwarna kelas dengan gelembung. */
+.popup-kepala {
+    position: relative;
+    height: 84px;
+    background-color: var(--warna-kelas);
+    background-image:
+        radial-gradient(
+            circle at 14% 38%,
+            rgba(255, 255, 255, 0.4) 0 6px,
+            transparent 7px
+        ),
+        radial-gradient(
+            circle at 24% 72%,
+            rgba(255, 255, 255, 0.28) 0 4px,
+            transparent 5px
+        ),
+        radial-gradient(
+            circle at 84% 28%,
+            rgba(255, 255, 255, 0.3) 0 9px,
+            transparent 10px
+        ),
+        radial-gradient(
+            circle at 72% 68%,
+            rgba(255, 255, 255, 0.4) 0 5px,
+            transparent 6px
+        );
+}
+
+/* Gambar ikan bulat besar yang menonjol keluar dari kepala. Masih emoji (SVG menyusul). */
+.popup-gambar {
+    position: absolute;
+    left: 50%;
+    bottom: -46px;
+    z-index: 1;
+    width: 92px;
+    height: 92px;
+    margin-left: -46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 2.8rem;
+    border-radius: 50%;
+    background: var(--latar-kelas);
+    border: 5px solid var(--warna-kelas);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    animation: popup-lompat 0.5s ease-out 0.1s both;
+}
+
+.popup-tutup {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--warna-teks);
+    font: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.popup-tutup:focus-visible {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 2px;
+}
+
+.popup-isi {
+    padding: 56px 16px 16px;
+}
+
+.popup-nama {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.popup-kelas {
+    display: inline-block;
+    margin: 0;
+    padding: 3px 14px;
+    border-radius: 999px;
+    background: var(--warna-kelas);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.popup-ikan.kelas-legendary .popup-kelas {
+    color: #4a3200;
+}
+
+/* Dua kotak info: jumlah dimiliki dan koin. */
+.popup-stat {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0;
+}
+
+.popup-chip {
+    flex: 1;
+    min-width: 0;
+    padding: 8px;
+    border-radius: var(--radius);
+    background: var(--latar-kelas);
+}
+
+.popup-chip p {
+    margin: 0;
+}
+
+.popup-chip-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.popup-chip-nilai {
+    font-size: 1.25rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.popup-ikan .petunjuk {
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.popup-ikan .pesan {
+    margin-top: 4px;
+    text-align: center;
+}
+
+.popup-ikan .pesan:not(:empty).info {
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    background: #e6f6f3;
+    color: var(--warna-utama-gelap);
+}
+
+.popup-ikan .aksi-jual {
+    margin-top: 12px;
+}
+
+@keyframes popup-pudar {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popup-muncul {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes popup-lompat {
+    0% {
+        transform: scale(0.4);
+    }
+    70% {
+        transform: scale(1.12);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .popup-latar,
+    .popup-ikan,
+    .popup-gambar {
+        animation: none;
+    }
 }

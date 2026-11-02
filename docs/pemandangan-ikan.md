@@ -184,3 +184,8 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
   - **VIS.05** (siluet album): belum diputuskan caranya. Karena semua berkas transparan, filter CSS (mis. `brightness(0)`) bisa dicoba. Glow ikut menjadi bayangan gelap sehingga siluet agak gembung; cek visual, bila mengganggu minta versi tanpa glow.
   - Keempat berkas perlu masuk `BERKAS_DASAR` di `sw.js` supaya tampil offline. Itu menyentuh `sw.js` dan butuh "OK" ketua. `NAMA_CACHE` perlu dipertimbangkan naik versi bila gambar tidak muncul karena cache lama.
 - Blok ini disusun dari laporan user dan pengecekan berkas (ukuran, transparansi), bukan dari kode. Cara tampil gambar di `tas.js`/`mancing.js` belum dikerjakan, jadi AI berikutnya sebaiknya membaca berkas yang ada, bukan menebak.
+
+### 2026-11-03: Satu nama ikan, satu gambar (menggantikan satu gambar per kelas)
+
+- Aturan dosen (WA, 3 Nov 2026): saat penilaian, tim minimal punya 40 gambar ikan yang mewakili 40 nama ikan, semuanya CC0 supaya tidak ada urusan atribusi. Tim berdelapan boleh menugaskan satu orang khusus mencari gambar. Selama development, berkas gambar lain (misalnya ikan1) boleh dipakai sebagai placeholder untuk ikan yang gambarnya belum ada. Menggantikan pendekatan satu gambar per kelas (VS8 butir b) dan blok 4 WebP tanggal 2 Nov 2026. Yang paling akhir menang.
+- Detail katalog ikan (jumlah, jalur gambar, placeholder, penambahan ikan) ada di `katalog-ikan.md`. Empat WebP yang sudah ada tetap dipakai sebagai gambar cadangan di sana.

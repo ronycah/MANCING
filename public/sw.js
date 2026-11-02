@@ -25,6 +25,10 @@ const BERKAS_DASAR = [
   "img/apple-touch-icon.png",
   "img/favicon.svg",
   "img/danau.svg",
+  "img/sisikpasir.webp",
+  "img/birumungil.webp",
+  "img/babydragon.webp",
+  "img/golddragon.webp",
 ];
 
 // Pasang: simpan berkas dasar. Satu berkas gagal tidak membatalkan yang lain.

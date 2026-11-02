@@ -994,3 +994,49 @@ button.kotak-ikan:focus-visible {
         animation: none;
     }
 }
+
+/* ===== Gambar ikan WebP (VIS.04) ===== */
+/* Menggantikan emoji sementara di kartu hasil, kotak album, dan popup. Satu gambar per kelas.
+   Rasio gambar berbeda-beda (tinggi 222 sampai 421 untuk lebar 500), jadi ditaruh dalam kotak
+   berukuran tetap dengan object-fit: contain supaya album rata dan layar hasil tidak loncat.
+   Kelas .ada-gambar dipasang oleh JS; bila gambar gagal dimuat, kelas dilepas dan emoji tampil lagi. */
+
+.gambar-ikan.ada-gambar,
+.gambar-kotak.ada-gambar {
+    border-radius: 0;
+    background: none;
+}
+
+.gambar-ikan.ada-gambar img,
+.gambar-kotak.ada-gambar img,
+.popup-gambar.ada-gambar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Kartu hasil lemparan. */
+.gambar-ikan.ada-gambar {
+    width: 100%;
+    max-width: 200px;
+    height: 110px;
+}
+
+/* Kotak album (dua kolom). */
+.gambar-kotak.ada-gambar {
+    width: 100%;
+    height: 72px;
+}
+
+/* Popup: lencana persegi membulat, tinggi sama dengan lingkaran lama supaya jarak isi tidak berubah. */
+.popup-gambar.ada-gambar {
+    width: 150px;
+    margin-left: -75px;
+    border-radius: 24px;
+}
+
+.popup-gambar.ada-gambar img {
+    padding: 8px;
+    box-sizing: border-box;
+}

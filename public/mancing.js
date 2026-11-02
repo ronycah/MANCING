@@ -12,6 +12,8 @@
 // VIS.03: animasi pelampung dan gigitan. Saat tombol ditekan, wadah danau diberi kelas "lempar"
 // (pelampung jatuh dan mengapung), lalu "gigit" (pelampung tersentak) sebelum hasil tampil.
 // Murni tampilan: hasil sudah ditentukan server (aksi "lempar"), animasi tidak mempengaruhinya.
+// VIS.04: emoji ikan di kartu hasil diganti gambar WebP per kelas. Emoji tetap jadi cadangan
+// bila gambar gagal dimuat. Hanya tampilan.
 (function () {
   "use strict";
 
@@ -35,6 +37,35 @@
     epic: "Epic",
     legendary: "Legendary",
   };
+
+  // VIS.04: gambar ikan berupa 4 berkas WebP, satu per kelas (lihat pemandangan-ikan.md, bagian 9).
+  // Hanya tampilan; kelas tetap berasal dari server. Bila kelas tidak dikenal atau gambar gagal
+  // dimuat, emoji sementara tampil sebagai cadangan.
+  const GAMBAR_KELAS = {
+    common: "img/sisikpasir.webp",
+    rare: "img/birumungil.webp",
+    epic: "img/babydragon.webp",
+    legendary: "img/golddragon.webp",
+  };
+
+  // Isi wadah dengan gambar ikan sesuai kelas (kunci huruf kecil, misal "rare").
+  function isiGambarIkan(wadah, kunci) {
+    const berkas = GAMBAR_KELAS[kunci];
+    if (!berkas) {
+      wadah.textContent = "🐟";
+      return;
+    }
+    wadah.classList.add("ada-gambar");
+    const gambar = document.createElement("img");
+    gambar.alt = "";
+    gambar.decoding = "async";
+    gambar.addEventListener("error", function () {
+      wadah.classList.remove("ada-gambar");
+      wadah.textContent = "🐟";
+    });
+    gambar.src = berkas;
+    wadah.appendChild(gambar);
+  }
 
   // Jeda animasi singkat sebelum hasil ditampilkan (milidetik).
   // VIS.03: diperpanjang dari 700 supaya pelampung sempat jatuh, mengapung, lalu tersentak.
@@ -263,8 +294,10 @@
         "kartu-ikan" + (dikenal ? " kelas-" + k : ""),
       );
       kartuIkan.appendChild(ctx.buatEl("p", "judul-hasil", PESAN.dapatIkan));
-      // Gambar sementara: kotak berwarna sesuai kelas (SVG ikan menyusul).
-      kartuIkan.appendChild(ctx.buatEl("div", "gambar-ikan", "🐟"));
+      // VIS.04: gambar WebP sesuai kelas (emoji sebagai cadangan).
+      const gambarHasil = ctx.buatEl("div", "gambar-ikan", "");
+      isiGambarIkan(gambarHasil, dikenal ? k : "");
+      kartuIkan.appendChild(gambarHasil);
       kartuIkan.appendChild(
         ctx.buatEl("p", "nama-ikan", String(ikan.nama || "")),
       );

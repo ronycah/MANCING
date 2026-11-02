@@ -12,6 +12,8 @@
 // Harga, stok, dan koin SEPENUHNYA dihitung server; angka di layar diambil dari balasan server.
 // Gambar masih sementara (SVG ikan menyusul, lihat pemandangan-ikan.md).
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
+// VIS.04: emoji ikan diganti gambar WebP per kelas (img/sisikpasir, birumungil, babydragon, golddragon).
+// Emoji tetap dipakai sebagai cadangan bila gambar gagal dimuat. Hanya tampilan.
 // TAS.06: "Jual semua jenis ini" meminta konfirmasi dulu di dalam popup (Ya, jual / Batal) yang
 // menyebut nama ikan dan jumlahnya. "Jual 1" tetap langsung. Hanya tampilan; server tidak berubah.
 (function () {
@@ -37,6 +39,35 @@
     epic: "Epic",
     legendary: "Legendary",
   };
+
+  // VIS.04: gambar ikan berupa 4 berkas WebP, satu per kelas (lihat pemandangan-ikan.md, bagian 9).
+  // Hanya tampilan; kelas tetap berasal dari server. Bila kelas tidak dikenal atau gambar gagal
+  // dimuat, emoji sementara tampil sebagai cadangan.
+  const GAMBAR_KELAS = {
+    common: "img/sisikpasir.webp",
+    rare: "img/birumungil.webp",
+    epic: "img/babydragon.webp",
+    legendary: "img/golddragon.webp",
+  };
+
+  // Isi wadah dengan gambar ikan sesuai kelas (kunci huruf kecil, misal "rare").
+  function isiGambarIkan(wadah, kunci) {
+    const berkas = GAMBAR_KELAS[kunci];
+    if (!berkas) {
+      wadah.textContent = "🐟";
+      return;
+    }
+    wadah.classList.add("ada-gambar");
+    const gambar = document.createElement("img");
+    gambar.alt = "";
+    gambar.decoding = "async";
+    gambar.addEventListener("error", function () {
+      wadah.classList.remove("ada-gambar");
+      wadah.textContent = "🐟";
+    });
+    gambar.src = berkas;
+    wadah.appendChild(gambar);
+  }
 
   function kosongkanElemen(e) {
     while (e.firstChild) e.removeChild(e.firstChild);
@@ -66,6 +97,7 @@
     return {
       css: dikenal ? " kelas-" + k : "",
       nama: dikenal ? NAMA_KELAS[k] : String(e.kelas || ""),
+      kunci: dikenal ? k : "", // VIS.04: kunci kelas untuk memilih gambar
     };
   }
 
@@ -162,7 +194,9 @@
       dialog.tabIndex = -1;
 
       const kepala = ctx.buatEl("div", "popup-kepala");
-      kepala.appendChild(ctx.buatEl("div", "popup-gambar", "🐟"));
+      const gambarPopup = ctx.buatEl("div", "popup-gambar", "");
+      isiGambarIkan(gambarPopup, k.kunci); // VIS.04
+      kepala.appendChild(gambarPopup);
       dialog.appendChild(kepala);
 
       const tutupX = ctx.buatEl("button", "popup-tutup", "✕");
@@ -351,7 +385,9 @@
               (e.id === terpilih ? " dipilih" : ""),
           );
           kotak.type = "button";
-          kotak.appendChild(ctx.buatEl("div", "gambar-kotak", "🐟"));
+          const gambarKotak = ctx.buatEl("div", "gambar-kotak", "");
+          isiGambarIkan(gambarKotak, k.kunci); // VIS.04
+          kotak.appendChild(gambarKotak);
           kotak.appendChild(
             ctx.buatEl("p", "nama-kotak", String(e.nama || "")),
           );

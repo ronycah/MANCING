@@ -9,6 +9,9 @@
 // VIS.02: suasana danau (pagi, siang, sore, malam) mengikuti jam WIB dari "jam_server" yang dikirim server
 // (status dan hasil lempar). Waktu berjalan dihitung dari titik acuan jam_server + performance.now(),
 // bukan jam HP. Hanya mengubah kelas CSS di wadah danau; tidak mempengaruhi hasil mancing.
+// VIS.03: animasi pelampung dan gigitan. Saat tombol ditekan, wadah danau diberi kelas "lempar"
+// (pelampung jatuh dan mengapung), lalu "gigit" (pelampung tersentak) sebelum hasil tampil.
+// Murni tampilan: hasil sudah ditentukan server (aksi "lempar"), animasi tidak mempengaruhinya.
 (function () {
   "use strict";
 
@@ -34,7 +37,10 @@
   };
 
   // Jeda animasi singkat sebelum hasil ditampilkan (milidetik).
-  const JEDA_ANIMASI = 700;
+  // VIS.03: diperpanjang dari 700 supaya pelampung sempat jatuh, mengapung, lalu tersentak.
+  const JEDA_ANIMASI = 2200;
+  // VIS.03: waktu (milidetik sejak lempar) pelampung mulai tersentak (gigitan).
+  const JEDA_GIGITAN = 1500;
   // Bila gagal menyegarkan umpan, coba lagi setelah sekian milidetik (maksimal 3 kali).
   const JEDA_ULANG = 10000;
   const MAKS_ULANG = 3;
@@ -130,6 +136,22 @@
       });
       if (baru !== "siang") wadahAktif.classList.add(baru);
       suasanaSekarang = baru;
+    }
+
+    // VIS.03: atur tahap animasi pelampung lewat kelas di wadah danau. Hanya tampilan.
+    // "lempar" = pelampung muncul dan mengapung; "gigit" = ditambahkan di atas "lempar" (pelampung tersentak);
+    // null = semua kelas dilepas (pelampung hilang). Tidak berbuat apa-apa bila danau belum terpasang.
+    function aturAnimasi(tahap) {
+      if (!wadahAktif) return;
+      if (tahap === "lempar") {
+        wadahAktif.classList.remove("gigit");
+        wadahAktif.classList.add("lempar");
+      } else if (tahap === "gigit") {
+        wadahAktif.classList.add("gigit");
+      } else {
+        wadahAktif.classList.remove("lempar");
+        wadahAktif.classList.remove("gigit");
+      }
     }
 
     // VIS.01: pemandangan danau di bagian paling atas. Dilewati bila lokasi-danau.js tidak termuat.
@@ -285,12 +307,21 @@
       area.appendChild(ctx.buatEl("p", "petunjuk", PESAN.melempar));
       perbaruiTampilan();
 
+      // VIS.03: pelampung jatuh ke air sekarang, lalu tersentak (gigitan) sebelum hasil tampil.
+      aturAnimasi("lempar");
+      const pewaktuGigit = setTimeout(function () {
+        if (sibuk) aturAnimasi("gigit");
+      }, JEDA_GIGITAN);
+
       const jawaban = await Promise.all([
         ctx.kirim("lempar"),
         jeda(JEDA_ANIMASI),
       ]);
       const res = jawaban[0];
       sibuk = false;
+      // VIS.03: hasil sudah ada, pelampung dihilangkan (juga bila lemparan gagal).
+      clearTimeout(pewaktuGigit);
+      aturAnimasi(null);
 
       // Perbarui status bersama DULU, walau layar sudah berpindah, supaya angka tidak basi.
       if (res.ok && res.hasil && typeof res.hasil === "object") {

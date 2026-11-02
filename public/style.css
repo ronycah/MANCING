@@ -882,3 +882,115 @@ button.kotak-ikan:focus-visible {
         transition: none;
     }
 }
+
+/* ===== PELAMPUNG DANAU (VIS.03) ===== */
+/* Hanya tampilan. Pelampung muncul saat wadah .danau mendapat kelas "lempar" dan tersentak
+   saat kelas "gigit" ditambahkan (keduanya dipasang mancing.js, dilepas saat hasil tampil).
+   Hasil mancing sudah ditentukan server; animasi ini tidak mempengaruhinya. */
+
+.danau-pelampung {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.danau.lempar .danau-pelampung {
+    opacity: 1;
+}
+
+.danau-pelampung-merah {
+    fill: #e63946;
+}
+
+.danau-pelampung-putih {
+    fill: #ffffff;
+}
+
+.danau-pelampung-antena {
+    fill: #ffd166;
+}
+
+.danau-pelampung-riak {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.danau.lempar .danau-pelampung-jatuh {
+    animation: pelampung-jatuh 0.7s cubic-bezier(0.3, 0, 0.7, 1) both;
+}
+
+.danau.lempar .danau-pelampung-badan {
+    animation: pelampung-apung 1.6s ease-in-out 0.7s infinite;
+}
+
+.danau.lempar .danau-pelampung-riak {
+    animation: pelampung-riak 1.4s ease-out 0.65s infinite;
+}
+
+/* Gigitan: pelampung tersentak turun-naik cepat. Aturan ini sengaja di bawah aturan apung. */
+.danau.gigit .danau-pelampung-badan {
+    animation: pelampung-gigit 0.45s ease-in-out infinite;
+}
+
+@keyframes pelampung-jatuh {
+    0% {
+        transform: translateY(-160px);
+    }
+    75% {
+        transform: translateY(6px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes pelampung-apung {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(5px);
+    }
+}
+
+@keyframes pelampung-gigit {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(22px);
+    }
+    70% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes pelampung-riak {
+    0% {
+        transform: scale(0.4);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Pengguna yang meminta gerakan dikurangi: pelampung tampil diam, tanpa animasi. */
+@media (prefers-reduced-motion: reduce) {
+    .danau-pelampung {
+        transition: none;
+    }
+
+    .danau.lempar .danau-pelampung-jatuh,
+    .danau.lempar .danau-pelampung-badan,
+    .danau.lempar .danau-pelampung-riak,
+    .danau.gigit .danau-pelampung-badan {
+        animation: none;
+    }
+}

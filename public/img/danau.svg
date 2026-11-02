@@ -69,6 +69,22 @@
     </g>
   </g>
 
+  <!-- ==================== 4b. PELAMPUNG (VIS.03) ==================== -->
+  <!-- Tersembunyi sampai wadah danau mendapat kelas "lempar" (diatur mancing.js, animasi di style.css). -->
+  <g id="danau-pelampung" class="danau-pelampung">
+    <!-- Lingkaran riak di permukaan air (tidak ikut turun-naik) -->
+    <ellipse class="danau-pelampung-riak" cx="400" cy="396" rx="36" ry="9" />
+    <!-- Bagian yang jatuh saat dilempar -->
+    <g class="danau-pelampung-jatuh">
+      <!-- Bagian yang mengapung dan tersentak saat gigitan -->
+      <g class="danau-pelampung-badan">
+        <rect class="danau-pelampung-antena" x="396" y="346" width="8" height="26" rx="3" />
+        <path class="danau-pelampung-merah" d="M 376 392 a 24 24 0 0 1 48 0 Z" />
+        <path class="danau-pelampung-putih" d="M 376 392 a 24 24 0 0 0 48 0 Z" />
+      </g>
+    </g>
+  </g>
+
   <!-- ==================== 5. DERMAGA KAYU (WOODEN PIER) ==================== -->
   <g id="danau-dermaga">
     <!-- Perspektif Dermaga Kayu Utama (Trapesium) -->

@@ -158,3 +158,7 @@ Aplikasi non-komersial, jadi pengetesan **disederhanakan**. Tes dilakukan langsu
 ### 2026-11-02: Reset password lewat email (menggantikan "reset manual oleh tim")
 
 Keputusan ketua: reset password lewat link email dengan Gmail SMTP tim, ditekan dari dashboard Supabase. Menggantikan butir "reset manual oleh tim" di bagian 1 (goal akun) dan aturan password sementara. "Confirm email" tetap mati (bagian 8). App password Gmail termasuk rahasia (bagian 7): hanya di dashboard Supabase. Rincian di blok `akun.md` dan `security.md` tanggal yang sama.
+
+### 2026-11-02: Berkas JS baru wajib didaftarkan di cache `sw.js`
+
+Keputusan ketua: tiap berkas JS (atau berkas game lain) yang ditambahkan ke `public/` wajib ikut ditambahkan ke daftar `BERKAS_DASAR` di `sw.js`, supaya tersimpan di cache dan game tetap bisa dibuka offline. Berkas yang lupa didaftarkan membuat game offline bisa setengah rusak tanpa langsung ketahuan. Muncul dari MCG.03, saat `mancing.js` ditambahkan. Mengubah `sw.js` tetap butuh "OK" ketua (bagian 7), dan cukup menambah satu nama berkas di daftar tanpa menghapus yang lama. Cek setelah terbit: berkas baru muncul di DevTools > Application > Cache Storage > `santuy-v1`, dan halaman tetap terbuka saat Network diset Offline. Alasan lain belum tercatat.

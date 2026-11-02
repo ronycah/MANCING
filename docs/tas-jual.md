@@ -185,3 +185,15 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Keputusan tim (2 Nov 2026): "Jual semua jenis ini" memakai konfirmasi (Ya, jual / Batal) yang menyebut nama ikan dan jumlahnya. "Jual 1" tetap langsung tanpa konfirmasi.
 - Menjawab butir "belum diketahui" di bagian 8 (konfirmasi sebelum jual semua): diputuskan perlu. Cara jual (TS3) dan semua aturan server tidak berubah.
 - Alasan lain belum tercatat.
+
+### Handoff #5 | 2026-11-02 | [rac]
+
+- **Tugas selesai:** TAS.06 (konfirmasi sebelum "Jual semua jenis ini"). Sudah terbit di production dan lolos cek visual. TAS.01 sampai TAS.06 sudah selesai dan dicentang di sheet.
+- **File yang diubah:** `public/tas.js` dan `public/style.css` (bagian baru "Konfirmasi Jual semua jenis ini (TAS.06)" di akhir). Server, `nama.js`, dan `sw.js` tidak diubah. Di `tas.js` hanya satu bagian lama yang berubah: tombol "Jual semua" kini membuka konfirmasi, dan pemanggilan jual dipindah ke tombol "Ya, jual".
+- **Keputusan baru:** tidak ada. Keputusan konfirmasi sudah dicatat di blok "2026-11-02: Konfirmasi sebelum Jual semua jenis ini (TAS.06)". Pertentangan: Handoff #4 dan bagian 8 menyebut konfirmasi belum diputuskan; yang paling akhir menang, yaitu konfirmasi dipakai.
+- **Perilaku (pilihan PIC, belum ditanyakan ke tim):** pertanyaan tampil di dalam popup menggantikan tombol jual, berbunyi "Jual semua [nama] ([N] ekor)?" dengan tombol Ya, jual / Batal. Fokus awal di Batal supaya aman dari salah ketuk. Bila jumlah ikan berubah saat pertanyaan tampil, angkanya ikut menyesuaikan; bila ikan habis, pertanyaan menutup sendiri. Tombol Esc tetap menutup seluruh popup. "Jual 1" tetap langsung tanpa konfirmasi.
+- **Bukti (cek visual, Low-Risk, tanpa bukti keamanan):** Jual semua memunculkan pertanyaan dengan nama dan jumlah benar. Batal tidak mengubah jumlah maupun koin (Sisik Pasir x15, koin 1660). Ya, jual menjual semua (Si Gelembung 13 menjadi 0, koin 1530 menjadi 1660, +130). Jual 1 langsung terjual tanpa pertanyaan (Sisik Pasir 15 menjadi 14, koin 1670). Album di belakang popup ikut berubah.
+- **Belum beres:**
+  1. Tes P0 yang belum dilakukan: harga ikut berubah saat `pengaturan` diubah (butuh penjelasan dampak dan "OK" ketua). Daftar kasus lain yang belum dites ada di `docs/tas-jual-test.md` bagian 5. Konfirmasi TAS.06 hanya dicek visual, belum jadi kasus di berkas tes itu.
+  2. Data uji `tes1` berubah lagi (koin 1670, beberapa jenis berjumlah 0) dan tidak dikembalikan; dibersihkan bersama akun tes sebelum demo (butuh "OK" ketua).
+- **Saran giliran berikutnya:** (1) Tes harga lewat `pengaturan` bila ketua setuju. (2) VIS.01 sampai VIS.05; saat gambar SVG ikan masuk, sesuaikan ukuran gambar kotak (64px) dan popup (92px) di `style.css`. (3) Bersihkan data uji sebelum demo.

@@ -5,6 +5,7 @@
 // Hitung mundur memakai sisa detik dari server dan jam internal browser (performance.now),
 // bukan jam HP, jadi mengubah jam HP tidak berpengaruh (MC9).
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
+// VIS.01: pemandangan danau dipasang di atas area hasil lewat window.LokasiDanau (lokasi-danau.js), hanya tampilan.
 (function () {
   "use strict";
 
@@ -71,6 +72,20 @@
     pesan.setAttribute("role", "alert");
     const tombol = ctx.buatEl("button", "tombol tombol-lempar", "Lempar Kail");
     tombol.type = "button";
+
+    // VIS.01: pemandangan danau di bagian paling atas. Dilewati bila lokasi-danau.js tidak termuat.
+    // Tempat sementara (kelas "danau") menjaga tinggi layar sampai gambar selesai dimuat.
+    const modulDanau = window.LokasiDanau;
+    if (modulDanau && typeof modulDanau.buat === "function") {
+      const tempatDanau = ctx.buatEl("div", "danau");
+      bagian.appendChild(tempatDanau);
+      modulDanau.buat().then(function (wadahDanau) {
+        // Bila layar sudah berganti sebelum gambar selesai, tidak perlu dipasang.
+        if (tempatDanau.parentNode === bagian) {
+          bagian.replaceChild(wadahDanau, tempatDanau);
+        }
+      });
+    }
 
     bagian.appendChild(area);
     bagian.appendChild(hitung);

@@ -171,3 +171,7 @@ Permintaan dosen: lokasi bertambah menjadi danau, sungai, dan laut, murni tampil
 
 - Keputusan tim (2 Nov 2026): pemain memilih lokasi (danau, sungai, atau laut) di awal, sebelum mulai mancing, dan boleh menggantinya kapan saja lewat tombol Ganti lokasi di layar mancing, tanpa harus menutup game. Menjawab butir "belum diputuskan: cara pemain memilih lokasi" di blok tiga lokasi pada tanggal yang sama.
 - Pilihan bawaan penulis, belum ditanyakan ke tim: lokasi hanya diingat selama game terbuka dan tidak disimpan di server (tidak ada perubahan database); layar pilih lokasi dikerjakan setelah ketiga pemandangan ada. Alasan lain belum tercatat.
+
+### 2026-11-03: Menambah berkas ke BERKAS_DASAR di sw.js dikerjakan tim sendiri
+
+Keputusan ketua (3 Nov 2026): untuk menambah nama berkas baru ke daftar `BERKAS_DASAR` di `sw.js`, tim mengerjakan sendiri dan AI hanya memandu (baris yang dicari, baris yang ditambah, cara mengecek), tanpa mengirim ulang berkas utuh. Alasan (kata ketua): lebih efektif daripada mengirim bolak-balik berkas utuh untuk perubahan yang hanya beberapa baris. Menggantikan "kode selalu file utuh" untuk perubahan jenis ini saja. Berlaku hanya untuk menambah nama berkas yang sudah ada di `public/`; menghapus atau mengubah entri lama, mengganti `NAMA_CACHE`, dan perubahan lain di `sw.js` tetap butuh penjelasan dan "OK" ketua. Alasan lain belum tercatat.

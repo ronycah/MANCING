@@ -1,104 +1,125 @@
-/docs/pemandangan-ikan.md
+/docs/bonus.md
 
-# 🌅 pemandangan-ikan.md: Danau WIB, Gambar Ikan, dan Animasi
+# ⭐ bonus.md: Antrean Fitur Tambahan
 
-> **Versi 1.0 (1 Nov 2026), hasil sesi strategi.** Bergantung pada `mancing.md` (layar utama sederhana sudah ada) dan `tas-jual.md` (album butuh gambar ikan).
-> **Status:** VS1 sampai VS9 disepakati tim (ketua ikut di Zoom, 1 Nov 2026). Butir bertanda **(bawaan)** adalah pilihan penulis yang tidak ditanyakan satu per satu; tim boleh mengubahnya sebelum dikerjakan. Belum ada yang dikerjakan.
-> **Cara pakai sesi kode:** lampirkan **`AGENTS.md` + berkas ini saja**. Kerjakan langkah di bagian 5. Sesi kode **tidak merapikan atau menulis ulang berkas ini**; hanya menambah blok di bagian 9 bila ada kejadian di lapangan.
-> **Berkas yang diminta AI di awal sesi** (sebut nama dan alasan sekaligus, jangan menebak isinya): berkas JS dan CSS layar utama dan tas yang sudah ada, `public/index.html`, dan script SVG ikan (bila sudah diterima dari pembuatnya).
-> **Tanpa kode.**
-> **Fitur ini Low-Risk** (tampilan): cukup visual sanity check, kecuali bagian waktu server yang menyentuh `status`.
+> **Versi 1.0 (2 Nov 2026).** Bergantung pada fitur inti yang sudah stabil (`akun.md`, `mancing.md`, `tas-jual.md`, `pemandangan-ikan.md`, `fondasi.md`).
+> **Status:** antrean fitur tambahan. Butir disusun dari bagian "Ditunda" di dokumen fitur lain dan dari `features.md` bagian 8. **Butir mana yang dikerjakan, dan urutannya, belum diputuskan tim.** Belum ada yang dikerjakan.
+> **Cara pakai sesi kode:** lampirkan **`AGENTS.md` + berkas ini + dokumen fitur yang disebut di kolom Sumber** untuk butir yang dipilih. Sesi kode **tidak merapikan atau menulis ulang berkas ini**; hanya menambah blok di bagian 8 bila ada keputusan baru atau kejadian di lapangan.
+> **Tanpa kode dan tanpa isi SQL.**
 > **Selisih:** `AGENTS.md` menang atas berkas ini. Yang paling akhir menang.
 
 ---
 
 ## 1. Tujuan
 
-Layar utama berupa **satu danau bergaya kartun flat** yang berubah suasana mengikuti **waktu WIB dari jam server**, lengkap dengan animasi pelampung, dan **gambar ikan** yang konsisten untuk layar hasil dan album.
+Menampung fitur tambahan yang **sengaja belum dikerjakan** supaya fokus tetap pada game kecil yang stabil. Bonus dikerjakan **hanya setelah semua fitur inti jalan dan lolos tes**, dan tidak boleh mengganggu fitur inti.
 
 ---
 
-## 2. Keputusan
+## 2. Daftar butir
 
-| No  | Keputusan                                                                                                                                                                                                                                                                                                                                                                                         | Dasar                                                |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| VS1 | **Satu lokasi: danau.** Gaya visual **kartun flat** (bentuk sederhana, warna solid), dipakai konsisten oleh semua giliran. Dibuat dengan CSS/SVG/Canvas, ringan untuk HP biasa. Nama dan tampilan sengaja tidak terikat air tawar atau asin supaya bisa ditambah laut nanti.                                                                                                                      | Keputusan tim 1 Nov 2026.                            |
-| VS2 | **Empat suasana mengikuti jam WIB:** pagi **05.00 sampai 10.00**, siang **10.00 sampai 15.00**, sore **15.00 sampai 18.00**, malam **18.00 sampai 05.00**.                                                                                                                                                                                                                                        | Keputusan tim 1 Nov 2026.                            |
-| VS3 | **Waktu dari jam server**, bukan jam HP. Server mengirim waktu saat masuk dan setiap aksi; aplikasi menghitung waktu berjalan dari titik itu, tanpa membaca jam HP untuk menentukan suasana.                                                                                                                                                                                                      | `security.md` aturan 6; SEC-09. Cara hitung: bawaan. |
-| VS4 | Suasana **hanya mengubah tampilan** (warna langit dan air, posisi matahari atau bulan, awan). Tidak mempengaruhi hasil mancing, peluang, atau umpan.                                                                                                                                                                                                                                              | Keputusan tim.                                       |
-| VS5 | **Elemen layar utama:** langit, matahari (siang) atau bulan (malam), awan, air danau, pelampung, tombol Lempar Kail, jumlah umpan dan hitung mundur, koin, nama tampilan.                                                                                                                                                                                                                         | `features.md`.                                       |
-| VS6 | **Animasi:** pelampung bergerak setelah lempar dan "gigitan" sebelum hasil muncul. Animasi gigitan **hanya tampilan**; hasil sudah ditentukan server saat lempar (`mancing.md` MC1). Efek khusus Epic dan Legendary: bonus.                                                                                                                                                                       | Keputusan tim 1 Nov 2026.                            |
-| VS7 | **Gambar ikan: satu SVG dasar yang warnanya diubah script.** Script dibuat oleh pihak di luar AI (kakak salah satu anggota). Berlaku aturan "file utuh, jangan hapus kode lama". Nama pemegang dicatat di TODO sheet, bukan di repo.                                                                                                                                                              | Keputusan tim; aturan dosen.                         |
-| VS8 | **Dua pendekatan gambar, diputuskan setelah tahu kemampuan script:** (a) satu SVG yang diwarnai ulang per kelas, atau (b) empat gambar berbeda per kelas dengan efek latar tambahan dari script. Katalog `ikan` punya kolom **kode gambar** supaya berganti pendekatan cukup mengubah isi katalog. Nama 16 ikan fantasi cocok untuk keduanya; bila gambar tidak tersedia, nama boleh disesuaikan. | Usulan teman tim 1 Nov 2026; `database.md`.          |
-| VS9 | **Aset gambar** ditaruh langsung di `public/img/` (nama huruf kecil, tanpa spasi) dan ikut di-push dari terminal. Tidak memakai gambar bermerek atau milik pihak lain. Siluet album (belum pernah didapat) memakai bentuk yang sama dengan warna gelap.                                                                                                                                           | `fondasi.md` F4 dan F5.                              |
+Prefix ID sheet: **BNS**. Kolom Risiko adalah penilaian penulis (bawaan), bukan keputusan tim.
 
----
+### A. Permainan dan ekonomi
 
-## 3. Prasyarat
+| ID     | Butir                                                                                                                          | Sumber                                            | Risiko    |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- | --------- |
+| BNS.01 | **Berat ikan dan harga berdasarkan berat.** Saat ini harga hanya menurut kelas.                                                | `tas-jual.md` TS4 dan bag. 8; `mancing.md` bag. 8 | High-Risk |
+| BNS.02 | **Upgrade umpan atau pancing dengan koin.** Saat ini koin berfungsi seperti skor.                                              | `tas-jual.md` TS8 dan bag. 8; `mancing.md` bag. 8 | High-Risk |
+| BNS.03 | **Papan peringkat** antar pemain.                                                                                              | `features.md` bag. 8; `tas-jual.md` bag. 8        | High-Risk |
+| BNS.04 | **Pencapaian.**                                                                                                                | `features.md` bag. 8                              | High-Risk |
+| BNS.05 | **Hadiah harian.**                                                                                                             | `features.md` bag. 8                              | High-Risk |
+| BNS.06 | **Tap tepat waktu yang mempengaruhi hasil.** Butuh dua tahap dan keputusan baru, karena sekarang hasil ditentukan saat lempar. | `mancing.md` bag. 8                               | High-Risk |
+| BNS.07 | **Kunci pengulangan lemparan.**                                                                                                | `mancing.md` bag. 8                               | High-Risk |
+| BNS.08 | **Riwayat lemparan.** Saat ini hasil yang lepas tidak disimpan.                                                                | `mancing.md` bag. 8; `database.md` bag. 2         | High-Risk |
+| BNS.09 | **Penjelasan alasan ikan lepas.**                                                                                              | `mancing.md` bag. 8                               | High-Risk |
 
-Dari `mancing.md`: layar utama sederhana dan layar hasil sudah ada. Dari `tas-jual.md`: album butuh gambar dan siluet. Server sudah mengirim waktu server di `status` (**bila belum, aksi `status` ditambah di langkah VIS.02 dengan "OK" ketua**).
+### B. Tampilan dan tas
 
----
+| ID     | Butir                                                                                                 | Sumber                                             | Risiko   |
+| ------ | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| BNS.10 | **Filter dan urutan album** (misalnya per kelas atau yang dimiliki saja).                             | `tas-jual.md` bag. 8                               | Low-Risk |
+| BNS.11 | **Efek khusus Epic dan Legendary** saat ikan tertangkap (hanya tampilan).                             | `features.md` bag. 8; `pemandangan-ikan.md` VS6    | Low-Risk |
+| BNS.12 | **Suara dan musik.**                                                                                  | `features.md` bag. 8; `pemandangan-ikan.md` bag. 8 | Low-Risk |
+| BNS.13 | **Cuaca** di pemandangan (hanya tampilan).                                                            | `pemandangan-ikan.md` bag. 8                       | Low-Risk |
+| BNS.14 | **Layar Cara Main dan Tentang.**                                                                      | `features.md` bag. 8                               | Low-Risk |
+| BNS.15 | **Tampilan mendatar (landscape)** saat di area mancing. **Menunggu jawaban dosen**; belum diputuskan. | Usulan tim, 2 Nov 2026                             | Low-Risk |
 
-## 4. Yang dibuat
+### C. Akun
 
-| Komponen                      | Isi                                                                                                      |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Pemandangan danau             | Langit, air, matahari atau bulan, awan; empat suasana (VS2).                                             |
-| Pengatur suasana              | Menentukan suasana dari waktu server (VS3), tanpa polling terus-menerus.                                 |
-| Animasi pelampung dan gigitan | Hanya tampilan (VS6).                                                                                    |
-| Gambar ikan                   | Script SVG dari pembuatnya, dipanggil dengan kode gambar dari katalog. Ditempel sesuai aturan file utuh. |
-| Siluet album                  | Bentuk ikan versi gelap untuk jenis yang belum pernah didapat.                                           |
-| Aset di `public/img/`         | Ikon aplikasi, SVG, dan gambar pendukung.                                                                |
+| ID     | Butir                                          | Sumber           | Risiko    |
+| ------ | ---------------------------------------------- | ---------------- | --------- |
+| BNS.16 | **Verifikasi email** saat daftar.              | `akun.md` bag. 8 | High-Risk |
+| BNS.17 | **Ganti email.**                               | `akun.md` bag. 8 | High-Risk |
+| BNS.18 | **Hapus akun.**                                | `akun.md` bag. 8 | High-Risk |
+| BNS.19 | **Login lewat Google.**                        | `akun.md` bag. 8 | High-Risk |
+| BNS.20 | **Rate limit khusus** di luar bawaan Supabase. | `akun.md` bag. 8 | High-Risk |
+| BNS.21 | **Foto profil.**                               | `akun.md` bag. 8 | High-Risk |
 
----
+### D. Fondasi dan penerbitan
 
-## 5. Urutan pekerjaan (untuk TODO sheet, prefix VIS)
+| ID     | Butir                           | Sumber              | Risiko    |
+| ------ | ------------------------------- | ------------------- | --------- |
+| BNS.22 | **Ikon aplikasi yang dipoles.** | `fondasi.md` bag. 8 | Low-Risk  |
+| BNS.23 | **README di root repo.**        | `fondasi.md` bag. 8 | Low-Risk  |
+| BNS.24 | **Domain sendiri.**             | `fondasi.md` bag. 8 | High-Risk |
+| BNS.25 | **Notifikasi.**                 | `fondasi.md` bag. 8 | High-Risk |
 
-Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua.
+Catatan risiko:
 
-1. **VIS.01** Pemandangan danau satu suasana (statis) di layar utama.
-2. **VIS.02 ⚠️** Empat suasana dari waktu server. Bila `status` belum mengirim waktu server, tambahkan di sini (menyentuh Edge Function).
-3. **VIS.03** Animasi pelampung dan gigitan.
-4. **VIS.04** Integrasi script SVG ikan: layar hasil dan album. Menunggu script dari pembuatnya.
-5. **VIS.05** Siluet album dan penyesuaian tampilan di HP.
-6. **VIS.06** Cek ringan di beberapa HP (visual sanity check; tidak butuh bukti).
-
----
-
-## 6. Aturan yang paling sering terlanggar
-
-| Aturan                                              | Akibat bila dilanggar                                            |
-| --------------------------------------------------- | ---------------------------------------------------------------- |
-| Menentukan suasana dari jam HP                      | Tampilan waktu bisa dipalsukan; melanggar aturan dosen (SEC-09). |
-| Animasi gigitan mempengaruhi hasil                  | Melanggar keputusan tim (MC1).                                   |
-| Mengubah atau menimpa script SVG tanpa file utuh    | Script pembuat bisa rusak dan tidak bisa dilacak.                |
-| Nama berkas gambar berhuruf besar atau berspasi     | Tidak muncul di versi online.                                    |
-| Memakai animasi atau Canvas berat                   | HP biasa lambat atau panas.                                      |
-| Nama atau teks dari server lewat `innerHTML`        | Teks bisa menjalankan skrip.                                     |
-| Mengganti gaya visual tidak konsisten antar giliran | Tampilan campur aduk.                                            |
+- **High-Risk** bila menyentuh koin, umpan, peluang, harga, balasan server, login, data pemain, atau pengaturan penerbitan. Wajib dijelaskan dampaknya dan menunggu "OK" ketua. Semua angka tetap disimpan di database, bukan ditulis mati di kode.
+- **Low-Risk** bila hanya tampilan atau dokumen; cukup visual sanity check.
+- Urutan di `features.md` bagian 8 (efek, papan peringkat dan pencapaian dan hadiah harian, Cara Main dan Tentang, suara, upgrade, berat ikan) adalah urutan usulan awal, belum final.
 
 ---
 
-## 7. Dampak dan pembatalan
+## 3. Aturan umum bonus
 
-- Hampir seluruhnya tampilan; bila ada glitch, perbaiki berkasnya dan push ulang. Tidak ada data pemain yang terpengaruh.
-- Satu-satunya bagian yang menyentuh server adalah penambahan waktu server di `status` (VIS.02): bila bermasalah, deploy ulang versi sebelumnya.
-
----
-
-## 8. Ditunda dan belum diketahui
-
-**Ditunda (lihat `bonus.md`):** efek Epic dan Legendary, suara dan musik, banyak lokasi atau cuaca, tema laut.
-
-**Belum diketahui (dicek, bukan ditebak):**
-
-- Apakah script SVG bisa membuat jenis berbeda dalam satu kelas (VS8): **ditanyakan ke pembuat script**, jawabannya dicatat di sini sebagai blok susulan.
-- Siapa yang membuat ikon aplikasi dan bentuknya (dibutuhkan sebelum FND.07).
-- Warna dan palet final: ditentukan saat VIS.01 dan dipakai konsisten setelahnya.
+1. Mulai **hanya setelah** fitur inti selesai dan lolos tes, termasuk cek skala 100 user.
+2. **Satu butir per giliran.** Butir yang dipilih ditambahkan ke Google Sheet dengan prefix BNS, lalu dibuatkan bagian "Urutan pekerjaan" di blok catatan susulan.
+3. Butir High-Risk mengikuti aturan keamanan di `AGENTS.md` bagian 7: logika dihitung di server, aplikasi hanya mengirim aksi, tabel tertutup untuk aplikasi. Tabel baru wajib mencabut semua hak `service_role` lalu memberi ulang hanya yang perlu (`database.md` bagian 8).
+4. Berkas JS atau aset baru wajib didaftarkan di `BERKAS_DASAR` di `sw.js` (butuh "OK" ketua), supaya game tetap bisa dibuka offline.
+5. Gambar dan suara tidak memakai materi bermerek atau milik pihak lain. Aset ditaruh di `public/` (nama huruf kecil, tanpa spasi) dan ikut di-push dari terminal.
 
 ---
 
-## 9. Catatan susulan dan Handoff
+## 4. Aturan yang paling sering terlanggar
+
+| Aturan                                                        | Akibat bila dilanggar                                     |
+| ------------------------------------------------------------- | --------------------------------------------------------- |
+| Mengerjakan bonus sebelum fitur inti stabil                   | Game inti terganggu; nilai proses dan hasil turun.        |
+| Mengubah harga, umpan, atau peluang tanpa penjelasan dan "OK" | Ekonomi semua pemain berubah tanpa disadari.              |
+| Menulis angka game langsung di kode                           | Tidak bisa diatur tanpa mengubah kode.                    |
+| Menambah berkas baru tanpa mendaftarkannya di `sw.js`         | Game offline bisa setengah rusak tanpa langsung ketahuan. |
+| Memakai gambar atau suara milik pihak lain                    | Melanggar aturan aset tim.                                |
+| Mengerjakan beberapa butir bonus sekaligus dalam satu giliran | Sulit dites dan sulit dibatalkan.                         |
+| Mengaktifkan kembali "Confirm email" tanpa keputusan baru     | Pendaftaran macet bila email verifikasi tidak terkirim.   |
+
+---
+
+## 5. Dampak dan pembatalan
+
+- Butir tampilan dan dokumen (Low-Risk): bila ada glitch, perbaiki berkasnya dan push ulang. Tidak ada data pemain yang terpengaruh.
+- Butir High-Risk: menyentuh tabel, fungsi SQL, Edge Function, atau pengaturan Auth. Salinan SQL disimpan di `supabase/migrations/` sebelum dijalankan; bila bermasalah, deploy ulang versi sebelumnya. Tidak ada environment uji terpisah (hanya production), jadi dampak dijelaskan dulu.
+
+---
+
+## 6. Sudah pindah ke inti (bukan bonus lagi)
+
+- **Album koleksi** (fishdex): `tas-jual.md` TS1.
+- **Konfirmasi sebelum "Jual semua jenis ini":** TAS.06.
+- **Tiga lokasi (danau, sungai, laut):** `pemandangan-ikan.md` bagian 9 dan VIS.07 sampai VIS.09.
+- **Lupa password lewat link email:** `akun.md` blok 2 Nov 2026 (AKN.06), menggantikan reset manual (AK8).
+
+---
+
+## 7. Belum diketahui
+
+- Butir mana yang dipilih tim dan urutannya.
+- Jawaban dosen soal tampilan mendatar (BNS.15).
+
+---
+
+## 8. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_

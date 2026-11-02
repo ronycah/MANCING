@@ -4,6 +4,7 @@
 // Dipasang dari nama.js lewat window.MANCING_TAS.tampil(ctx). ctx berisi:
 // wadah, status, buatEl, kosongkan, aturPesan, muatStatus(), jual(ikanId, pilihan),
 // saatKoinBerubah(), sesiHabis(), kembali()
+// Album dikirim server sejajar dengan status (res.album), bukan di dalam status.
 // Aplikasi hanya mengirim id jenis dan pilihan "satu" atau "semua" (lewat ctx.jual).
 // Harga, stok, dan koin SEPENUHNYA dihitung server; angka di layar diambil dari balasan server.
 // Gambar masih sementara (SVG ikan menyusul, lihat pemandangan-ikan.md).
@@ -36,10 +37,10 @@
     while (e.firstChild) e.removeChild(e.firstChild);
   }
 
-  // Ambil daftar album dari balasan status. Bila tidak sah (null atau bukan daftar), kembalikan null.
-  function ambilAlbum(status) {
-    if (!status || !Array.isArray(status.album)) return null;
-    const daftar = status.album.filter(function (e) {
+  // Rapikan daftar album mentah dari server (res.album). Bila tidak sah (null atau bukan daftar), kembalikan null.
+  function ambilAlbum(mentah) {
+    if (!Array.isArray(mentah)) return null;
+    const daftar = mentah.filter(function (e) {
       return e && typeof e === "object" && typeof e.id === "number";
     });
     daftar.sort(function (a, b) {
@@ -230,10 +231,11 @@
           ctx.saatKoinBerubah();
           perbaruiKoin();
         }
-        const a = ambilAlbum(res.status);
+        // Album ada di res.album (sejajar dengan res.status).
+        const a = ambilAlbum(res.album);
         if (a) {
           album = a;
-          status.album = res.status.album;
+          status.album = res.album;
           gambarGrid();
           gambarDetail();
           return;

@@ -29,7 +29,8 @@
     return c && c.SUPABASE_URL ? c.SUPABASE_URL + "/functions/v1/mancing" : "";
   }
 
-  // Panggil Edge Function "mancing". Mengembalikan { ok, status } (aksi status dan ganti_nama),
+  // Panggil Edge Function "mancing". Mengembalikan { ok, status, album } (aksi status dan ganti_nama;
+  // album sejajar dengan status di balasan server, bisa null atau tidak ada),
   // { ok, hasil } (aksi lempar dan jual), atau { ok:false, kode }.
   async function panggil(ctx, aksi, tambahan) {
     try {
@@ -60,7 +61,8 @@
         data = null;
       }
       if (res.ok && data && data.ok && data.status) {
-        return { ok: true, status: data.status };
+        // TAS.03: album dikirim server sejajar dengan status, jadi ikut diteruskan.
+        return { ok: true, status: data.status, album: data.album };
       }
       // MCG.03 dan TAS.03: jawaban aksi "lempar" dan "jual" berkunci "hasil".
       if (res.ok && data && data.ok && data.hasil) {

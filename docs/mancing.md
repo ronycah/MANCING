@@ -131,3 +131,37 @@ Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua. Jangan menjalankan undian
 ## 9. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### Handoff #1 | 2026-11-02 | (rac)
+
+**Tugas:** MCG.01 (migration) dan MCG.02 (Edge Function `mancing` aksi `lempar`). Keduanya selesai, tinggal dicentang di sheet.
+
+**File yang diubah:**
+
+- `supabase/migrations/2026-11-02_mancing-ikan-tangkapan.sql` (baru): tabel `ikan` dan `tangkapan`, RLS tanpa policy, 5 baris peluang di `pengaturan`, katalog 16 ikan, fungsi atomik `public.lempar(uuid)`, serta query cek baca-saja (dikomentari) di bagian bawah. Dijalankan manual di SQL Editor.
+- `supabase/functions/mancing/index.ts` (diubah): ditambah fungsi `aksiLempar` dan satu `case "lempar"`. 28 baris ditambah, 0 dihapus. Aksi `status` dan `ganti_nama` tidak disentuh. Di-deploy dengan urutan Mac bersama (`--project-ref`).
+
+**Keputusan baru:**
+
+- `service_role` di `ikan` dan `tangkapan` hanya SELECT. Tulis ke `tangkapan` lewat fungsi `lempar` (SECURITY DEFINER), jadi INSERT dan UPDATE langsung tidak diperlukan. Menyimpang dari saran awal (SELECT, INSERT, UPDATE) dan disetujui ketua lewat "OK". Bila `tas-jual` butuh tulis langsung, hak ditambah di migration TAS.
+- `lempar` menggeser `umpan_dihitung_pada` maju sebanyak umpan yang sudah pulih, bukan mengisinya `now()`, supaya progres pulih pemain tidak hilang. Bila umpan sudah penuh, hitungan mulai dari `now()`.
+- Kunci baris `pemain` (`for update`) selama lemparan, untuk mencegah dua lemparan bersamaan saat umpan 1 (SEC-08).
+- `umpan_habis` dan `kolam_kosong` dibalas sebagai status biasa (tidak ada yang ditulis, umpan tidak terpakai), bukan galat. `PEMAIN_TIDAK_ADA` dibalas 400 dengan pesan "Pilih nama tampilan dulu"; galat lain 500 dengan pesan umum, detail hanya di log server.
+- `peluang_lepas` ditolak bila di luar 0 sampai 100; peluang kelas wajib berjumlah 100 (menjawab sebagian butir "belum diketahui" di bagian 8). `kode_gambar` berupa slug nama ikan (misal `sisik-pasir`). Keduanya pilihan bawaan penulis, alasan lain belum tercatat.
+- **Bentuk jawaban `lempar` (untuk MCG.03):** `{ ok: true, hasil: { status, umpan, umpan_maks, detik_ke_umpan_berikutnya, jam_server, ikan? } }`. Kuncinya `hasil`, bukan `status`. Objek `ikan` (id, nama, kelas, kode_gambar, jumlah_dimiliki) hanya ada bila `status` = `ok`.
+
+**Bukti (semua dari balasan server atau hasil query):**
+
+- RLS aktif di `ikan` dan `tangkapan`.
+- `anon` dan `authenticated` tanpa hak apa pun; `service_role` hanya SELECT.
+- `EXECUTE` `lempar` hanya `service_role`.
+- Jumlah peluang kelas 100; `pengaturan` berisi 8 baris (3 umpan lama utuh + 5 peluang).
+- Katalog 4 ikan aktif per kelas (total 16).
+- Deploy `mancing` sukses; tanpa token, aksi `lempar` dibalas `401` ("Silakan masuk dulu.") dari fungsi sendiri.
+
+**Masalah yang belum beres:**
+
+1. `lempar` dengan token sah **belum pernah dijalankan**, jadi perilakunya (ikan lepas, sebaran kelas, umpan berkurang, `tangkapan` bertambah, umpan 0, dua lemparan bersamaan, jam HP, batas umpan) belum terbukti. Dites di MCG.04.
+2. `status` dan `ganti_nama` setelah deploy belum dites ulang. Cukup dicek lewat game dengan akun dummy di MCG.03.
+3. Berkas migration baru belum terverifikasi sudah ter-commit di repo (`git status` saat commit MCG.02 hanya menampilkan `index.ts`). Cek dengan `git log -- supabase/migrations/2026-11-02_mancing-ikan-tangkapan.sql`.
+4. Pembersihan token CLI: sempat tampil `[ada]` saat dicek di jendela yang sama dengan tempat token ditempel; kedua jendela lalu

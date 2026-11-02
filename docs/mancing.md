@@ -165,3 +165,40 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 2. `status` dan `ganti_nama` setelah deploy belum dites ulang. Cukup dicek lewat game dengan akun dummy di MCG.03.
 3. Berkas migration baru belum terverifikasi sudah ter-commit di repo (`git status` saat commit MCG.02 hanya menampilkan `index.ts`). Cek dengan `git log -- supabase/migrations/2026-11-02_mancing-ikan-tangkapan.sql`.
 4. Pembersihan token CLI: sempat tampil `[ada]` saat dicek di jendela yang sama dengan tempat token ditempel; kedua jendela lalu
+
+### Handoff #2 | 2026-11-02 | (germano)
+
+**Tugas:** MCG.03 (layar utama sederhana: umpan, hitung mundur, tombol Lempar, layar hasil) dan penambahan `mancing.js` ke cache `sw.js` (disetujui ketua). Keduanya selesai, tinggal dicentang di sheet.
+
+**File yang diubah:**
+
+- `public/mancing.js` (baru): tombol Lempar Kail, hitung mundur, layar hasil. Dipasang lewat `window.MANCING_LEMPAR.pasang(...)`.
+- `public/nama.js` (diubah): `panggil()` ditambah cabang untuk jawaban berkunci `hasil`; `tampilUtama` memasang `mancing.js` bila termuat (bila tidak, teks lama "Layar permainan menyusul" tetap tampil). Tidak ada kode lama yang dihapus. Aksi `status` dan `ganti_nama` tidak disentuh.
+- `public/index.html` (diubah): ditambah `<script src="mancing.js">` sebelum `nama.js`.
+- `public/style.css` (ditambah): bagian `/* ===== Layar lempar kail dan hasil (MCG.03) ===== */` (kartu hasil berwarna per kelas, tombol selebar kartu).
+- `public/sw.js` (diubah): satu baris `"mancing.js"` ditambah di `BERKAS_DASAR`. `NAMA_CACHE` tetap `santuy-v1`.
+
+**Keputusan baru:**
+
+- Teks hitung mundur: **"+1 umpan dalam mm:ss"** (saat umpan 0: "Umpan habis. +1 umpan dalam mm:ss"). Teks awal "Umpan berikutnya dalam..." disalahartikan sebagai jeda antar lemparan; padahal tombol Lempar aktif selama umpan masih ada dan hitung mundur hanya jarak ke tambahan 1 umpan.
+- Hitung mundur berjalan di browser (`performance.now()`), bukan jam HP, dan tidak memanggil server tiap detik. Server dipanggil (`status`) **sekali** saat hitungan habis; bila gagal, coba lagi tiap 10 detik, maksimal 3 kali, lalu muncul "Umpan belum terbaca. Muat ulang halaman".
+- Gambar ikan **sementara**: emoji di lingkaran berwarna sesuai kelas (Common abu-biru, Rare biru, Epic ungu, Legendary emas). Diganti SVG saat `pemandangan-ikan.md` siap.
+- Ikan lepas hanya menampilkan "Ikan lepas!" (MC3). `umpan_habis` dan `kolam_kosong` ditampilkan sebagai pesan biasa.
+
+**Bukti dan hasil cek (visual, Low-Risk):**
+
+- Lempar berjalan dengan akun dummy: dapat ikan (Common dan Rare), "Ikan lepas!", umpan berkurang, hitung mundur tidak ter-reset saat lempar atau muat ulang. Aksi `status` mengirim `detik_ke_umpan_berikutnya`.
+- `sw.js` (High-Risk): Cache Storage `santuy-v1` berisi `mancing.js`; dengan Network Offline, halaman tetap terbuka dan menampilkan "Butuh internet" (sesuai aturan: login tetap butuh internet).
+- Migration `2026-11-02_mancing-ikan-tangkapan.sql` sudah ter-commit (`6d89af9`), menjawab butir 3 Handoff #1.
+
+**Masalah yang belum beres:**
+
+1. Perilaku server `lempar` belum dibuktikan resmi (umpan tetap terpakai saat ikan lepas, sebaran kelas, umpan 0, dua lemparan bersamaan, jam HP diubah, batas umpan). Dites di MCG.04. Hasil visual di atas bukan bukti.
+2. `ganti_nama` belum dites ulang setelah deploy (`status` sudah terlihat sehat lewat layar utama).
+3. Ruang kosong besar di kartu sebelum ada lemparan (dari `min-height: 150px` di `.hasil-lempar`). Kosmetik; boleh dikecilkan.
+4. Tes di iPhone tidak bisa dilakukan (tidak ada device).
+
+**Saran giliran berikutnya:**
+
+- MCG.04: buat `mancing-test.md` dan mulai dari bukti umpan tetap terpakai saat ikan lepas (SEC-11) dan SEC-08 (dua lemparan bersamaan saat umpan 1). Jangan spam lemparan di production; sebaran kelas cukup dicek kasar.
+- Sebelum commit: cek `git status`, pastikan blok CSS MCG.03 sudah ada di `style.css` dan tidak ada rahasia ikut.

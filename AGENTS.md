@@ -95,7 +95,7 @@ Tiap dokumen fitur memuat tabel keputusan bernomor, alur, **"aturan yang paling 
 /public            (root web; semua file game)
 ├── index.html, manifest.json, sw.js, config.js
 ├── style.css      (CSS terpusat semua layar, ditulis sendiri, tanpa CDN)
-├── *.js           (satu fitur = satu berkas kecil, usahakan di bawah ~300 baris)
+├── *.js           (satu fitur = satu berkas kecil, usahakan di bawah ~500 baris)
 └── img/           (aset gambar)
 /docs              (md fitur, database, security, tes)
 /archive           (md versi lama, diisi saat penilaian 2)

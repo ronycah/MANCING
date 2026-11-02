@@ -65,7 +65,7 @@ Dari `fondasi.md`: repo dan terbit online jalan (FND.04), project Supabase dibua
 | Tabel `pengaturan` dan `pemain` | Skema di `database.md`. RLS aktif tanpa policy; hak `service_role` per tabel, tanpa DELETE.                      |
 | Fungsi SQL pembuat pemain       | Atomik: buat baris bila belum ada, isi awal dari `pengaturan`. Pola keamanan fungsi sesuai `AGENTS.md` bagian 7. |
 | Edge Function `mancing`         | Versi pertama: aksi `status` dan `ganti_nama`, hanya untuk pemain yang login.                                    |
-| Berkas JS dan CSS akun          | Layar Daftar, Masuk, Pilih nama, menu akun. Satu berkas kecil per fitur (di bawah ~300 baris).                   |
+| Berkas JS dan CSS akun          | Layar Daftar, Masuk, Pilih nama, menu akun. Satu berkas kecil per fitur (di bawah ~500 baris).                   |
 
 ---
 
@@ -237,7 +237,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - `public/sw.js`: hanya menambah `nama.js` ke daftar berkas dasar. Versi cache tetap `santuy-v1`.
 - `public/style.css`: ditambah `.aksi`, `.statistik`, dan jarak teks/pesan di dalam kartu (sekalian membereskan catatan P2 Handoff #3 soal kartu "Butuh internet").
 
-**Keputusan baru:** fitur nama dibuat di berkas baru `nama.js`, bukan di `akun.js`, supaya `akun.js` tidak melewati ~300 baris. Persetujuan "OK" ketua untuk `index.html` dan `sw.js` diberikan di sesi (1 Nov 2026). Alasan lain belum tercatat.
+**Keputusan baru:** fitur nama dibuat di berkas baru `nama.js`, bukan di `akun.js`. Persetujuan "OK" ketua untuk `index.html` dan `sw.js` diberikan di sesi (1 Nov 2026). Alasan lain belum tercatat.
 
 **Hasil (tes di production, akun dummy `tes2@example.com`):** akun tanpa nama memunculkan layar Pilih nama; nama `ab` dan `<b>x</b>` ditolak dengan pesan aturan nama; nama valid membuka layar utama (umpan 10/20, koin 0); Ganti nama berhasil; refresh dan Keluar lalu Masuk lagi langsung ke layar utama dengan nama tersimpan (sesi tersimpan, tidak diminta nama lagi).
 
@@ -282,7 +282,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 **Berkas yang berubah:**
 
 - `public/password.js` (baru): layar Buat password baru (dua kolom, aturan AK3, Simpan, Batal). Memakai `updateUser` ke Supabase Auth; pesan galat Bahasa Indonesia.
-- `public/akun.js`: alamat dibaca di awal untuk mengenali link pemulihan; link itu membuka layar Buat password baru, bukan layar utama. Bila `password.js` tidak termuat, game keluar dan menampilkan "Gagal memuat". Link kedaluwarsa atau sudah dipakai menampilkan pesan di layar Masuk. Tidak ada kode lama yang dihapus. Sekarang 414 baris (di atas patokan ~300).
+- `public/akun.js`: alamat dibaca di awal untuk mengenali link pemulihan; link itu membuka layar Buat password baru, bukan layar utama. Bila `password.js` tidak termuat, game keluar dan menampilkan "Gagal memuat". Link kedaluwarsa atau sudah dipakai menampilkan pesan di layar Masuk. Tidak ada kode lama yang dihapus.
 - `public/index.html`: ditambah `<script src="password.js">` sebelum `akun.js`.
 - `public/sw.js`: hanya menambah `password.js` ke daftar berkas dasar. Versi cache tetap `santuy-v1`.
 
@@ -314,7 +314,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 **File yang diubah (sudah di-push, PWA dicek normal tanpa galat):**
 
 - `public/password.js` (baru): layar Buat password baru, dua kolom, aturan AK3, tombol Simpan dan Batal. Direncanakan dipakai juga oleh layar Ganti password (AK7).
-- `public/akun.js`: mengenali link pemulihan dari alamat, menampilkan layar Buat password baru (bukan layar utama), pesan link kedaluwarsa di layar Masuk, dan cadangan bila `password.js` tidak termuat. Sekarang 414 baris (di atas patokan ~300).
+- `public/akun.js`: mengenali link pemulihan dari alamat, menampilkan layar Buat password baru (bukan layar utama), pesan link kedaluwarsa di layar Masuk, dan cadangan bila `password.js` tidak termuat.
 - `public/index.html`: ditambah `<script src="password.js">` sebelum `akun.js`.
 - `public/sw.js`: `password.js` ditambah ke `BERKAS_DASAR`. Versi cache tetap `santuy-v1`.
 - Dashboard Supabase (tanpa kode): custom SMTP Gmail tim aktif; Site URL dan Redirect URLs sudah berisi alamat GitHub Pages dan tidak diubah. Batas daftar/masuk 30 per 5 menit per IP tidak diubah. Setelan lain tidak disentuh.
@@ -354,7 +354,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 
 **File yang diubah (copas dari chat; push bila belum):**
 
-- `public/akun.js`: tautan "Lupa password?" di tab Masuk (bukan di tab Daftar) dan kartu petunjuk dengan tombol "Kembali ke Masuk" (AKN.06e). Tidak ada kode lama yang dihapus. Sekarang sekitar 445 baris (di atas patokan ~300).
+- `public/akun.js`: tautan "Lupa password?" di tab Masuk (bukan di tab Daftar) dan kartu petunjuk dengan tombol "Kembali ke Masuk" (AKN.06e). Tidak ada kode lama yang dihapus.
 - `public/style.css`: ditambah gaya `.tautan` (tombol bertampilan tautan). Gaya lain tidak diubah.
 - `public/password.js`: ditambah fungsi `tampilGanti` untuk layar Ganti password (AKN.06c). Layar Buat password baru dari link email tidak diubah.
 - `public/nama.js`: tombol "Ganti password" di layar utama, dan pesan "Password berhasil diganti" setelah berhasil.

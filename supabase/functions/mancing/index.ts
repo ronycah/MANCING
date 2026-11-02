@@ -1,5 +1,6 @@
 // supabase/functions/mancing/index.ts
 // Edge Function "mancing" versi pertama: aksi "status" dan "ganti_nama".
+// MCG.02: ditambah aksi "lempar" (satu panggilan ke fungsi SQL atomik public.lempar).
 // Deploy dengan --no-verify-jwt, jadi fungsi ini memverifikasi token SENDIRI paling awal.
 // Kunci service_role dibaca dari lingkungan Supabase, tidak ditulis di kode.
 
@@ -85,6 +86,31 @@ async function aksiGantiNama(
   return aksiStatus(idPemain);
 }
 
+// Aksi "lempar": satu panggilan atomik ke fungsi SQL public.lempar (MC1, MC2).
+// Aplikasi tidak mengirim apa pun selain nama aksi; hasil sepenuhnya ditentukan server (MC12).
+// Status dari SQL: "ok", "lepas", "umpan_habis", atau "kolam_kosong" (diteruskan apa adanya).
+async function aksiLempar(idPemain: string): Promise<Response> {
+  const { data, error } = await admin.rpc("lempar", { p_id: idPemain });
+
+  if (error) {
+    const pesanDb = error.message ?? "";
+    // Akun ada tapi baris pemain belum dibuat: arahkan ke layar Pilih nama.
+    if (pesanDb.includes("PEMAIN_TIDAK_ADA")) {
+      return galat(400, "Pilih nama tampilan dulu sebelum memancing.");
+    }
+    // PELUANG_TIDAK_VALID, PENGATURAN_KURANG, dan lainnya: detail hanya di log server.
+    console.error("lempar gagal:", pesanDb);
+    return galat(500, "Gagal melempar kail. Coba lagi.");
+  }
+
+  if (!data || typeof data !== "object") {
+    console.error("lempar gagal: jawaban SQL kosong");
+    return galat(500, "Gagal melempar kail. Coba lagi.");
+  }
+
+  return balas(200, { ok: true, hasil: data });
+}
+
 Deno.serve(async (req: Request): Promise<Response> => {
   // Permintaan "izin dulu" dari browser: dijawab kosong, tidak membuka data apa pun.
   if (req.method === "OPTIONS") {
@@ -123,6 +149,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return aksiStatus(idPemain);
     case "ganti_nama":
       return aksiGantiNama(idPemain, isi.nama);
+    case "lempar":
+      return aksiLempar(idPemain);
     default:
       return galat(400, "Aksi tidak dikenal.");
   }

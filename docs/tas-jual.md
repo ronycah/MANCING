@@ -158,3 +158,25 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - **Bukti (ringkas, rincian di `tas-jual-test.md`):** SEC-12 (13 kasus ditolak 400, data tidak berubah), SEC-06 (harga dan koin palsu diabaikan, koin 940 menjadi 950), SEC-18 (jual semua Biru Mungil ×7, koin 1020, baris tetap ada), jual bersamaan Naga Emas ×1 (satu berhasil, koin 1520 bukan 2020), SEC-05 (`tes2` tidak berubah), SEC-01 dan SEC-02 untuk `jual` (401), SEC-03 dan SEC-04 (permission denied), cek visual album dan koin.
 - **Belum beres:** (1) Konfirmasi sebelum "Jual semua jenis ini" belum diputuskan (bagian 8); sekarang satu ketukan langsung menjual. (2) Belum dites: harga ikut berubah saat `pengaturan` diubah (P0, butuh "OK" ketua), `PEMAIN_TIDAK_ADA` pada jual, jual ikan nonaktif, galat pengaturan rusak, layar sesi habis, cek skala 100 user. (3) Data uji `tes1` berubah (koin 1520, beberapa jenis berjumlah 0) dan tidak dikembalikan; dibersihkan bersama akun tes sebelum demo (butuh "OK" ketua). (4) `docs/tas-jual-test.md` dan blok handoff ini belum di-commit dan di-push (`git status`, `git add .`, commit, push).
 - **Saran giliran berikutnya:** (1) `git status`, lalu `git add .`, commit, push. (2) Tes harga lewat `pengaturan` bila ketua setuju (P0 yang tersisa). (3) VIS.01 (gambar ikan dan siluet sungguhan) menggantikan emoji. (4) Putuskan konfirmasi "Jual semua jenis ini" bersama tim.
+
+### 2026-11-02: Album 2 kolom dan popup detail (TAS.05)
+
+- Permintaan ketua (2 Nov 2026): kotak album diperbesar jadi 2 kolom per baris (sebelumnya 3 kolom), dan mengetuk kotak membuka popup detail (nama, kelas, jumlah dimiliki, koin, tombol Jual 1 dan Jual semua jenis ini).
+- Pertentangan dengan isi lama: Handoff #2 dan bagian 4 menyebut detail dan tombol jual muncul di bawah album. Sekarang di popup. Yang paling akhir menang: popup. Cara jual (TS3) dan semua aturan server tidak berubah.
+- Perilaku popup (pilihan PIC, belum ditanyakan ke tim): tetap terbuka setelah jual supaya bisa jual beruntun dan pesan hasil tampil di dalam popup. Ditutup lewat tombol silang, tombol Tutup, ketuk area gelap, atau tombol Esc.
+- File yang diubah: `public/tas.js` dan `public/style.css` (bagian TAS.03 diperbesar, bagian baru "Popup detail ikan (TAS.05)" di akhir). Aturan CSS lama `.panel-ikan` dan `.detail-ikan` dibiarkan tapi tidak terpakai lagi. Server, `nama.js`, dan `sw.js` tidak diubah.
+- Gambar ikan masih emoji sementara. Ukuran gambar kotak (64px) dan gambar popup (92px) bisa jadi acuan saat gambar SVG masuk (VIS.04, VIS.05).
+- Bukti (Low-Risk, cek visual 2 Nov 2026): album 2 kolom, popup terbuka dan tertutup (silang, Tutup, area gelap), Jual 1 memperbarui jumlah dan koin di popup, jenis x0 membuat tombol jual mati, siluet tidak bisa diketuk. Alasan lain belum tercatat.
+
+### Handoff #4 | 2026-11-02 | [fren]
+
+- **Tugas selesai:** TAS.05 (album 2 kolom dan popup detail ikan). Lolos cek visual di production. Pengingat: centang TAS.05 di sheet. TAS.01 sampai TAS.04 sudah selesai sebelumnya.
+- **File yang diubah:** `public/tas.js` dan `public/style.css`. Server, `nama.js`, dan `sw.js` tidak diubah. Rinciannya ada di blok catatan "2026-11-02: Album 2 kolom dan popup detail (TAS.05)" di atas.
+- **Keputusan baru (pilihan PIC, belum ditanyakan ke tim):** popup tetap terbuka setelah jual supaya bisa jual beruntun. Gambar ikan di kotak dan popup masih emoji sementara.
+- **Bukti:** cek visual (Low-Risk, tanpa bukti keamanan): album 2 kolom, popup terbuka dan tertutup lewat tombol silang, Tutup, dan ketuk area gelap; Jual 1 memperbarui jumlah dan koin di popup; jenis berjumlah 0 membuat tombol jual mati; siluet tidak bisa diketuk.
+- **Belum beres:**
+  1. Konfirmasi sebelum "Jual semua jenis ini" belum diputuskan (bagian 8). Sekarang satu ketukan di popup langsung menjual.
+  2. Tes P0 yang belum dilakukan: harga ikut berubah saat `pengaturan` diubah (butuh penjelasan dampak dan "OK" ketua). Daftar lengkap kasus yang belum dites ada di `docs/tas-jual-test.md` bagian 5.
+  3. Data uji `tes1` berubah (koin 1530, beberapa jenis berjumlah 0) dan tidak dikembalikan; dibersihkan bersama akun tes sebelum demo (butuh "OK" ketua).
+  4. Pastikan perubahan TAS.05 dan blok catatan ini sudah di-commit dan di-push (`git status`, `git add .`, commit, push).
+- **Saran giliran berikutnya:** (1) `git status` dan push bila masih ada yang tertinggal. (2) Putuskan konfirmasi "Jual semua jenis ini" bersama tim. (3) Tes harga lewat `pengaturan` bila ketua setuju. (4) VIS.01 sampai VIS.05; saat gambar SVG ikan masuk, sesuaikan ukuran gambar kotak (64px) dan popup (92px) di `style.css`.

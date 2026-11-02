@@ -347,3 +347,43 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 3. **AKN.06d:** tes email reset ke Gmail anggota tim lain (dengan izin) dan terjemahkan template email di dashboard.
 4. Baru **AKN.07** (sesi tes, termasuk reset via email, SEC-16, SEC-17, PWA iPhone).
 5. Sebelum tiap `git add .`, jalankan `git status`. Jangan tulis password atau app password di chat, md, atau repo.
+
+### Handoff #6 | 2026-11-02 | (cocciplaz)
+
+**Tugas:** melanjutkan AKN.06 dari Handoff #5. Selesai dengan bukti: AKN.06c, AKN.06d, dan AKN.06e. Dengan itu seluruh AKN.06 (06a sampai 06e) sudah selesai, tinggal dicentang di sheet.
+
+**File yang diubah (copas dari chat; push bila belum):**
+
+- `public/akun.js`: tautan "Lupa password?" di tab Masuk (bukan di tab Daftar) dan kartu petunjuk dengan tombol "Kembali ke Masuk" (AKN.06e). Tidak ada kode lama yang dihapus. Sekarang sekitar 445 baris (di atas patokan ~300).
+- `public/style.css`: ditambah gaya `.tautan` (tombol bertampilan tautan). Gaya lain tidak diubah.
+- `public/password.js`: ditambah fungsi `tampilGanti` untuk layar Ganti password (AKN.06c). Layar Buat password baru dari link email tidak diubah.
+- `public/nama.js`: tombol "Ganti password" di layar utama, dan pesan "Password berhasil diganti" setelah berhasil.
+- `public/sw.js` dan `public/index.html`: tidak berubah (tidak ada berkas baru).
+- Dashboard Supabase (tanpa kode): template email Reset Password diterjemahkan ke Bahasa Indonesia (subjek dan isi). Bagian link `{{ .ConfirmationURL }}` dan tag HTML dibiarkan utuh. Teks asli bahasa Inggris disimpan pribadi sebagai cadangan.
+
+**Keputusan baru:**
+
+- Ganti password memakai alur AK7: aplikasi login ulang dengan password lama dulu, baru memanggil `updateUser`. Password lama salah = berhenti, password tidak berubah.
+- Isi kartu "Lupa password?": hubungi tim lewat kontak di luar aplikasi, tim mengirim email berisi link, cek juga folder Spam. Tanpa nomor atau email di repo, tanpa menyebut daftar ulang (sesuai keputusan 2 Nov).
+- Persetujuan "OK" ketua diberikan di sesi untuk perubahan login (`akun.js`, `nama.js`, `password.js`, `style.css`) dan template email.
+- Alasan lain belum tercatat.
+
+**Bukti (tes di production, screenshot):**
+
+- Tautan "Lupa password?" muncul di tab Masuk; kartu petunjuk dan tombol Kembali berfungsi.
+- Ganti password: password lama salah ditolak ("Password lama salah") dan login dengan password yang berlaku sesudahnya tetap berhasil (SEC-17); kurang dari 8 karakter, dua kolom tidak sama, dan password baru sama dengan lama masing-masing ditolak; password valid berhasil, password lama ditolak saat Masuk, password baru diterima.
+- Email reset dengan template baru masuk **Inbox** di Gmail tim dan di Gmail anggota lain (bukan pengirim), pengirim "Mancing Santuy App", isi Bahasa Indonesia, tautan ada.
+
+**Masalah yang belum beres:**
+
+1. Jalur `password.js` gagal termuat belum dites. Masuk sesi tes AKN.07.
+2. Pengetesan di iPhone tidak bisa dilakukan (tidak ada device, `AGENTS.md` bagian 9 butir 7); dicatat sebagai batasan.
+3. Masa berlaku link reset belum dicek. Setelan "Secure password change" tercatat mati di Handoff #1 (1 Nov); Handoff #5 menulis belum dilihat, jadi cek ulang bila perlu.
+4. Ada 4 akun tes yang perlu dibersihkan sebelum demo: `tes1` dan `tes2` (email dummy), akun tes Gmail tim, dan akun tes Gmail anggota. Jangan tulis alamat atau password di repo. Password `tes1` dan `tes2` tidak ada di repo/chat/md, tanyakan ke pembuatnya. Menghapus akun butuh penjelasan dampak dan "OK" ketua. Jangan dihapus sebelum AKN.07 selesai.
+5. Dari handoff sebelumnya masih berlaku: jawaban dosen soal `_headers`, 2FA GitHub dan Supabase ketua belum aktif, token GitHub classic belum dicek, dan pemulihan umpan seiring waktu belum terbukti (AKN.07).
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. **AKN.07:** sesi tes akun (buat `akun-test.md` di sesi tes), 1 sampai 3 akun dummy. Cakupan: reset via email, SEC-01 sampai SEC-04, SEC-14, SEC-16, SEC-17, jalur `password.js` gagal termuat, sesi habis (401), dan pemulihan umpan (mengubah waktu hitung akun dummy lewat SQL Editor butuh penjelasan dampak dan "OK" ketua). Lampirkan `AGENTS.md`, `docs/akun.md`, `docs/security.md`, dan berkas JS bila perlu.
+2. Setelah AKN.07, bersihkan 4 akun tes dengan "OK" ketua.
+3. Sebelum tiap `git add .`, jalankan `git status`. Jangan tulis password atau app password di chat, md, atau repo.

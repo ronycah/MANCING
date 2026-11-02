@@ -135,3 +135,33 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Setiap pemandangan baru (sungai, laut) berarti berkas JS dan SVG baru. Nama keduanya perlu ditambah ke `BERKAS_DASAR` di `sw.js` supaya tampil offline. Itu menyentuh `sw.js` lagi dan butuh "OK" ketua.
 - Pilihan bawaan penulis di blok "Pilihan lokasi di awal mancing" (lokasi hanya diingat selama game terbuka, layar pilih lokasi setelah ketiga pemandangan ada) belum ditanyakan ke tim.
 - Blok ini disusun dari laporan user dan screenshot hasil cek, bukan dari sesi kode aslinya. Isi persis perubahan di `index.html`/`mancing.js` untuk memasang danau tidak tercatat di sini, jadi AI berikutnya sebaiknya membaca berkas yang ada, bukan menebak.
+
+### Handoff #2 | 2026-11-02 | [aik]
+
+**Selesai: VIS.03 (animasi pelampung dan gigitan).** Low-Risk, tanpa OK ketua. Hasil test dilaporkan user OK.
+
+- Berkas berubah (3), semuanya file utuh dan isi lama tidak dihapus:
+  - `public/img/danau.svg`: menambah satu grup pelampung.
+  - `public/style.css`: menambah blok animasi di bagian paling bawah.
+  - `public/mancing.js`: menambah fungsi pengatur animasi dan memanggilnya saat lempar. Satu angka lama diubah dan diberi komentar: `JEDA_ANIMASI` dari 700 menjadi 2200.
+- `sw.js` tidak berubah (tidak ada berkas baru). `NAMA_CACHE` tetap `santuy-v1`.
+- Perilaku: setelah Lempar Kail, pelampung jatuh ke air dan mengapung dengan riak. Sekitar 1,5 detik kemudian ada gigitan (tersentak turun-naik), lalu hasil muncul dan pelampung hilang. Animasi hanya tampilan; hasil tetap ditentukan server saat lempar (MC1).
+- Cek yang disusun di sesi: pelampung dan riak tampil; gigitan muncul sebelum hasil; hasil dan hitungan umpan tetap normal; tidak ada error di konsol; Lempar Kail dua kali beruntun, tombol tetap mati selama animasi.
+
+**Catatan koreksi dari Handoff #1:** VIS.02 (empat suasana dari waktu server) tercatat **Selesai** di TODO sheet (2 Nov 2026). Handoff #1 menulisnya belum dikerjakan; yang paling akhir menang. Menurut catatan sheet: `status_pemain` dan lempar sudah mengirim `jam_server`, jadi tanpa OK ketua. Sudah dites dengan jam perangkat diubah ke siang, tampilan tetap malam (SEC-09 terpenuhi). Berkas yang berubah di VIS.02 tidak tercatat di sini, jadi baca berkas yang ada, jangan menebak.
+
+**Belum dikerjakan:**
+
+- VIS.04 (script SVG ikan): menunggu script dari pembuatnya. Pertanyaan "bisa jenis berbeda dalam satu kelas?" (VS8) belum dipastikan sudah ditanyakan atau belum.
+- VIS.05, VIS.06, VIS.07 (sungai), VIS.08 (laut), VIS.09 (pilih lokasi) sesuai TODO sheet.
+
+**Catatan untuk sesi berikutnya:**
+
+- Satu lemparan sekarang sekitar 2,2 detik (sebelumnya 0,7 detik) supaya gigitan terlihat. Bila terasa terlalu lama, kecilkan dua angka di `mancing.js` dan beri tahu ketua.
+- Pelampung kecil di HP sempit (sekitar 14 piksel lebarnya). Bila kurang terlihat, besarkan saat VIS.05.
+- Warna pelampung (merah, putih, kuning) sama di semua suasana termasuk malam. Ini pilihan penulis, belum ditanyakan ke tim.
+- Efek Epic dan Legendary belum termasuk (bonus, lihat `bonus.md`).
+- Layar utama panjang dan ada jarak kosong antara danau dan hitung mundur (dari Handoff #1), dibiarkan sampai VIS.05.
+- Ikon ikan di layar hasil dan album masih emoji 🐟 sampai VIS.04.
+- Setiap pemandangan baru (sungai, laut) menyentuh `BERKAS_DASAR` di `sw.js` dan butuh "OK" ketua.
+- Blok ini disusun dari laporan sesi terakhir dan screenshot TODO sheet, bukan dari kode aslinya. Isi persis perubahan di `mancing.js` tidak tercatat, jadi AI berikutnya sebaiknya membaca berkas yang ada.

@@ -115,3 +115,10 @@ Satu Edge Function bernama **`mancing`** dengan banyak aksi, hanya untuk pemain 
 - Keputusan baru: satu fungsi SQL `public.simpan_nama_pemain(p_id uuid, p_nama text)` membuat baris pemain bila belum ada (umpan awal dari `pengaturan`, koin 0, waktu hitung = jam server) dan hanya mengganti nama bila baris sudah ada (umpan dan koin tidak tersentuh). Dipakai aksi `ganti_nama` supaya Edge Function tidak menulis ke tabel langsung. Nama dicek lagi di fungsi (3 sampai 20 karakter, huruf, angka, spasi, garis bawah).
 - Keputusan baru: `pemain.id` terhubung ke akun login dengan hapus berantai (baris pemain ikut terhapus bila akun dihapus dari dashboard), supaya pembersihan akun dummy tidak macet. Alasan lain belum tercatat.
 - Bukti: query cek 1 Nov 2026 menunjukkan RLS aktif di kedua tabel, 0 policy, tidak ada hak untuk `anon` dan `authenticated`, `EXECUTE` fungsi hanya `service_role`, pengaturan 10 / 20 / 60.
+
+### 2026-11-02: TAS.01, jumlah tangkapan boleh 0, harga jual, fungsi jual
+
+- Migration yang dijalankan di SQL Editor: `2026-11-02_tas-jual.sql`.
+- Perubahan pada tabel yang sudah ada (disetujui ketua, 2 Nov 2026): aturan `tangkapan.jumlah` dari `> 0` menjadi `>= 0`. Bertentangan dengan SQL `2026-11-02_mancing-ikan-tangkapan.sql` (MCG.01) dan sesuai bagian 2 dokumen ini; yang paling akhir menang. Data lama tidak berubah.
+- Ditambah: 4 baris harga di `pengaturan` (10 / 30 / 100 / 500) dan fungsi `public.jual(uuid, bigint, text)`, `SECURITY DEFINER`, `search_path` kosong, `EXECUTE` hanya `service_role`. Menulis ke `tangkapan` dan `pemain` lewat fungsi saja; hak tabel `service_role` tidak diubah (`tangkapan` tetap SELECT saja).
+- Bukti: query cek 2 Nov 2026 menunjukkan aturan `CHECK (jumlah >= 0)`, pengaturan lengkap dan baris lama utuh, `EXECUTE` hanya `service_role`, dan hak `ikan` dan `tangkapan` tidak berubah. Perilaku fungsi `jual` baru diuji di TAS.04. Alasan lain belum tercatat.

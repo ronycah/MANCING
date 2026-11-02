@@ -113,3 +113,10 @@ Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua.
 ## 9. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### 2026-11-02: Jumlah tangkapan boleh 0 (TAS.01)
+
+- Keputusan ketua (2 Nov 2026): aturan tabel `tangkapan` diubah dari `jumlah > 0` menjadi `jumlah >= 0`, supaya baris tetap ada saat ikan habis dijual dan jenisnya tetap "terbuka" di album (TS1, TS6).
+- Pertentangan: SQL MCG.01 (`2026-11-02_mancing-ikan-tangkapan.sql`) menulis `jumlah > 0`, sedangkan dokumen ini (TS6) dan `database.md` bagian 2 menyebut jumlah bisa 0. Yang paling akhir menang: 0 atau lebih.
+- Dijalankan lewat `2026-11-02_tas-jual.sql`, bersama baris `harga_common`, `harga_rare`, `harga_epic`, `harga_legendary` (10 / 30 / 100 / 500) dan fungsi `public.jual(p_id uuid, p_ikan_id bigint, p_pilihan text)` dengan pilihan `satu` atau `semua`. Ikan yang dinonaktifkan tetap boleh dijual (bawaan penulis, belum ditanyakan ke tim).
+- Bukti: query cek 2 Nov 2026 menunjukkan aturan tinggal `CHECK (jumlah >= 0)`, harga 10 / 30 / 100 / 500 dengan baris umpan dan peluang lama utuh, `EXECUTE` fungsi `jual` hanya `service_role`, dan hak `ikan` dan `tangkapan` tetap: `anon` dan `authenticated` tanpa hak, `service_role` hanya SELECT. Fungsi `jual` belum diuji perilakunya (menunggu TAS.04). Alasan lain belum tercatat.

@@ -109,3 +109,8 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Keputusan tim: lokasi hanya mengubah tampilan. Ikan, peluang, dan umpan sama di semua lokasi; tidak ada pencocokan ikan dengan lokasi dan tidak ada perubahan database.
 - Urutan: danau dikerjakan dulu sesuai VIS.01 dan seterusnya. Sungai dan laut ditambahkan sebagai pekerjaan baru setelah danau selesai.
 - Belum diputuskan: cara pemain memilih lokasi. Alasan lain belum tercatat.
+
+### 2026-11-02: Pilihan lokasi di awal mancing dan boleh diganti
+
+- Keputusan tim (2 Nov 2026): pemain memilih lokasi (danau, sungai, atau laut) di awal, sebelum mulai mancing, dan boleh menggantinya kapan saja lewat tombol Ganti lokasi di layar mancing, tanpa harus menutup game. Menjawab butir "belum diputuskan: cara pemain memilih lokasi" di blok tiga lokasi pada tanggal yang sama.
+- Pilihan bawaan penulis, belum ditanyakan ke tim: lokasi hanya diingat selama game terbuka dan tidak disimpan di server (tidak ada perubahan database); layar pilih lokasi dikerjakan setelah ketiga pemandangan ada. Alasan lain belum tercatat.

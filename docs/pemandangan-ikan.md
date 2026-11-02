@@ -102,3 +102,10 @@ Langkah ⚠️ butuh penjelasan dampak dan "OK" ketua.
 ## 9. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### 2026-11-02: Dosen minta tiga lokasi (danau, sungai, laut)
+
+- Permintaan dosen (2 Nov 2026, siang): lokasi game menjadi tiga, yaitu danau, sungai, dan laut. Menggantikan VS1 ("satu lokasi: danau") dan butir "tema laut ditunda" di bagian 8. Yang paling akhir menang.
+- Keputusan tim: lokasi hanya mengubah tampilan. Ikan, peluang, dan umpan sama di semua lokasi; tidak ada pencocokan ikan dengan lokasi dan tidak ada perubahan database.
+- Urutan: danau dikerjakan dulu sesuai VIS.01 dan seterusnya. Sungai dan laut ditambahkan sebagai pekerjaan baru setelah danau selesai.
+- Belum diputuskan: cara pemain memilih lokasi. Alasan lain belum tercatat.

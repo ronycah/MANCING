@@ -162,3 +162,12 @@ Keputusan ketua: reset password lewat link email dengan Gmail SMTP tim, ditekan 
 ### 2026-11-02: Berkas JS baru wajib didaftarkan di cache `sw.js`
 
 Keputusan ketua: tiap berkas JS (atau berkas game lain) yang ditambahkan ke `public/` wajib ikut ditambahkan ke daftar `BERKAS_DASAR` di `sw.js`, supaya tersimpan di cache dan game tetap bisa dibuka offline. Berkas yang lupa didaftarkan membuat game offline bisa setengah rusak tanpa langsung ketahuan. Muncul dari MCG.03, saat `mancing.js` ditambahkan. Mengubah `sw.js` tetap butuh "OK" ketua (bagian 7), dan cukup menambah satu nama berkas di daftar tanpa menghapus yang lama. Cek setelah terbit: berkas baru muncul di DevTools > Application > Cache Storage > `santuy-v1`, dan halaman tetap terbuka saat Network diset Offline. Alasan lain belum tercatat.
+
+### 2026-11-02: Lokasi menjadi tiga (danau, sungai, laut)
+
+Permintaan dosen: lokasi bertambah menjadi danau, sungai, dan laut, murni tampilan (ikan dan aturan game sama di semua lokasi). Menggantikan "Satu lokasi: danau" di bagian 1. Danau dikerjakan dulu; detail di blok tanggal yang sama pada `pemandangan-ikan.md`. Alasan lain belum tercatat.
+
+### 2026-11-02: Pilihan lokasi di awal mancing dan boleh diganti
+
+- Keputusan tim (2 Nov 2026): pemain memilih lokasi (danau, sungai, atau laut) di awal, sebelum mulai mancing, dan boleh menggantinya kapan saja lewat tombol Ganti lokasi di layar mancing, tanpa harus menutup game. Menjawab butir "belum diputuskan: cara pemain memilih lokasi" di blok tiga lokasi pada tanggal yang sama.
+- Pilihan bawaan penulis, belum ditanyakan ke tim: lokasi hanya diingat selama game terbuka dan tidak disimpan di server (tidak ada perubahan database); layar pilih lokasi dikerjakan setelah ketiga pemandangan ada. Alasan lain belum tercatat.

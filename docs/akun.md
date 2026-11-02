@@ -387,3 +387,36 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 1. **AKN.07:** sesi tes akun (buat `akun-test.md` di sesi tes), 1 sampai 3 akun dummy. Cakupan: reset via email, SEC-01 sampai SEC-04, SEC-14, SEC-16, SEC-17, jalur `password.js` gagal termuat, sesi habis (401), dan pemulihan umpan (mengubah waktu hitung akun dummy lewat SQL Editor butuh penjelasan dampak dan "OK" ketua). Lampirkan `AGENTS.md`, `docs/akun.md`, `docs/security.md`, dan berkas JS bila perlu.
 2. Setelah AKN.07, bersihkan 4 akun tes dengan "OK" ketua.
 3. Sebelum tiap `git add .`, jalankan `git status`. Jangan tulis password atau app password di chat, md, atau repo.
+
+### Handoff #7 | 2026-11-02 | (RAC)
+
+**Tugas:** AKN.07 (sesi tes akun). Selesai dengan bukti, tinggal dicentang di sheet.
+
+**File yang diubah:**
+
+- `docs/akun-test.md` (baru): hasil tes dan bukti, rujukan ke Handoff #5 dan #6 untuk reset email, dan daftar yang belum dites. Tidak ada berkas kode yang berubah.
+- Data: kolom umpan dan waktu hitung baris `tes1` diubah lewat SQL Editor untuk tes pemulihan umpan, lalu dikembalikan ke nilai awal dan dicek ulang (umpan 10, koin 0). Akun dan tabel lain tidak tersentuh.
+
+**Keputusan baru:** tidak ada. "OK" ketua diberikan di sesi untuk mengubah data `tes1`, dibatasi pada tes yang belum pernah dilakukan; tes reset email dari AKN.06 tidak diulang. Alasan lain belum tercatat.
+
+**Hasil (semua dengan bukti balasan server atau hasil query):**
+
+- Lulus: SEC-01, SEC-02, SEC-03 (baca dan tulis), SEC-04, SEC-14, SEC-16, SEC-17.
+- Lulus: pemulihan umpan seiring waktu dari jam server (5 menjadi 7 setelah 150 menit) dan batas `umpan_maks` (15 ditambah 10 jam berhenti di 20, bagian akun dari SEC-10).
+- Reset via email: dirujuk ke Handoff #5 dan #6, tidak diulang.
+- Token login `tes1` sudah dibersihkan dari Terminal.
+
+**Masalah yang belum beres:**
+
+1. Belum dites: perilaku layar saat sesi habis (401), jalur `password.js` gagal termuat (P2), masa berlaku link reset, dan nilai "Secure password change" (Handoff #1 mencatat mati, Handoff #5 menulis belum dilihat). iPhone tidak bisa dites (tidak ada device).
+2. SEC-15 (cari rahasia di repo, md, dan riwayat commit) belum dikerjakan; sebaiknya sebelum penilaian.
+3. Ada 4 akun tes yang perlu dibersihkan sebelum demo (`tes1`, `tes2`, akun tes Gmail tim, akun tes Gmail anggota). Jangan dihapus sebelum tes fitur lain selesai; butuh penjelasan dampak dan "OK" ketua.
+4. Dari handoff sebelumnya masih berlaku: jawaban dosen soal `_headers`, 2FA GitHub dan Supabase ketua belum aktif, token GitHub classic belum dicek.
+5. `database.md` bagian 6 dan 7 masih menyebut reset manual oleh tim; sudah digantikan keputusan 2 Nov (reset lewat link email), yang paling akhir menang.
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. Centang AKN.07 di sheet; tambahkan butir baru untuk poin 1 sampai 3 di atas.
+2. Mulai **MCG.01 ⚠️** (migration tabel `ikan` dan `tangkapan`). Lampirkan `AGENTS.md`, `docs/mancing.md`, `docs/database.md`, dan file migration terbaru di `supabase/migrations/`. Butuh penjelasan dampak dan "OK" ketua.
+3. Migration tabel baru wajib mencabut semua hak `service_role` lalu memberi ulang hanya yang perlu, dicek dengan query baca-saja (kejadian AKN.02).
+4. Sebelum tiap `git add .`, jalankan `git status`. Jangan tulis password atau token di chat, md, atau repo.

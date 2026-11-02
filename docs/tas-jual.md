@@ -178,5 +178,10 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
   1. Konfirmasi sebelum "Jual semua jenis ini" belum diputuskan (bagian 8). Sekarang satu ketukan di popup langsung menjual.
   2. Tes P0 yang belum dilakukan: harga ikut berubah saat `pengaturan` diubah (butuh penjelasan dampak dan "OK" ketua). Daftar lengkap kasus yang belum dites ada di `docs/tas-jual-test.md` bagian 5.
   3. Data uji `tes1` berubah (koin 1530, beberapa jenis berjumlah 0) dan tidak dikembalikan; dibersihkan bersama akun tes sebelum demo (butuh "OK" ketua).
-  4. Pastikan perubahan TAS.05 dan blok catatan ini sudah di-commit dan di-push (`git status`, `git add .`, commit, push).
-- **Saran giliran berikutnya:** (1) `git status` dan push bila masih ada yang tertinggal. (2) Putuskan konfirmasi "Jual semua jenis ini" bersama tim. (3) Tes harga lewat `pengaturan` bila ketua setuju. (4) VIS.01 sampai VIS.05; saat gambar SVG ikan masuk, sesuaikan ukuran gambar kotak (64px) dan popup (92px) di `style.css`.
+- **Saran giliran berikutnya:** (1) Putuskan konfirmasi "Jual semua jenis ini" bersama tim. (3) Tes harga lewat `pengaturan` bila ketua setuju. (2) VIS.01 sampai VIS.05; saat gambar SVG ikan masuk, sesuaikan ukuran gambar kotak (64px) dan popup (92px) di `style.css`.
+
+### 2026-11-02: Konfirmasi sebelum "Jual semua jenis ini" (TAS.06)
+
+- Keputusan tim (2 Nov 2026): "Jual semua jenis ini" memakai konfirmasi (Ya, jual / Batal) yang menyebut nama ikan dan jumlahnya. "Jual 1" tetap langsung tanpa konfirmasi.
+- Menjawab butir "belum diketahui" di bagian 8 (konfirmasi sebelum jual semua): diputuskan perlu. Cara jual (TS3) dan semua aturan server tidak berubah.
+- Alasan lain belum tercatat.

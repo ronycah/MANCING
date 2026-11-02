@@ -735,3 +735,29 @@ button.kotak-ikan:focus-visible {
         animation: none;
     }
 }
+
+/* ===== Konfirmasi "Jual semua jenis ini" (TAS.06) ===== */
+/* Muncul di dalam popup menggantikan tombol jual, berisi pertanyaan dan tombol Ya, jual / Batal. */
+
+.konfirmasi-jual {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: var(--radius);
+    background: var(--latar-kelas);
+}
+
+.konfirmasi-tanya {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.popup-ikan .konfirmasi-jual .aksi {
+    flex-direction: row;
+}
+
+.popup-ikan .konfirmasi-jual .tombol {
+    flex: 1;
+    min-width: 0;
+}

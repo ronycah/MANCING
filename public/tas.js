@@ -12,6 +12,8 @@
 // Harga, stok, dan koin SEPENUHNYA dihitung server; angka di layar diambil dari balasan server.
 // Gambar masih sementara (SVG ikan menyusul, lihat pemandangan-ikan.md).
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
+// TAS.06: "Jual semua jenis ini" meminta konfirmasi dulu di dalam popup (Ya, jual / Batal) yang
+// menyebut nama ikan dan jumlahnya. "Jual 1" tetap langsung. Hanya tampilan; server tidak berubah.
 (function () {
   "use strict";
 
@@ -212,14 +214,35 @@
         if (t) jual(t, "satu");
       });
       jualSemua.addEventListener("click", function () {
-        const t = cari(e.id);
-        if (t) jual(t, "semua");
+        bukaKonfirmasi();
       });
       tutupTeks.addEventListener("click", tutupPopup);
       aksi.appendChild(jual1);
       aksi.appendChild(jualSemua);
       aksi.appendChild(tutupTeks);
       isi.appendChild(aksi);
+
+      // TAS.06: panel konfirmasi "Jual semua", tersembunyi sampai tombol Jual semua diketuk.
+      const konfirmasi = ctx.buatEl("div", "konfirmasi-jual");
+      konfirmasi.hidden = true;
+      const tanya = ctx.buatEl("p", "konfirmasi-tanya", "");
+      konfirmasi.appendChild(tanya);
+      const aksiKonfirmasi = ctx.buatEl("div", "aksi");
+      const ya = ctx.buatEl("button", "tombol", "Ya, jual");
+      ya.type = "button";
+      const batal = ctx.buatEl("button", "tombol sekunder", "Batal");
+      batal.type = "button";
+      aksiKonfirmasi.appendChild(ya);
+      aksiKonfirmasi.appendChild(batal);
+      konfirmasi.appendChild(aksiKonfirmasi);
+      isi.appendChild(konfirmasi);
+      // Jenis dicari ulang saat diketuk. Yang dijual tetap SEMUA ekor menurut server.
+      ya.addEventListener("click", function () {
+        tutupKonfirmasi();
+        const t = cari(e.id);
+        if (t) jual(t, "semua");
+      });
+      batal.addEventListener("click", tutupKonfirmasi);
       dialog.appendChild(isi);
 
       // Ketuk area gelap di luar popup menutupnya.
@@ -238,6 +261,11 @@
         habis: habis,
         jual1: jual1,
         jualSemua: jualSemua,
+        aksi: aksi,
+        konfirmasi: konfirmasi,
+        tanya: tanya,
+        ya: ya,
+        batal: batal,
       };
       document.addEventListener("keydown", saatTombolTekan);
       dialog.focus();
@@ -260,6 +288,42 @@
       const mati = sibuk || memuat || n < 1;
       popup.jual1.disabled = mati;
       popup.jualSemua.disabled = mati;
+      // TAS.06: bila konfirmasi sedang tampil, jumlahnya ikut mengikuti data terbaru.
+      if (!popup.konfirmasi.hidden) {
+        if (n < 1) {
+          tutupKonfirmasi();
+        } else {
+          popup.tanya.textContent = teksTanya(e, n);
+          popup.ya.disabled = mati;
+        }
+      }
+    }
+
+    // TAS.06: kalimat konfirmasi, menyebut nama ikan dan jumlahnya.
+    function teksTanya(e, n) {
+      return "Jual semua " + String(e.nama || "") + " (" + n + " ekor)?";
+    }
+
+    // TAS.06: tampilkan konfirmasi menggantikan tombol jual. Fokus ke Batal supaya aman.
+    function bukaKonfirmasi() {
+      if (!popup || sibuk || memuat) return;
+      const e = cari(popup.id);
+      if (!e) return;
+      const n = jumlahDari(e);
+      if (n < 1) return;
+      popup.tanya.textContent = teksTanya(e, n);
+      ctx.aturPesan(popup.pesan, "", false);
+      popup.aksi.hidden = true;
+      popup.konfirmasi.hidden = false;
+      popup.ya.disabled = false;
+      popup.batal.focus();
+    }
+
+    // TAS.06: sembunyikan konfirmasi, tombol jual tampil lagi.
+    function tutupKonfirmasi() {
+      if (!popup) return;
+      popup.konfirmasi.hidden = true;
+      popup.aksi.hidden = false;
     }
 
     function pilih(id) {

@@ -1,6 +1,8 @@
 // supabase/functions/mancing/index.ts
 // Edge Function "mancing" versi pertama: aksi "status" dan "ganti_nama".
 // MCG.02: ditambah aksi "lempar" (satu panggilan ke fungsi SQL atomik public.lempar).
+// TAS.02: ditambah aksi "jual" (satu panggilan ke fungsi SQL atomik public.jual) dan
+// aksi "status" diperluas dengan kunci "album" (daftar ikan dan tangkapan pemain, TS9).
 // Deploy dengan --no-verify-jwt, jadi fungsi ini memverifikasi token SENDIRI paling awal.
 // Kunci service_role dibaca dari lingkungan Supabase, tidak ditulis di kode.
 
@@ -43,14 +45,71 @@ function ambilToken(req: Request): string | null {
   return cocok ? cocok[1] : null;
 }
 
+// Album koleksi pemain (TS1, TS9). Hanya membaca, tidak menulis apa pun.
+// - Pernah didapat (baris tangkapan ada, jumlah boleh 0): terbuka, kirim nama, kelas, kode gambar, jumlah.
+//   Tetap tampil walau ikannya kemudian dinonaktifkan.
+// - Belum pernah didapat dan ikan aktif: terkunci, kirim HANYA id dan kelas (tanpa nama dan kode gambar).
+// - Belum pernah didapat dan ikan nonaktif: tidak dikirim.
+// Mengembalikan null bila pembacaan gagal, supaya aksi "status" lama tetap jalan.
+async function ambilAlbum(
+  idPemain: string,
+): Promise<Array<Record<string, unknown>> | null> {
+  const [hasilIkan, hasilTangkapan] = await Promise.all([
+    admin
+      .from("ikan")
+      .select("id, nama, kelas, kode_gambar, aktif")
+      .order("id", { ascending: true }),
+    admin.from("tangkapan").select("ikan_id, jumlah").eq("akun_id", idPemain),
+  ]);
+
+  if (
+    hasilIkan.error ||
+    hasilTangkapan.error ||
+    !hasilIkan.data ||
+    !hasilTangkapan.data
+  ) {
+    console.error(
+      "album gagal:",
+      hasilIkan.error?.message,
+      hasilTangkapan.error?.message,
+    );
+    return null;
+  }
+
+  const jumlahPerIkan = new Map<number, number>();
+  for (const t of hasilTangkapan.data) {
+    jumlahPerIkan.set(Number(t.ikan_id), Number(t.jumlah));
+  }
+
+  const album: Array<Record<string, unknown>> = [];
+  for (const i of hasilIkan.data) {
+    const id = Number(i.id);
+    if (jumlahPerIkan.has(id)) {
+      album.push({
+        id,
+        terbuka: true,
+        nama: i.nama,
+        kelas: i.kelas,
+        kode_gambar: i.kode_gambar,
+        jumlah: jumlahPerIkan.get(id),
+      });
+    } else if (i.aktif) {
+      album.push({ id, terbuka: false, kelas: i.kelas });
+    }
+  }
+  return album;
+}
+
 // Aksi "status": baca status pemain dari fungsi SQL (jam server).
+// TAS.02: ditambah kunci "album" (null bila album gagal dibaca; status lama tetap dibalas).
 async function aksiStatus(idPemain: string): Promise<Response> {
   const { data, error } = await admin.rpc("status_pemain", { p_id: idPemain });
   if (error || !data) {
     console.error("status_pemain gagal:", error?.message);
     return galat(500, "Gagal memuat. Coba lagi.");
   }
-  return balas(200, { ok: true, status: data });
+  const album = await ambilAlbum(idPemain);
+  return balas(200, { ok: true, status: data, album });
 }
 
 // Aksi "ganti_nama": buat baris pemain bila belum ada, atau ganti nama.
@@ -111,6 +170,62 @@ async function aksiLempar(idPemain: string): Promise<Response> {
   return balas(200, { ok: true, hasil: data });
 }
 
+// Aksi "jual": satu panggilan atomik ke fungsi SQL public.jual (TS3, TS5).
+// Aplikasi hanya mengirim id jenis ikan dan pilihan "satu" atau "semua".
+// Harga, kelas, jumlah koin, dan jumlah ikan dihitung di server, tidak pernah dari aplikasi.
+async function aksiJual(
+  idPemain: string,
+  idIkan: unknown,
+  pilihan: unknown,
+): Promise<Response> {
+  if (
+    typeof idIkan !== "number" ||
+    !Number.isSafeInteger(idIkan) ||
+    idIkan <= 0 ||
+    (pilihan !== "satu" && pilihan !== "semua")
+  ) {
+    return galat(400, "Permintaan tidak dikenal.");
+  }
+
+  const { data, error } = await admin.rpc("jual", {
+    p_id: idPemain,
+    p_ikan_id: idIkan,
+    p_pilihan: pilihan,
+  });
+
+  if (error) {
+    const pesanDb = error.message ?? "";
+    // Akun ada tapi baris pemain belum dibuat: arahkan ke layar Pilih nama.
+    if (pesanDb.includes("PEMAIN_TIDAK_ADA")) {
+      return galat(400, "Pilih nama tampilan dulu sebelum menjual.");
+    }
+    if (
+      pesanDb.includes("IKAN_TIDAK_VALID") ||
+      pesanDb.includes("PILIHAN_TIDAK_VALID")
+    ) {
+      return galat(400, "Permintaan tidak dikenal.");
+    }
+    // PENGATURAN_KURANG, HARGA_TIDAK_VALID, dan lainnya: detail hanya di log server.
+    console.error("jual gagal:", pesanDb);
+    return galat(500, "Gagal menjual. Coba lagi.");
+  }
+
+  if (!data || typeof data !== "object") {
+    console.error("jual gagal: jawaban SQL kosong");
+    return galat(500, "Gagal menjual. Coba lagi.");
+  }
+
+  // Jenis tidak dimiliki atau stok 0: data tidak berubah, pesan umum (TS7).
+  if ((data as Record<string, unknown>).status !== "ok") {
+    return galat(
+      400,
+      "Ikan ini tidak bisa dijual. Muat ulang tas lalu coba lagi.",
+    );
+  }
+
+  return balas(200, { ok: true, hasil: data });
+}
+
 Deno.serve(async (req: Request): Promise<Response> => {
   // Permintaan "izin dulu" dari browser: dijawab kosong, tidak membuka data apa pun.
   if (req.method === "OPTIONS") {
@@ -143,7 +258,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
     return galat(400, "Permintaan tidak dikenal.");
   }
 
-  // 4. Jalankan aksi. Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama).
+  // 4. Jalankan aksi. Aplikasi hanya mengirim nama aksi (nama untuk ganti_nama;
+  //    id ikan dan pilihan untuk jual).
   switch (isi?.aksi) {
     case "status":
       return aksiStatus(idPemain);
@@ -151,6 +267,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return aksiGantiNama(idPemain, isi.nama);
     case "lempar":
       return aksiLempar(idPemain);
+    case "jual":
+      return aksiJual(idPemain, isi.ikan_id, isi.pilihan);
     default:
       return galat(400, "Aksi tidak dikenal.");
   }

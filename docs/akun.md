@@ -274,3 +274,76 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 4. Tes di sesi tes (AKN.07): reset penuh dengan akun dummy dan bukti.
 
 **Belum diputuskan:** jumlah dan nama berkas pasti; nama berkas JS menyusul saat dikerjakan.
+
+### 2026-11-02: AKN.06 sebagian, reset password lewat link email
+
+**Keputusan baru (ketua):** reset password memakai link email lewat Gmail SMTP tim, menggantikan AK8 (reset manual oleh tim) dan bagian 5 butir 5. Pemain yang lupa menghubungi tim, ketua menekan "Send password recovery" di dashboard, pemain klik link dan membuat password baru. Teks tautan "Lupa password?" tidak menyebut daftar ulang. Alasan: dashboard tidak punya pilihan atur password langsung; alasan lain belum tercatat. "OK" ketua diberikan di sesi (2 Nov 2026) untuk perubahan login dan `sw.js`.
+
+**Berkas yang berubah:**
+
+- `public/password.js` (baru): layar Buat password baru (dua kolom, aturan AK3, Simpan, Batal). Memakai `updateUser` ke Supabase Auth; pesan galat Bahasa Indonesia.
+- `public/akun.js`: alamat dibaca di awal untuk mengenali link pemulihan; link itu membuka layar Buat password baru, bukan layar utama. Bila `password.js` tidak termuat, game keluar dan menampilkan "Gagal memuat". Link kedaluwarsa atau sudah dipakai menampilkan pesan di layar Masuk. Tidak ada kode lama yang dihapus. Sekarang 414 baris (di atas patokan ~300).
+- `public/index.html`: ditambah `<script src="password.js">` sebelum `akun.js`.
+- `public/sw.js`: hanya menambah `password.js` ke daftar berkas dasar. Versi cache tetap `santuy-v1`.
+
+**Pengaturan dashboard (tanpa kode):** custom SMTP Gmail tim aktif; Site URL dan Redirect URLs sudah berisi alamat GitHub Pages dan tidak diubah.
+
+**Hasil tes di production (akun tes dengan alamat Gmail tim):**
+
+1. Link pemulihan dari email (masuk Inbox) membuka layar Buat password baru.
+2. Password kurang dari 8 karakter ditolak dengan pesan aturan.
+3. Dua password berbeda ditolak ("Kedua password harus sama").
+4. Password valid tersimpan, masuk ke layar utama, alamat di browser bersih dari token.
+5. Setelah Keluar: password lama ditolak ("Email atau password salah"), password baru berhasil.
+6. Link yang sama dibuka lagi: layar Masuk dengan pesan link kedaluwarsa atau sudah dipakai.
+7. Link baru lalu Batal: kembali ke layar Masuk; setelah refresh tetap layar Masuk.
+8. Setelah push `sw.js` dan deploy, PWA terbuka normal tanpa galat.
+
+**Masalah yang belum beres:**
+
+1. **Layar Ganti password (AK7, minta password lama) belum dibuat.** AKN.06 belum selesai.
+2. Email baru dites ke akun Gmail yang sama dengan pengirim. Belum dites ke Gmail lain (bisa masuk Spam).
+3. Nilai setelan "Secure password change" belum dilihat (tes di atas lolos tanpa masalah).
+4. Template email masih bahasa Inggris (bisa diterjemahkan di dashboard, tab Templates, tanpa kode).
+5. Belum dites di HP/PWA iPhone dan jalur `password.js` gagal termuat.
+
+### Handoff #5 | 2026-11-02 | (Antok)
+
+**Tugas:** AKN.06 sebagian. Reset password lewat link email menggantikan reset manual (AK8). Selesai: AKN.06a (SMTP Gmail tim di dashboard) dan AKN.06b (layar Buat password baru). Belum: 06c, 06d, 06e.
+
+**File yang diubah (sudah di-push, PWA dicek normal tanpa galat):**
+
+- `public/password.js` (baru): layar Buat password baru, dua kolom, aturan AK3, tombol Simpan dan Batal. Direncanakan dipakai juga oleh layar Ganti password (AK7).
+- `public/akun.js`: mengenali link pemulihan dari alamat, menampilkan layar Buat password baru (bukan layar utama), pesan link kedaluwarsa di layar Masuk, dan cadangan bila `password.js` tidak termuat. Sekarang 414 baris (di atas patokan ~300).
+- `public/index.html`: ditambah `<script src="password.js">` sebelum `akun.js`.
+- `public/sw.js`: `password.js` ditambah ke `BERKAS_DASAR`. Versi cache tetap `santuy-v1`.
+- Dashboard Supabase (tanpa kode): custom SMTP Gmail tim aktif; Site URL dan Redirect URLs sudah berisi alamat GitHub Pages dan tidak diubah. Batas daftar/masuk 30 per 5 menit per IP tidak diubah. Setelan lain tidak disentuh.
+
+**Keputusan baru:**
+
+- Reset password lewat link email dengan Gmail SMTP tim, ditekan ketua dari dashboard (fase dev: siapa saja yang membuka laptop ketua; setelah fase dev: hanya ketua). Menggantikan AK8 dan butir password sementara. Tidak ada tombol kirim email di game.
+- Halaman tujuan link = layar baru di `index.html` yang sama, bukan berkas HTML terpisah.
+- Teks "Lupa password?" tidak menyebut daftar ulang.
+- Prosedur darurat akun sampah (matikan "Allow new users to sign up" sementara lalu bersihkan) dan penolakan captcha dicatat di blok `security.md`; batas bawaan Supabase tidak diubah.
+- Alasan lain belum tercatat.
+
+**Bukti:** tes reset 1 sampai 7 lulus di production dengan screenshot (link membuka layar baru, validasi password, password lama ditolak dan baru berhasil, link bekas ditolak, Batal tidak meninggalkan sesi, alamat browser bersih). Rinciannya ada di blok susulan `akun.md` dan `security.md` tanggal 2 Nov.
+
+**Masalah yang belum beres:**
+
+1. **Tautan "Lupa password?" di layar Masuk belum ada** (AKN.06e). Pemain belum punya petunjuk apa pun di layar Masuk.
+2. **Layar Ganti password (AK7, minta password lama) belum dibuat** (AKN.06c). SEC-17 bergantung padanya.
+3. Email baru dites ke akun Gmail yang sama dengan pengirim; belum dites ke Gmail lain (bisa masuk Spam) (AKN.06d). Template email masih bahasa Inggris (terjemahan lewat dashboard, tab Templates, tanpa kode).
+4. Nilai setelan "Secure password change" belum dilihat. Masa berlaku link belum dicek.
+5. Belum dites: PWA di iPhone, dan jalur `password.js` gagal termuat.
+6. Akun dummy `tes1` dan `tes2` masih ada; password tidak ada di repo/chat/md, tanyakan ke pembuatnya. Akun tes dengan alamat Gmail tim dibuat di sesi ini dan perlu dibersihkan sebelum demo.
+7. Dari handoff sebelumnya masih berlaku: jawaban dosen soal `_headers`, 2FA GitHub dan Supabase ketua belum aktif (disarankan aktif sebelum fase dev selesai), dan token GitHub classic belum dicek.
+8. Blok susulan 2 Nov di `AGENTS.md`, `security.md`, dan `akun.md` perlu dipastikan sudah ditempel (cek di bagian akhir tiap berkas).
+
+**Saran giliran berikutnya (satu langkah per giliran):**
+
+1. **AKN.06e ⚠️:** tautan "Lupa password?" di layar Masuk. Lampirkan `AGENTS.md`, `docs/akun.md`, `public/akun.js`, `public/style.css`, dan `public/index.html`. Butuh penjelasan dampak dan "OK" ketua.
+2. **AKN.06c ⚠️:** layar Ganti password di layar utama (`nama.js`), memakai `password.js`: login ulang dengan password lama dulu, baru ganti (AK7). Lampirkan juga `nama.js` dan `sw.js`. Butuh "OK" ketua.
+3. **AKN.06d:** tes email reset ke Gmail anggota tim lain (dengan izin) dan terjemahkan template email di dashboard.
+4. Baru **AKN.07** (sesi tes, termasuk reset via email, SEC-16, SEC-17, PWA iPhone).
+5. Sebelum tiap `git add .`, jalankan `git status`. Jangan tulis password atau app password di chat, md, atau repo.

@@ -146,6 +146,7 @@ Aplikasi non-komersial, jadi pengetesan **disederhanakan**. Tes dilakukan langsu
 4. **Tes awal ringan:** 1 sampai 3 akun dummy. Tidak perlu simulasi 100 user di tiap giliran.
 5. **Cek skala 100 user di akhir:** perkirakan jumlah panggilan per sesi pemain terhadap batas free tier, lalu uji ramai-ramai sederhana (beberapa HP dan akun bersamaan).
 6. Tes PWA: setelah update, versi baru muncul di HP (network first), dan game tetap bisa dibuka offline (login dan aksi game tetap butuh internet).
+7. Pengetesan tidak bisa dilakukan di iphone karena tidak ada device
 
 ## 10. Pola Sesi
 

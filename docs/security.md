@@ -99,3 +99,20 @@ Kasus tes fitur lainnya ada di dokumen tes masing-masing fitur (dibuat di sesi t
 **Catatan:** tes dengan pengirim dan penerima akun yang sama belum membuktikan email masuk Inbox di akun lain; perlu satu tes ke Gmail anggota tim yang lain sebelum demo.
 
 **Belum beres:** layar Buat password baru, terjemahan template email (tanpa kode), tes ke Gmail lain.
+
+### 2026-11-02: Bukti tes reset password lewat link email
+
+Melengkapi blok "Reset password lewat email (Gmail SMTP)" tanggal yang sama bila sudah ditempel (yang paling akhir menang).
+
+**Terbukti di production (akun tes, dengan screenshot):**
+
+- Link pemulihan tidak membuka layar utama tanpa membuat password baru (`akun.js` menangkapnya).
+- Setelah reset, password lama ditolak dan password baru berhasil.
+- Link yang sudah dipakai ditolak; pemain melihat pesan dan diarahkan menghubungi tim.
+- Tombol Batal mengakhiri sesi pemulihan; setelah refresh tidak ada login yang tertinggal.
+- Alamat browser tidak menyimpan token setelah password tersimpan atau link ditolak.
+- Setelan dashboard: SMTP Gmail aktif, batas email naik otomatis ke 30 per jam, Site URL dan Redirect URL benar. Batas daftar/masuk bawaan 30 per 5 menit per IP tidak diubah.
+
+**Belum terbukti:** email masuk Inbox di akun Gmail selain pengirim; masa berlaku link (belum dicek); nilai "Secure password change"; jalur ketika `password.js` gagal termuat; tes di HP.
+
+**Catatan:** link pemulihan setara kunci masuk, jangan diteruskan ke orang lain atau difoto bersama bilah alamat. Pengiriman email hanya dari dashboard (tidak ada tombol kirim di game), jadi tidak ada risiko "bom email" dari game.

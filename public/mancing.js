@@ -101,10 +101,10 @@
       let teks = "";
       if (akhir !== null) {
         const sisa = (akhir - performance.now()) / 1000;
+        // Hitung mundur ini jarak ke tambahan 1 umpan, bukan jeda antar lemparan.
         teks =
-          (ada
-            ? "Umpan berikutnya dalam "
-            : "Umpan habis. Umpan berikutnya dalam ") + formatWaktu(sisa);
+          (ada ? "+1 umpan dalam " : "Umpan habis. +1 umpan dalam ") +
+          formatWaktu(sisa);
       } else if (!ada) {
         teks = "Umpan habis. Tunggu sebentar";
       }

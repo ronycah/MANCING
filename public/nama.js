@@ -1,6 +1,7 @@
 // public/nama.js
 // Layar Pilih nama, Ganti nama, dan layar utama sederhana (AKN.05).
 // Dipanggil dari akun.js setelah pemain berhasil masuk.
+// AKN.06c: tombol Ganti password di layar utama (layarnya ada di password.js).
 // Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
@@ -18,6 +19,7 @@
     terlaluSering: "Terlalu sering mencoba. Tunggu sebentar lalu coba lagi",
     keluarGagal: "Gagal keluar. Coba lagi",
     tunggu: "Mohon tunggu...",
+    passwordBerhasil: "Password berhasil diganti",
   };
 
   function alamatFungsi() {
@@ -221,7 +223,8 @@
   }
 
   // Layar utama sederhana: nama, umpan, koin, menu akun.
-  function tampilUtama(ctx, status) {
+  // pesanAwal (opsional): pesan info singkat, misal setelah password berhasil diganti.
+  function tampilUtama(ctx, status, pesanAwal) {
     ctx.kosongkan();
     const kartu = ctx.buatEl("div", "kartu");
     kartu.appendChild(
@@ -249,6 +252,7 @@
 
     const pesan = ctx.buatEl("p", "pesan");
     pesan.setAttribute("role", "alert");
+    if (pesanAwal) ctx.aturPesan(pesan, pesanAwal, false);
     kartu.appendChild(pesan);
 
     const aksi = ctx.buatEl("div", "aksi");
@@ -258,6 +262,33 @@
       tampilNama(ctx, "ganti", status);
     });
     aksi.appendChild(ganti);
+
+    // AKN.06c: Ganti password (login ulang dengan password lama dulu, AK7).
+    const gantiPass = ctx.buatEl("button", "tombol sekunder", "Ganti password");
+    gantiPass.type = "button";
+    gantiPass.addEventListener("click", function () {
+      const modul = window.MANCING_PASSWORD;
+      if (!modul || typeof modul.tampilGanti !== "function") {
+        ctx.aturPesan(pesan, PESAN.gagalMemuat, true);
+        return;
+      }
+      modul.tampilGanti({
+        wadah: ctx.wadah,
+        klien: ctx.klien,
+        email: ctx.email,
+        buatEl: ctx.buatEl,
+        kosongkan: ctx.kosongkan,
+        aturPesan: ctx.aturPesan,
+        selesai: function () {
+          tampilUtama(ctx, status, PESAN.passwordBerhasil);
+        },
+        batal: function () {
+          tampilUtama(ctx, status);
+        },
+      });
+    });
+    aksi.appendChild(gantiPass);
+
     aksi.appendChild(buatTombolKeluar(ctx, pesan));
     kartu.appendChild(aksi);
     ctx.wadah.appendChild(kartu);

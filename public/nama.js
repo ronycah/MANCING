@@ -2,6 +2,7 @@
 // Layar Pilih nama, Ganti nama, dan layar utama sederhana (AKN.05).
 // Dipanggil dari akun.js setelah pemain berhasil masuk.
 // AKN.06c: tombol Ganti password di layar utama (layarnya ada di password.js).
+// MCG.03: layar utama memasang tombol Lempar Kail dari mancing.js bila termuat.
 // Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
@@ -27,7 +28,8 @@
     return c && c.SUPABASE_URL ? c.SUPABASE_URL + "/functions/v1/mancing" : "";
   }
 
-  // Panggil Edge Function "mancing". Mengembalikan { ok, status } atau { ok:false, kode }.
+  // Panggil Edge Function "mancing". Mengembalikan { ok, status } (aksi status dan ganti_nama),
+  // { ok, hasil } (aksi lempar), atau { ok:false, kode }.
   async function panggil(ctx, aksi, tambahan) {
     try {
       const alamat = alamatFungsi();
@@ -58,6 +60,10 @@
       }
       if (res.ok && data && data.ok && data.status) {
         return { ok: true, status: data.status };
+      }
+      // MCG.03: jawaban aksi "lempar" berkunci "hasil".
+      if (res.ok && data && data.ok && data.hasil) {
+        return { ok: true, hasil: data.hasil };
       }
       return { ok: false, kode: res.status };
     } catch (e) {
@@ -222,7 +228,7 @@
     input.focus();
   }
 
-  // Layar utama sederhana: nama, umpan, koin, menu akun.
+  // Layar utama sederhana: nama, umpan, koin, tombol Lempar Kail, menu akun.
   // pesanAwal (opsional): pesan info singkat, misal setelah password berhasil diganti.
   function tampilUtama(ctx, status, pesanAwal) {
     ctx.kosongkan();
@@ -232,23 +238,47 @@
     );
 
     const info = ctx.buatEl("div", "statistik");
-    info.appendChild(
-      ctx.buatEl(
-        "p",
-        "petunjuk",
-        "Umpan: " + status.umpan + " / " + status.umpan_maks,
-      ),
+    // MCG.03: disimpan di variabel supaya angka umpan bisa diperbarui setelah lemparan.
+    const teksUmpan = ctx.buatEl(
+      "p",
+      "petunjuk",
+      "Umpan: " + status.umpan + " / " + status.umpan_maks,
     );
+    info.appendChild(teksUmpan);
     info.appendChild(ctx.buatEl("p", "petunjuk", "Koin: " + status.koin));
     kartu.appendChild(info);
 
-    kartu.appendChild(
-      ctx.buatEl(
-        "p",
-        "petunjuk",
-        "Layar permainan menyusul di langkah berikutnya.",
-      ),
-    );
+    // MCG.03: pasang layar lempar bila mancing.js termuat; bila tidak, tampil teks lama.
+    const modulLempar = window.MANCING_LEMPAR;
+    if (modulLempar && typeof modulLempar.pasang === "function") {
+      modulLempar.pasang({
+        induk: kartu,
+        status: status,
+        buatEl: ctx.buatEl,
+        aturPesan: ctx.aturPesan,
+        kirim: function (aksi) {
+          return panggil(ctx, aksi);
+        },
+        muatStatus: function () {
+          return panggil(ctx, "status");
+        },
+        saatUmpanBerubah: function () {
+          teksUmpan.textContent =
+            "Umpan: " + status.umpan + " / " + status.umpan_maks;
+        },
+        sesiHabis: function () {
+          sesiHabis(ctx);
+        },
+      });
+    } else {
+      kartu.appendChild(
+        ctx.buatEl(
+          "p",
+          "petunjuk",
+          "Layar permainan menyusul di langkah berikutnya.",
+        ),
+      );
+    }
 
     const pesan = ctx.buatEl("p", "pesan");
     pesan.setAttribute("role", "alert");

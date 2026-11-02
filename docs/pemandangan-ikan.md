@@ -165,3 +165,22 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Ikon ikan di layar hasil dan album masih emoji 🐟 sampai VIS.04.
 - Setiap pemandangan baru (sungai, laut) menyentuh `BERKAS_DASAR` di `sw.js` dan butuh "OK" ketua.
 - Blok ini disusun dari laporan sesi terakhir dan screenshot TODO sheet, bukan dari kode aslinya. Isi persis perubahan di `mancing.js` tidak tercatat, jadi AI berikutnya sebaiknya membaca berkas yang ada.
+
+### 2026-11-02: Gambar ikan berupa 4 berkas WebP (menggantikan rencana script SVG di VS7 dan VS8)
+
+- Pembuatan gambar: kakak teman tim mengubah gambar ke WebP dengan script Python di luar AI, sambil menambah efek glow. Yang diterima tim adalah berkas WebP jadi, **bukan script SVG yang dijalankan di game**. Ini menggantikan VS7 dan butir "script SVG bisa membuat jenis berbeda dalam satu kelas?" di bagian 8. Yang paling akhir menang.
+- Sumber gambar asli: svgrepo.com, dengan lisensi CC0, dikonfirmasi oleh cocciplaz. Tidak wajib mencantumkan atribusi.
+- Pendekatan VS8 yang terpakai: **(b) satu gambar per kelas**, 4 berkas. Efek sudah tertanam di berkas, tidak ada pewarnaan ulang oleh script. Sesuai VS9: gambar CC0, bukan milik pihak lain.
+- Berkas (di `public/img/`, sudah di-push 2 Nov 2026), semuanya transparan dan total sekitar 150 KB:
+  - `sisikpasir.webp` (500x222, glow abu-abu)
+  - `birumungil.webp` (500x319, glow biru)
+  - `babydragon.webp` (500x365, glow ungu)
+  - `golddragon.webp` (500x421, glow oranye)
+- Pemetaan ke kelas: sisikpasir = Common, birumungil = Rare, babydragon = Epic, golddragon = Legendary.
+- Catatan tampilan: gaya gambar tidak seragam antar kelas (realistis, vektor flat, kartun, ornamen) dan berbeda dari kartun flat di VS1. Diterima tim karena dosen (1 Nov 2026) membolehkan berkreasi sesuai selera masing-masing dan tidak terikat gaya kartun. Dua gambar berupa naga; nama di katalog `ikan` disesuaikan dengan gambar (VS8 mengizinkan).
+- Dampak ke langkah:
+  - **VIS.04** menjadi "pasang 4 WebP di layar hasil dan album lewat kode gambar di katalog `ikan`", bukan integrasi script. Tidak ada perubahan server, database, atau peluang mancing.
+  - Rasio gambar beda-beda (tinggi 222 sampai 421 piksel): tampilkan dalam kotak berukuran tetap dengan `object-fit: contain` supaya album rata dan layar hasil tidak loncat.
+  - **VIS.05** (siluet album): belum diputuskan caranya. Karena semua berkas transparan, filter CSS (mis. `brightness(0)`) bisa dicoba. Glow ikut menjadi bayangan gelap sehingga siluet agak gembung; cek visual, bila mengganggu minta versi tanpa glow.
+  - Keempat berkas perlu masuk `BERKAS_DASAR` di `sw.js` supaya tampil offline. Itu menyentuh `sw.js` dan butuh "OK" ketua. `NAMA_CACHE` perlu dipertimbangkan naik versi bila gambar tidak muncul karena cache lama.
+- Blok ini disusun dari laporan user dan pengecekan berkas (ukuran, transparansi), bukan dari kode. Cara tampil gambar di `tas.js`/`mancing.js` belum dikerjakan, jadi AI berikutnya sebaiknya membaca berkas yang ada, bukan menebak.

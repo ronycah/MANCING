@@ -3,7 +3,8 @@
 // Dipanggil dari akun.js setelah pemain berhasil masuk.
 // AKN.06c: tombol Ganti password di layar utama (layarnya ada di password.js).
 // MCG.03: layar utama memasang tombol Lempar Kail dari mancing.js bila termuat.
-// Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama); identitas dibaca server dari token.
+// TAS.03: layar utama punya tombol Tas Ikan (layarnya ada di tas.js) dan koin ikut diperbarui setelah jual.
+// Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama; id jenis dan pilihan untuk jual); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
   "use strict";
@@ -29,7 +30,7 @@
   }
 
   // Panggil Edge Function "mancing". Mengembalikan { ok, status } (aksi status dan ganti_nama),
-  // { ok, hasil } (aksi lempar), atau { ok:false, kode }.
+  // { ok, hasil } (aksi lempar dan jual), atau { ok:false, kode }.
   async function panggil(ctx, aksi, tambahan) {
     try {
       const alamat = alamatFungsi();
@@ -61,7 +62,7 @@
       if (res.ok && data && data.ok && data.status) {
         return { ok: true, status: data.status };
       }
-      // MCG.03: jawaban aksi "lempar" berkunci "hasil".
+      // MCG.03 dan TAS.03: jawaban aksi "lempar" dan "jual" berkunci "hasil".
       if (res.ok && data && data.ok && data.hasil) {
         return { ok: true, hasil: data.hasil };
       }
@@ -245,7 +246,9 @@
       "Umpan: " + status.umpan + " / " + status.umpan_maks,
     );
     info.appendChild(teksUmpan);
-    info.appendChild(ctx.buatEl("p", "petunjuk", "Koin: " + status.koin));
+    // TAS.03: disimpan di variabel supaya koin bisa diperbarui setelah jual.
+    const teksKoin = ctx.buatEl("p", "petunjuk", "Koin: " + status.koin);
+    info.appendChild(teksKoin);
     kartu.appendChild(info);
 
     // MCG.03: pasang layar lempar bila mancing.js termuat; bila tidak, tampil teks lama.
@@ -286,6 +289,42 @@
     kartu.appendChild(pesan);
 
     const aksi = ctx.buatEl("div", "aksi");
+
+    // TAS.03: tombol Tas Ikan (album koleksi dan jual). Layarnya ada di tas.js.
+    const tas = ctx.buatEl("button", "tombol", "Tas Ikan");
+    tas.type = "button";
+    tas.addEventListener("click", function () {
+      const modul = window.MANCING_TAS;
+      if (!modul || typeof modul.tampil !== "function") {
+        ctx.aturPesan(pesan, PESAN.gagalMemuat, true);
+        return;
+      }
+      modul.tampil({
+        wadah: ctx.wadah,
+        status: status,
+        buatEl: ctx.buatEl,
+        kosongkan: ctx.kosongkan,
+        aturPesan: ctx.aturPesan,
+        muatStatus: function () {
+          return panggil(ctx, "status");
+        },
+        // Hanya id jenis dan pilihan ("satu" atau "semua") yang dikirim; harga dan koin dihitung server.
+        jual: function (ikanId, pilihan) {
+          return panggil(ctx, "jual", { ikan_id: ikanId, pilihan: pilihan });
+        },
+        saatKoinBerubah: function () {
+          teksKoin.textContent = "Koin: " + status.koin;
+        },
+        sesiHabis: function () {
+          sesiHabis(ctx);
+        },
+        kembali: function () {
+          tampilUtama(ctx, status);
+        },
+      });
+    });
+    aksi.appendChild(tas);
+
     const ganti = ctx.buatEl("button", "tombol sekunder", "Ganti nama");
     ganti.type = "button";
     ganti.addEventListener("click", function () {

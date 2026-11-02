@@ -319,3 +319,157 @@
     font-size: 0.95rem;
     margin-top: 4px;
 }
+
+/* ===== Layar Tas Ikan / album koleksi (TAS.03) ===== */
+
+/* Warna kelas untuk kotak album dan panel detail (sama dengan kartu hasil lemparan). */
+.kotak-ikan,
+.panel-ikan {
+    --warna-kelas: #6c8ea4;
+    --latar-kelas: #eef4f7;
+}
+
+.kotak-ikan.kelas-common,
+.panel-ikan.kelas-common {
+    --warna-kelas: #6c8ea4;
+    --latar-kelas: #eef4f7;
+}
+
+.kotak-ikan.kelas-rare,
+.panel-ikan.kelas-rare {
+    --warna-kelas: #2f80ed;
+    --latar-kelas: #e8f1fd;
+}
+
+.kotak-ikan.kelas-epic,
+.panel-ikan.kelas-epic {
+    --warna-kelas: #8e44ad;
+    --latar-kelas: #f3e9f8;
+}
+
+.kotak-ikan.kelas-legendary,
+.panel-ikan.kelas-legendary {
+    --warna-kelas: #e0a100;
+    --latar-kelas: #fff6d6;
+}
+
+/* 16 kotak, 3 kolom. */
+.album {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: var(--jarak);
+}
+
+/* Pesan "Mohon tunggu" atau galat memuat selebar album. */
+.album > .petunjuk,
+.album > .tombol {
+    grid-column: 1 / -1;
+}
+
+.kotak-ikan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+    min-height: 44px;
+    padding: 6px 4px;
+    box-sizing: border-box;
+    border: 3px solid var(--warna-kelas);
+    border-radius: var(--radius);
+    background: var(--latar-kelas);
+    color: var(--warna-teks);
+    font: inherit;
+    text-align: center;
+}
+
+button.kotak-ikan {
+    cursor: pointer;
+}
+
+button.kotak-ikan:focus-visible {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 2px;
+}
+
+.kotak-ikan.dipilih {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 2px;
+}
+
+/* Jenis pernah didapat tapi sekarang habis (jumlah 0): tetap terbuka, tampil pudar. */
+.kotak-ikan.kosong {
+    opacity: 0.55;
+}
+
+/* Siluet terkunci: kotak abu-abu bertanda "?". */
+.kotak-ikan.terkunci {
+    border-style: dashed;
+    background: #dfe6ea;
+    color: #5a6b78;
+}
+
+.gambar-kotak {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    background: var(--warna-kelas);
+}
+
+.kotak-ikan.terkunci .gambar-kotak {
+    background: #8a9aa5;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.kotak-ikan p {
+    margin: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.nama-kotak {
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.kelas-kotak {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--warna-kelas);
+}
+
+.jumlah-kotak {
+    font-size: 0.8rem;
+}
+
+/* Detail jenis yang dipilih. */
+.detail-ikan {
+    margin-bottom: var(--jarak);
+}
+
+.panel-ikan {
+    padding: var(--jarak);
+    border: 3px solid var(--warna-kelas);
+    border-radius: var(--radius);
+    background: var(--latar-kelas);
+    text-align: center;
+}
+
+.panel-ikan p {
+    margin: 0;
+}
+
+.panel-ikan .petunjuk {
+    text-align: center;
+    margin-top: 4px;
+}
+
+.aksi-jual {
+    margin-top: var(--jarak);
+}

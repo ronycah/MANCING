@@ -121,7 +121,7 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Dijalankan lewat `2026-11-02_tas-jual.sql`, bersama baris `harga_common`, `harga_rare`, `harga_epic`, `harga_legendary` (10 / 30 / 100 / 500) dan fungsi `public.jual(p_id uuid, p_ikan_id bigint, p_pilihan text)` dengan pilihan `satu` atau `semua`. Ikan yang dinonaktifkan tetap boleh dijual (bawaan penulis, belum ditanyakan ke tim).
 - Bukti: query cek 2 Nov 2026 menunjukkan aturan tinggal `CHECK (jumlah >= 0)`, harga 10 / 30 / 100 / 500 dengan baris umpan dan peluang lama utuh, `EXECUTE` fungsi `jual` hanya `service_role`, dan hak `ikan` dan `tangkapan` tetap: `anon` dan `authenticated` tanpa hak, `service_role` hanya SELECT. Fungsi `jual` belum diuji perilakunya (menunggu TAS.04). Alasan lain belum tercatat.
 
-### Handoff #1 | 2026-11-02 | [isi nama PIC]
+### Handoff #1 | 2026-11-02 | [miemoe]
 
 - **Tugas selesai:** TAS.01 (migration: `2026-11-02_tas-jual.sql`) dan TAS.02 (Edge Function `mancing`: aksi `jual` dan `status` diperluas). Keduanya sudah dijalankan atau di-deploy di production dan lolos tes konsol. TAS.01 sudah di-commit (`71dfb69`). Pengingat: centang TAS.01 dan TAS.02 di sheet.
 - **File yang diubah:** `supabase/migrations/2026-11-02_tas-jual.sql` (baru), `supabase/functions/mancing/index.ts` (diubah, sudah di-deploy), blok catatan TAS.01 di `tas-jual.md` dan `database.md`.

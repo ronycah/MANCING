@@ -17,6 +17,7 @@ const BERKAS_DASAR = [
   "nama.js",
   "password.js",
   "mancing.js",
+  "tas.js",
   "manifest.json",
   "img/web-app-manifest-192x192.png",
   "img/web-app-manifest-512x512.png",

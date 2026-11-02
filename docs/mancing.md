@@ -202,3 +202,32 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 
 - MCG.04: buat `mancing-test.md` dan mulai dari bukti umpan tetap terpakai saat ikan lepas (SEC-11) dan SEC-08 (dua lemparan bersamaan saat umpan 1). Jangan spam lemparan di production; sebaran kelas cukup dicek kasar.
 - Sebelum commit: cek `git status`, pastikan blok CSS MCG.03 sudah ada di `style.css` dan tidak ada rahasia ikut.
+
+### Handoff #3 | 2026-11-02 | (miemoe)
+
+**Tugas:** MCG.04 (sesi tes mancing, dibuat `mancing-test.md`). Selesai, tinggal dicentang di sheet. Sesi ini tidak mengubah kode.
+
+**File yang diubah:**
+
+- `docs/mancing-test.md` (baru): hasil tes SEC-05, 06, 07, 08, 09, 11, 13, rujukan SEC-10, cek sebaran kelas, data uji, dan daftar belum dites. Format meniru `akun-test.md`.
+
+**Keputusan baru:**
+
+- Tangkapan layar bukti tidak disimpan sebagai berkas; bukti dicatat dari pengamatan di sesi chat dan ditulis di dokumen tes. Alasan: arahan dosen, disampaikan ketua.
+- Tes yang butuh data khusus dikerjakan lewat Console browser (token tidak ditampilkan) dan SQL Editor dengan "OK" ketua; semua perubahan dikembalikan dan dicek ulang. Alasan lain belum tercatat.
+
+**Hasil singkat:** semua tes keamanan lempar yang dijalankan lulus dengan bukti balasan server. Rincian ada di `mancing-test.md`.
+
+**Masalah yang belum beres:**
+
+1. SEC-10 baru terbukti lewat aksi `status`, belum lewat aksi `lempar` (P0).
+2. Cek sebaran terhenti di lemparan ke-84 karena satu balasan **502 (Bad Gateway)** dari Supabase. Penyebab belum diketahui. Legendary belum muncul dari 71 ikan (wajar untuk sampel kecil).
+3. Ikan hasil tes masih ada di `tangkapan` akun `tes1` dan `tes2`. Dibersihkan bersama akun tes sebelum demo (butuh penjelasan dampak dan "OK" ketua).
+4. Belum dites: `kolam_kosong`, `PEMAIN_TIDAK_ADA`, tampilan layar saat sesi habis (401), tes di iPhone (tidak ada device).
+5. Kosmetik lama dari Handoff #2 (`min-height: 150px` di `.hasil-lempar`) masih berlaku.
+
+**Saran giliran berikutnya:**
+
+- Sebelum commit: `git status`, pastikan hanya `docs/mancing-test.md` dan `docs/mancing.md` yang berubah, tanpa rahasia (token, password).
+- Tambah butir sheet: tes batas umpan lewat `lempar`, cek penyebab 502, dan pembersihan akun tes.
+- Lanjut TAS.01 (migration harga dan fungsi jual), butuh "OK" ketua. Jangan menjalankan undian berulang di production tanpa perlu.

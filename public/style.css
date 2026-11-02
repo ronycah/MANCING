@@ -764,7 +764,7 @@ button.kotak-ikan:focus-visible {
 
 /* ===== DANAU (VIS.01) ===== */
 /* Pemandangan danau dari img/danau.svg yang ditempelkan oleh lokasi-danau.js. */
-/* Warna diatur lewat variabel di wadah .danau. Suasana lain (sore, malam)
+/* Warna diatur lewat variabel di wadah .danau. Suasana lain (pagi, sore, malam)
    cukup mengganti variabel lewat kelas tambahan di wadah yang sama. */
 /* Sungai dan laut nanti menambah blok sendiri di bawah ini, dengan awalan sungai- dan laut-. */
 
@@ -788,6 +788,18 @@ button.kotak-ikan:focus-visible {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+/* Suasana pagi (VIS.02): langit biru muda kekuningan, warna lebih lembut dari siang.
+   Palet pilihan penulis, boleh diubah tim. Dipasang oleh mancing.js dari jam server. */
+.danau.pagi {
+    --danau-langit: #9fd8f0;
+    --danau-matahari: #ffe9a8;
+    --danau-awan: #fff7e6;
+    --danau-awan-opasitas: 0.9;
+    --danau-bukit-jauh: #6bbf8a;
+    --danau-bukit-dekat: #4caf6a;
+    --danau-air: #6fb3dd;
 }
 
 /* Suasana sore (dipindah dari kelas .sunset di dalam danau.svg). Dipakai di VIS.02. */

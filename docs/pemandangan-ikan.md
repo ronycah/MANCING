@@ -114,3 +114,24 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 
 - Keputusan tim (2 Nov 2026): pemain memilih lokasi (danau, sungai, atau laut) di awal, sebelum mulai mancing, dan boleh menggantinya kapan saja lewat tombol Ganti lokasi di layar mancing, tanpa harus menutup game. Menjawab butir "belum diputuskan: cara pemain memilih lokasi" di blok tiga lokasi pada tanggal yang sama.
 - Pilihan bawaan penulis, belum ditanyakan ke tim: lokasi hanya diingat selama game terbuka dan tidak disimpan di server (tidak ada perubahan database); layar pilih lokasi dikerjakan setelah ketiga pemandangan ada. Alasan lain belum tercatat.
+
+### Handoff #1 | 2026-11-02 | [rac]
+
+**Selesai: VIS.01 (danau satu suasana, statis).** Sudah dicek di HP lewat versi online (ronycah.github.io/MANCING).
+
+- Berkas baru: `lokasi-danau.js`, `img/danau.svg`, dan `style.css` versi baru. Danau siang (langit biru, bukit, air, dermaga, matahari, awan) tampil di layar utama, di atas tombol Lempar Kail.
+- `sw.js` diubah dengan OK ketua: hanya menambah `lokasi-danau.js` dan `img/danau.svg` di `BERKAS_DASAR`, tidak ada yang dihapus. `NAMA_CACHE` tetap `santuy-v1`. Di Cache storage, kedua berkas sudah terkonfirmasi tersimpan.
+- Cek yang lolos: lempar kail jalan normal (hasil "Ikan lepas!" dan "Dapat ikan!", hitung mundur umpan tetap jalan); Tas Ikan terbuka dengan jumlah benar; kembali dari Tas Ikan, danau muncul lagi tanpa error di konsol.
+
+**Belum dikerjakan:**
+
+- VIS.02 ⚠️ (empat suasana dari waktu server). Bila `status` belum mengirim waktu server, penambahannya menyentuh Edge Function dan butuh penjelasan dampak plus "OK" ketua.
+- VIS.03 sampai VIS.06, serta VIS.07 (sungai), VIS.08 (laut), VIS.09 (pilih lokasi) sesuai urutan di TODO sheet.
+
+**Catatan untuk sesi berikutnya:**
+
+- Layar utama jadi lebih panjang karena danau, dan ada jarak kosong antara danau dan teks hitung mundur sebelum lempar. Dibiarkan sampai VIS.05 (penyesuaian di HP).
+- Ikon ikan di layar hasil dan album masih emoji 🐟 (sementara), menunggu script SVG di VIS.04.
+- Setiap pemandangan baru (sungai, laut) berarti berkas JS dan SVG baru. Nama keduanya perlu ditambah ke `BERKAS_DASAR` di `sw.js` supaya tampil offline. Itu menyentuh `sw.js` lagi dan butuh "OK" ketua.
+- Pilihan bawaan penulis di blok "Pilihan lokasi di awal mancing" (lokasi hanya diingat selama game terbuka, layar pilih lokasi setelah ketiga pemandangan ada) belum ditanyakan ke tim.
+- Blok ini disusun dari laporan user dan screenshot hasil cek, bukan dari sesi kode aslinya. Isi persis perubahan di `index.html`/`mancing.js` untuk memasang danau tidak tercatat di sini, jadi AI berikutnya sebaiknya membaca berkas yang ada, bukan menebak.

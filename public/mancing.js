@@ -6,6 +6,9 @@
 // bukan jam HP, jadi mengubah jam HP tidak berpengaruh (MC9).
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 // VIS.01: pemandangan danau dipasang di atas area hasil lewat window.LokasiDanau (lokasi-danau.js), hanya tampilan.
+// VIS.02: suasana danau (pagi, siang, sore, malam) mengikuti jam WIB dari "jam_server" yang dikirim server
+// (status dan hasil lempar). Waktu berjalan dihitung dari titik acuan jam_server + performance.now(),
+// bukan jam HP. Hanya mengubah kelas CSS di wadah danau; tidak mempengaruhi hasil mancing.
 (function () {
   "use strict";
 
@@ -36,6 +39,11 @@
   const JEDA_ULANG = 10000;
   const MAKS_ULANG = 3;
 
+  // VIS.02: WIB = UTC+7 (tanpa pergeseran musim). Dihitung manual, tidak memakai zona waktu HP.
+  const GESER_WIB_MS = 7 * 3600 * 1000;
+  // Kelas CSS suasana di wadah danau. Siang = bawaan (tanpa kelas tambahan).
+  const KELAS_SUASANA = ["pagi", "sore", "malam"];
+
   function dua(n) {
     return String(n).padStart(2, "0");
   }
@@ -59,6 +67,22 @@
     while (e.firstChild) e.removeChild(e.firstChild);
   }
 
+  // VIS.02: teks waktu dari server (misal "2026-11-02T14:19:00.123456+00:00") -> milidetik.
+  // Pecahan detik dipotong jadi 3 digit supaya terbaca di semua browser. Mengembalikan null bila tidak valid.
+  function bacaJamServer(teks) {
+    if (typeof teks !== "string") return null;
+    const ms = Date.parse(teks.replace(/(\.\d{3})\d+/, "$1"));
+    return isFinite(ms) ? ms : null;
+  }
+
+  // VIS.02: jam WIB (0 sampai 23) -> nama suasana (VS2).
+  function suasanaDariJam(jam) {
+    if (jam >= 5 && jam < 10) return "pagi";
+    if (jam >= 10 && jam < 15) return "siang";
+    if (jam >= 15 && jam < 18) return "sore";
+    return "malam";
+  }
+
   // Dipanggil dari nama.js. ctx berisi:
   // induk, status, buatEl, aturPesan, kirim(aksi), muatStatus(), saatUmpanBerubah(), sesiHabis()
   function pasang(ctx) {
@@ -73,6 +97,41 @@
     const tombol = ctx.buatEl("button", "tombol tombol-lempar", "Lempar Kail");
     tombol.type = "button";
 
+    let wadahAktif = null; // VIS.02: wadah danau yang sudah terpasang (null sebelum gambar selesai dimuat)
+    let suasanaSekarang = null; // VIS.02: suasana yang sedang terpasang di wadahAktif
+
+    // VIS.02: simpan titik acuan waktu server. Disimpan di status (seperti _akhir_umpan)
+    // supaya kembali dari layar lain tidak kehilangan acuan.
+    function aturAcuanWaktu(jamServer) {
+      const ms = bacaJamServer(jamServer);
+      if (ms === null) return;
+      status._acuan_waktu = { ms: ms, pn: performance.now() };
+    }
+
+    // VIS.02: jam WIB sekarang (0 sampai 23) dari jam server + jam internal browser. null bila belum ada acuan.
+    function jamWibSekarang() {
+      const a = status._acuan_waktu;
+      if (!a || typeof a.ms !== "number" || typeof a.pn !== "number") {
+        return null;
+      }
+      const msServer = a.ms + (performance.now() - a.pn);
+      return new Date(msServer + GESER_WIB_MS).getUTCHours();
+    }
+
+    // VIS.02: pasang kelas suasana di wadah danau bila suasana berganti. Hanya tampilan.
+    function terapkanSuasana() {
+      if (!wadahAktif) return;
+      const jam = jamWibSekarang();
+      if (jam === null) return;
+      const baru = suasanaDariJam(jam);
+      if (baru === suasanaSekarang) return;
+      KELAS_SUASANA.forEach(function (k) {
+        wadahAktif.classList.remove(k);
+      });
+      if (baru !== "siang") wadahAktif.classList.add(baru);
+      suasanaSekarang = baru;
+    }
+
     // VIS.01: pemandangan danau di bagian paling atas. Dilewati bila lokasi-danau.js tidak termuat.
     // Tempat sementara (kelas "danau") menjaga tinggi layar sampai gambar selesai dimuat.
     const modulDanau = window.LokasiDanau;
@@ -83,6 +142,10 @@
         // Bila layar sudah berganti sebelum gambar selesai, tidak perlu dipasang.
         if (tempatDanau.parentNode === bagian) {
           bagian.replaceChild(wadahDanau, tempatDanau);
+          // VIS.02: wadah baru belum punya kelas suasana, pasang sesuai jam server.
+          wadahAktif = wadahDanau;
+          suasanaSekarang = null;
+          terapkanSuasana();
         }
       });
     }
@@ -152,6 +215,8 @@
         if (typeof res.status.umpan_maks === "number") {
           status.umpan_maks = res.status.umpan_maks;
         }
+        // VIS.02: jam server terbaru ikut menyegarkan titik acuan waktu.
+        aturAcuanWaktu(res.status.jam_server);
         aturAkhir(res.status.detik_ke_umpan_berikutnya);
         ctx.saatUmpanBerubah();
         if (Number(status.umpan) <= 0 && akhir === null) {
@@ -232,6 +297,8 @@
         const h = res.hasil;
         if (typeof h.umpan === "number") status.umpan = h.umpan;
         if (typeof h.umpan_maks === "number") status.umpan_maks = h.umpan_maks;
+        // VIS.02: jam server dari hasil lempar ikut menyegarkan titik acuan waktu.
+        aturAcuanWaktu(h.jam_server);
         aturAkhir(h.detik_ke_umpan_berikutnya);
         ctx.saatUmpanBerubah();
       }
@@ -264,6 +331,11 @@
     } else {
       aturAkhir(status.detik_ke_umpan_berikutnya);
     }
+    // VIS.02: titik acuan waktu dari jam_server di status, hanya bila belum ada
+    // (kembali dari layar lain memakai acuan yang sudah tersimpan).
+    if (!status._acuan_waktu) {
+      aturAcuanWaktu(status.jam_server);
+    }
     perbaruiTampilan();
 
     // Pewaktu berhenti sendiri bila layar sudah berganti.
@@ -273,6 +345,8 @@
         return;
       }
       perbaruiTampilan();
+      // VIS.02: cek suasana tiap detik dari waktu yang dihitung lokal (tanpa panggilan server).
+      terapkanSuasana();
       if (
         akhir !== null &&
         !sibuk &&

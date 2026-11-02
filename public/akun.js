@@ -3,6 +3,7 @@
 // Memakai Supabase Auth dengan kunci publik dari config.js.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 // AKN.05: setelah masuk, layar Pilih nama / layar utama diambil alih nama.js bila termuat.
+// AKN.06e: tautan "Lupa password?" di layar Masuk berisi petunjuk menghubungi tim.
 (function () {
   "use strict";
 
@@ -264,6 +265,46 @@
     });
 
     kartu.appendChild(form);
+
+    // AKN.06e: tautan "Lupa password?" hanya di tab Masuk.
+    if (mode === "masuk") {
+      const lupa = buatEl("button", "tautan", "Lupa password?");
+      lupa.type = "button";
+      lupa.addEventListener("click", function () {
+        tampilLupa();
+      });
+      kartu.appendChild(lupa);
+    }
+
+    wadah.appendChild(kartu);
+  }
+
+  // AKN.06e: petunjuk bagi pemain yang lupa password. Tanpa nomor atau email
+  // di repo (aturan keamanan 7) dan tanpa menyebut daftar ulang (keputusan 2 Nov 2026).
+  function tampilLupa() {
+    kosongkan();
+    const kartu = buatEl("div", "kartu");
+    kartu.appendChild(buatEl("h2", "judul", "Lupa password?"));
+    kartu.appendChild(
+      buatEl(
+        "p",
+        "petunjuk",
+        "Hubungi tim lewat kontak yang dibagikan di luar aplikasi. Tim akan mengirim email berisi link untuk membuat password baru.",
+      ),
+    );
+    kartu.appendChild(
+      buatEl(
+        "p",
+        "petunjuk",
+        "Kalau emailnya belum masuk, cek juga folder Spam. Link hanya bisa dipakai sekali.",
+      ),
+    );
+    const kembali = buatEl("button", "tombol sekunder", "Kembali ke Masuk");
+    kembali.type = "button";
+    kembali.addEventListener("click", function () {
+      tampilForm("masuk");
+    });
+    kartu.appendChild(kembali);
     wadah.appendChild(kartu);
   }
 

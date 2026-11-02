@@ -181,3 +181,25 @@
 .statistik .petunjuk {
     font-size: 1rem;
 }
+
+/* ===== Tautan "Lupa password?" di layar Masuk (AKN.06e) ===== */
+
+/* Tombol yang tampil seperti tautan, di bawah tombol Masuk. */
+.tautan {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 4px;
+    border: none;
+    background: none;
+    color: var(--warna-utama-gelap);
+    font: inherit;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.tautan:focus-visible {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 2px;
+}

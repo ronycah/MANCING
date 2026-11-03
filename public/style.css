@@ -1202,3 +1202,464 @@ button.kotak-ikan:focus-visible {
         animation: none;
     }
 }
+
+/* ===== SUNGAI (VIS.07) ===== */
+/* Pemandangan sungai dari img/sungai.svg yang ditempelkan oleh lokasi-sungai.js. */
+/* Ditambah di paling bawah, aturan lama tidak dihapus. Strukturnya mengikuti blok DANAU:
+   warna diatur lewat variabel di wadah .sungai (sekarang hanya suasana siang). */
+/* Pelampung (kelas lempar dan gigit) sudah disiapkan memakai keyframes milik danau,
+   supaya VIS.09 cukup mengganti wadah yang dipasang. */
+
+.sungai {
+    /* Suasana siang (bawaan). */
+    --sungai-langit: #87ceeb;
+    --sungai-matahari: #ffde59;
+    --sungai-awan: #ffffff;
+    --sungai-awan-opasitas: 0.95;
+    --sungai-bukit-jauh: #6bbf8a;
+    --sungai-bukit-dekat: #4da86a;
+    --sungai-tepi-jauh: #5cb85c;
+    --sungai-tepi-dekat: #3e9b4a;
+    --sungai-pohon: #2e7d32;
+    --sungai-air: #4aa3d8;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--sungai-langit);
+}
+
+.sungai svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sungai-langit {
+    fill: var(--sungai-langit);
+    transition: fill 1.5s ease;
+}
+
+.sungai-matahari {
+    fill: var(--sungai-matahari);
+    transition: fill 1.5s ease;
+}
+
+.sungai-awan {
+    fill: var(--sungai-awan);
+    opacity: var(--sungai-awan-opasitas);
+    transition:
+        fill 1.5s ease,
+        opacity 1.5s ease;
+}
+
+.sungai-bukit-jauh {
+    fill: var(--sungai-bukit-jauh);
+    transition: fill 1.5s ease;
+}
+
+.sungai-bukit-dekat {
+    fill: var(--sungai-bukit-dekat);
+    transition: fill 1.5s ease;
+}
+
+.sungai-tepi-jauh {
+    fill: var(--sungai-tepi-jauh);
+    transition: fill 1.5s ease;
+}
+
+.sungai-tepi-dekat {
+    fill: var(--sungai-tepi-dekat);
+    transition: fill 1.5s ease;
+}
+
+.sungai-pohon {
+    fill: var(--sungai-pohon);
+    transition: fill 1.5s ease;
+}
+
+.sungai-air {
+    fill: var(--sungai-air);
+    transition: fill 1.5s ease;
+}
+
+.sungai-batang {
+    fill: #7a4b24;
+}
+
+.sungai-batu {
+    fill: #8c97a3;
+}
+
+.sungai-batu-terang {
+    fill: #b4bec8;
+}
+
+.sungai-riak {
+    stroke: #8fd0f2;
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0.75;
+}
+
+.sungai-rumput {
+    fill: none;
+    stroke: #2f7d3a;
+    stroke-width: 4;
+    stroke-linecap: round;
+}
+
+.sungai-kayu {
+    fill: #a06535;
+}
+
+.sungai-kayu-gelap {
+    fill: #794821;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sungai-langit,
+    .sungai-matahari,
+    .sungai-awan,
+    .sungai-bukit-jauh,
+    .sungai-bukit-dekat,
+    .sungai-tepi-jauh,
+    .sungai-tepi-dekat,
+    .sungai-pohon,
+    .sungai-air {
+        transition: none;
+    }
+}
+
+/* --- Pelampung sungai (sama dengan pelampung danau, VIS.03) --- */
+
+.sungai-pelampung {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.sungai.lempar .sungai-pelampung {
+    opacity: 1;
+}
+
+.sungai-pelampung-merah {
+    fill: #e63946;
+}
+
+.sungai-pelampung-putih {
+    fill: #ffffff;
+}
+
+.sungai-pelampung-antena {
+    fill: #ffd166;
+}
+
+.sungai-pelampung-riak {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.sungai.lempar .sungai-pelampung-jatuh {
+    animation: pelampung-jatuh 0.7s cubic-bezier(0.3, 0, 0.7, 1) both;
+}
+
+.sungai.lempar .sungai-pelampung-badan {
+    animation: pelampung-apung 1.6s ease-in-out 0.7s infinite;
+}
+
+.sungai.lempar .sungai-pelampung-riak {
+    animation: pelampung-riak 1.4s ease-out 0.65s infinite;
+}
+
+/* Gigitan: aturan ini sengaja di bawah aturan apung. */
+.sungai.gigit .sungai-pelampung-badan {
+    animation: pelampung-gigit 0.45s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sungai-pelampung {
+        transition: none;
+    }
+
+    .sungai.lempar .sungai-pelampung-jatuh,
+    .sungai.lempar .sungai-pelampung-badan,
+    .sungai.lempar .sungai-pelampung-riak,
+    .sungai.gigit .sungai-pelampung-badan {
+        animation: none;
+    }
+}
+
+/* ===== LAUT (VIS.08) ===== */
+/* Pemandangan laut dari img/laut.svg yang ditempelkan oleh lokasi-laut.js. */
+/* Ditambah di paling bawah, aturan lama tidak dihapus. Strukturnya mengikuti blok DANAU dan SUNGAI:
+   warna diatur lewat variabel di wadah .laut (sekarang hanya suasana siang). */
+/* Pelampung (kelas lempar dan gigit) memakai keyframes milik danau, supaya VIS.09 cukup mengganti wadah. */
+
+.laut {
+    /* Suasana siang (bawaan). */
+    --laut-langit: #7fd1f0;
+    --laut-matahari: #ffde59;
+    --laut-awan: #ffffff;
+    --laut-awan-opasitas: 0.95;
+    --laut-pulau: #5aa57a;
+    --laut-air: #1f78c1;
+    --laut-air-jauh: #4ab3e8;
+    --laut-pasir: #f2d79a;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--laut-langit);
+}
+
+.laut svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.laut-langit {
+    fill: var(--laut-langit);
+    transition: fill 1.5s ease;
+}
+
+.laut-matahari {
+    fill: var(--laut-matahari);
+    transition: fill 1.5s ease;
+}
+
+.laut-awan {
+    fill: var(--laut-awan);
+    opacity: var(--laut-awan-opasitas);
+    transition:
+        fill 1.5s ease,
+        opacity 1.5s ease;
+}
+
+.laut-pulau {
+    fill: var(--laut-pulau);
+    transition: fill 1.5s ease;
+}
+
+.laut-air {
+    fill: var(--laut-air);
+    transition: fill 1.5s ease;
+}
+
+.laut-air-jauh {
+    fill: var(--laut-air-jauh);
+    transition: fill 1.5s ease;
+}
+
+.laut-pasir {
+    fill: var(--laut-pasir);
+    transition: fill 1.5s ease;
+}
+
+.laut-camar {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.laut-layar {
+    fill: #ffffff;
+}
+
+.laut-lambung {
+    fill: #b5532f;
+}
+
+.laut-ombak {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0.55;
+}
+
+.laut-buih {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 5;
+    stroke-linecap: round;
+    opacity: 0.85;
+}
+
+.laut-batu {
+    fill: #8c97a3;
+}
+
+.laut-kayu {
+    fill: #a06535;
+}
+
+.laut-kayu-gelap {
+    fill: #794821;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .laut-langit,
+    .laut-matahari,
+    .laut-awan,
+    .laut-pulau,
+    .laut-air,
+    .laut-air-jauh,
+    .laut-pasir {
+        transition: none;
+    }
+}
+
+/* --- Pelampung laut (sama dengan pelampung danau, VIS.03) --- */
+
+.laut-pelampung {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.laut.lempar .laut-pelampung {
+    opacity: 1;
+}
+
+.laut-pelampung-merah {
+    fill: #e63946;
+}
+
+.laut-pelampung-putih {
+    fill: #ffffff;
+}
+
+.laut-pelampung-antena {
+    fill: #ffd166;
+}
+
+.laut-pelampung-riak {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.laut.lempar .laut-pelampung-jatuh {
+    animation: pelampung-jatuh 0.7s cubic-bezier(0.3, 0, 0.7, 1) both;
+}
+
+.laut.lempar .laut-pelampung-badan {
+    animation: pelampung-apung 1.6s ease-in-out 0.7s infinite;
+}
+
+.laut.lempar .laut-pelampung-riak {
+    animation: pelampung-riak 1.4s ease-out 0.65s infinite;
+}
+
+/* Gigitan: aturan ini sengaja di bawah aturan apung. */
+.laut.gigit .laut-pelampung-badan {
+    animation: pelampung-gigit 0.45s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .laut-pelampung {
+        transition: none;
+    }
+
+    .laut.lempar .laut-pelampung-jatuh,
+    .laut.lempar .laut-pelampung-badan,
+    .laut.lempar .laut-pelampung-riak,
+    .laut.gigit .laut-pelampung-badan {
+        animation: none;
+    }
+}
+
+/* ===== Suasana pagi, sore, malam untuk SUNGAI dan LAUT (VIS.07 dan VIS.08, lanjutan) ===== */
+/* Hanya tampilan. Kelas pagi, sore, malam dipasang ke wadah oleh mancing.js dari jam server,
+   sama seperti di danau (VIS.02). Siang = bawaan di blok SUNGAI dan LAUT di atas.
+   Palet pilihan penulis, mengikuti nuansa danau; boleh diubah tim. */
+
+/* --- Sungai --- */
+
+.sungai.pagi {
+    --sungai-langit: #9fd8f0;
+    --sungai-matahari: #ffe9a8;
+    --sungai-awan: #fff7e6;
+    --sungai-awan-opasitas: 0.9;
+    --sungai-bukit-jauh: #7cc59a;
+    --sungai-bukit-dekat: #62b57c;
+    --sungai-tepi-jauh: #6fc46f;
+    --sungai-tepi-dekat: #53ad5c;
+    --sungai-pohon: #3f8f45;
+    --sungai-air: #6fb9e0;
+}
+
+.sungai.sore {
+    --sungai-langit: #ff7e5f;
+    --sungai-matahari: #feb47b;
+    --sungai-awan: #ffd3b6;
+    --sungai-awan-opasitas: 0.8;
+    --sungai-bukit-jauh: #724c66;
+    --sungai-bukit-dekat: #52374e;
+    --sungai-tepi-jauh: #7a8a4a;
+    --sungai-tepi-dekat: #5c6b3a;
+    --sungai-pohon: #3f5a33;
+    --sungai-air: #5a5478;
+}
+
+.sungai.malam {
+    --sungai-langit: #0f172a;
+    --sungai-matahari: #f1f5f9;
+    --sungai-awan: #334155;
+    --sungai-awan-opasitas: 0.5;
+    --sungai-bukit-jauh: #1e293b;
+    --sungai-bukit-dekat: #16213a;
+    --sungai-tepi-jauh: #1f3a2e;
+    --sungai-tepi-dekat: #16302a;
+    --sungai-pohon: #14291f;
+    --sungai-air: #1e293b;
+}
+
+/* --- Laut --- */
+
+.laut.pagi {
+    --laut-langit: #a6dcf2;
+    --laut-matahari: #ffe9a8;
+    --laut-awan: #fff7e6;
+    --laut-awan-opasitas: 0.9;
+    --laut-pulau: #78b992;
+    --laut-air: #4a97d0;
+    --laut-air-jauh: #7ccaf0;
+    --laut-pasir: #f6e2b0;
+}
+
+.laut.sore {
+    --laut-langit: #ff7e5f;
+    --laut-matahari: #feb47b;
+    --laut-awan: #ffd3b6;
+    --laut-awan-opasitas: 0.8;
+    --laut-pulau: #724c66;
+    --laut-air: #4a4568;
+    --laut-air-jauh: #e8826f;
+    --laut-pasir: #d9a974;
+}
+
+.laut.malam {
+    --laut-langit: #0f172a;
+    --laut-matahari: #f1f5f9;
+    --laut-awan: #334155;
+    --laut-awan-opasitas: 0.5;
+    --laut-pulau: #1e293b;
+    --laut-air: #14223d;
+    --laut-air-jauh: #1e3050;
+    --laut-pasir: #6b6a5a;
+}
+
+/* Camar tidak terbang di malam hari. */
+.laut.malam .laut-camar {
+    opacity: 0;
+}

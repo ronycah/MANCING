@@ -233,3 +233,29 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - VIS.06 (cek visual ringan di beberapa HP, tanpa bukti). Sekalian cek gerak card, reduce-motion, dan dua catatan VIS.05 di atas.
 - VIS.07 (sungai), VIS.08 (laut), VIS.09 (pilih lokasi) sesuai TODO sheet.
 - Blok ini disusun dari sesi dan screenshot, tanpa log tes panjang.
+
+### Handoff #4 | 2026-11-04 | [germano]
+
+**Selesai: VIS.07 (sungai) dan VIS.08 (laut), masing-masing satu suasana statis, lalu suasana pagi, sore, malam untuk keduanya.** Low-Risk, hanya tampilan. Dicek lewat render Chrome (pratinjau gambar), belum dicek langsung di HP.
+
+- Berkas baru (4): `public/img/sungai.svg`, `public/img/laut.svg`, `public/lokasi-sungai.js`, `public/lokasi-laut.js`. Cetakan JS sama dengan `lokasi-danau.js` (`LokasiSungai.buat()` dan `LokasiLaut.buat()`; kelas wadah `sungai` dan `laut`).
+- Berkas berubah (1): `public/style.css`, file utuh, isi lama tidak dihapus (1204 jadi 1665 baris). Blok baru di paling bawah: SUNGAI, pelampung sungai, LAUT, pelampung laut, lalu suasana pagi/sore/malam untuk sungai dan laut. Pelampung memakai keyframes milik danau.
+- `img/sungai.svg`: air diperpanjang ke bawah untuk menutup celah tipis di tepi bawah yang tembus ke warna langit (terlihat di sore dan malam).
+- `sw.js`: yang perlu ditambah ke `BERKAS_DASAR` (dikerjakan tim sendiri, AI memandu; tanpa OK baru): `lokasi-sungai.js`, `lokasi-laut.js`, `img/sungai.svg`, `img/laut.svg`. **Belum dipastikan sudah ditambah**; cek di Cache Storage `santuy-v1`.
+- `index.html` dan `mancing.js` **tidak diubah**. Sungai dan laut belum tampil di game sampai VIS.09.
+
+**Keputusan baru (ketua, 4 Nov 2026):** VIS.06 (cek visual ringan di beberapa HP) **ditunda sampai setelah VIS.09**. Ini menggantikan saran di Handoff #3 yang menaruh VIS.06 sebagai langkah berikutnya, dan menggantikan urutan di bagian 5 (VIS.06 sebelum VIS.07). Yang paling akhir menang. Urutan sekarang: VIS.09, lalu VIS.06. Alasan belum tercatat.
+
+**Pilihan bawaan penulis, belum ditanyakan ke tim:**
+
+- Palet warna sungai dan laut (semua suasana) dan bentuk pemandangannya. Sungai: aliran menyamping, pohon dan batu di tepian, dermaga kecil. Laut: pulau di cakrawala, perahu layar, camar, pantai pasir di dua sudut bawah. Camar hilang saat malam.
+- Dua catatan lama VIS.05 (jarak kosong antara danau dan hitung mundur; pelampung kecil di HP sempit) belum disentuh. Ikut dibahas di VIS.06.
+
+**Belum dikerjakan / saran giliran berikutnya:**
+
+- **VIS.09** (layar pilih lokasi plus tombol Ganti lokasi). Menyentuh `mancing.js` dan `index.html`. Hal yang perlu diketahui:
+  - `mancing.js` sekarang memasang danau saja: memanggil `window.LokasiDanau` dan tempat sementara berkelas `danau`. Kelas `lempar`, `gigit`, serta suasana (`pagi`, `sore`, `malam`) dipasang ke wadah aktif, jadi bekerja juga untuk `sungai` dan `laut` karena CSS-nya sudah disiapkan.
+  - `index.html` perlu tag `<script src="lokasi-sungai.js">` dan `<script src="lokasi-laut.js">` sebelum `mancing.js`.
+  - Pilihan bawaan di blok "Pilihan lokasi di awal mancing" (2 Nov 2026): lokasi hanya diingat selama game terbuka, tanpa perubahan database. Belum ditanyakan ke tim.
+- **VIS.06** setelah VIS.09, sekalian cek tiga lokasi di HP, gerak card, dan reduce-motion.
+- Blok ini disusun dari sesi, bukan dari log tes di HP. Isi persis `mancing.js` yang akan diubah di VIS.09 sebaiknya dibaca dari berkas yang ada, bukan ditebak.

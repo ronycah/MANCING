@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%" id="sungai-svg">
+  <defs>
+    <!-- Warna (siang) ada di public/style.css, blok SUNGAI. -->
+  </defs>
+
+  <!-- ==================== 1. LANGIT (SKY) ==================== -->
+  <rect id="sungai-langit-bg" class="sungai-langit" x="0" y="0" width="800" height="340" />
+
+  <!-- Matahari / Bulan -->
+  <circle id="sungai-matahari-bulat" class="sungai-matahari" cx="650" cy="100" r="45" />
+
+  <!-- ==================== 2. AWAN (CLOUDS) ==================== -->
+  <g id="sungai-awan-grup">
+    <!-- Awan Kiri -->
+    <path id="sungai-awan-1" class="sungai-awan" d="M 90 120
+             a 20 20 0 0 1 30 -10
+             a 30 30 0 0 1 50 0
+             a 20 20 0 0 1 30 10
+             a 15 15 0 0 1 -10 25
+             l -90 0
+             a 15 15 0 0 1 -10 -25 Z" />
+
+    <!-- Awan Tengah -->
+    <path id="sungai-awan-2" class="sungai-awan" d="M 400 70
+             a 15 15 0 0 1 25 -8
+             a 25 25 0 0 1 40 0
+             a 15 15 0 0 1 25 8
+             a 12 12 0 0 1 -8 20
+             l -74 0
+             a 12 12 0 0 1 -8 -20 Z" />
+  </g>
+
+  <!-- ==================== 3. BUKIT JAUH (FAR HILLS) ==================== -->
+  <g id="sungai-bukit-grup">
+    <path id="sungai-bukit-jauh" class="sungai-bukit-jauh" d="M 0 260 Q 150 190 330 245 T 800 215 L 800 310 L 0 310 Z" />
+    <path id="sungai-bukit-dekat" class="sungai-bukit-dekat" d="M 0 285 Q 250 230 500 275 T 800 262 L 800 320 L 0 320 Z" />
+  </g>
+
+  <!-- ==================== 4. TEPI SEBERANG (FAR BANK) ==================== -->
+  <g id="sungai-tepi-jauh-grup">
+    <!-- Rumput tepi seberang -->
+    <path id="sungai-tepi-jauh" class="sungai-tepi-jauh" d="M 0 300 Q 200 282 400 296 T 800 290 L 800 350 Q 600 338 400 346 T 0 350 Z" />
+
+    <!-- Pohon seberang (batang lalu tajuk bulat) -->
+    <rect class="sungai-batang" x="86" y="288" width="9" height="34" rx="2" />
+    <circle class="sungai-pohon" cx="90" cy="274" r="30" />
+    <rect class="sungai-batang" x="151" y="298" width="7" height="26" rx="2" />
+    <circle class="sungai-pohon" cx="154" cy="286" r="22" />
+    <rect class="sungai-batang" x="646" y="284" width="9" height="36" rx="2" />
+    <circle class="sungai-pohon" cx="650" cy="268" r="32" />
+    <rect class="sungai-batang" x="716" y="294" width="7" height="28" rx="2" />
+    <circle class="sungai-pohon" cx="720" cy="282" r="24" />
+
+    <!-- Batu di tepi seberang -->
+    <ellipse class="sungai-batu" cx="300" cy="334" rx="24" ry="12" />
+    <ellipse class="sungai-batu-terang" cx="294" cy="329" rx="11" ry="5" />
+    <ellipse class="sungai-batu" cx="530" cy="338" rx="18" ry="9" />
+  </g>
+
+  <!-- ==================== 5. AIR SUNGAI (RIVER WATER) ==================== -->
+  <g id="sungai-air-grup">
+    <!-- Aliran air memanjang menyamping di antara dua tepi -->
+    <path id="sungai-air-dasar" class="sungai-air" d="M 0 342 Q 200 330 400 340 T 800 336 L 800 570 L 0 570 Z" />
+
+    <!-- Garis arus air (statis) -->
+    <g id="sungai-riak-grup">
+      <line class="sungai-riak" x1="60"  y1="372" x2="170" y2="372" />
+      <line class="sungai-riak" x1="560" y1="366" x2="700" y2="366" />
+      <line class="sungai-riak" x1="230" y1="364" x2="330" y2="364" />
+      <line class="sungai-riak" x1="90"  y1="420" x2="250" y2="420" />
+      <line class="sungai-riak" x1="500" y1="418" x2="640" y2="418" />
+      <line class="sungai-riak" x1="640" y1="452" x2="760" y2="452" />
+      <line class="sungai-riak" x1="40"  y1="468" x2="170" y2="468" />
+      <line class="sungai-riak" x1="260" y1="476" x2="360" y2="476" />
+      <line class="sungai-riak" x1="540" y1="484" x2="650" y2="484" />
+    </g>
+
+    <!-- Batu di tengah arus -->
+    <ellipse class="sungai-batu" cx="190" cy="440" rx="30" ry="14" />
+    <ellipse class="sungai-batu-terang" cx="182" cy="435" rx="14" ry="5" />
+    <ellipse class="sungai-batu" cx="620" cy="436" rx="22" ry="11" />
+    <ellipse class="sungai-batu-terang" cx="614" cy="432" rx="10" ry="4" />
+  </g>
+
+  <!-- ==================== 5b. PELAMPUNG ==================== -->
+  <!-- Tersembunyi sampai wadah sungai mendapat kelas "lempar" (diatur mancing.js, animasi di style.css). -->
+  <g id="sungai-pelampung" class="sungai-pelampung">
+    <!-- Lingkaran riak di permukaan air (tidak ikut turun-naik) -->
+    <ellipse class="sungai-pelampung-riak" cx="400" cy="396" rx="36" ry="9" />
+    <!-- Bagian yang jatuh saat dilempar -->
+    <g class="sungai-pelampung-jatuh">
+      <!-- Bagian yang mengapung dan tersentak saat gigitan -->
+      <g class="sungai-pelampung-badan">
+        <rect class="sungai-pelampung-antena" x="396" y="346" width="8" height="26" rx="3" />
+        <path class="sungai-pelampung-merah" d="M 376 392 a 24 24 0 0 1 48 0 Z" />
+        <path class="sungai-pelampung-putih" d="M 376 392 a 24 24 0 0 0 48 0 Z" />
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== 6. TEPI DEKAT (NEAR BANK) ==================== -->
+  <g id="sungai-tepi-dekat-grup">
+    <path id="sungai-tepi-dekat" class="sungai-tepi-dekat" d="M 0 534 Q 200 498 400 518 T 800 508 L 800 600 L 0 600 Z" />
+
+    <!-- Batu di tepi dekat -->
+    <ellipse class="sungai-batu" cx="710" cy="552" rx="34" ry="16" />
+    <ellipse class="sungai-batu-terang" cx="700" cy="546" rx="15" ry="6" />
+
+    <!-- Alang-alang kiri -->
+    <path class="sungai-rumput" d="M 50 560 Q 46 530 38 510" />
+    <path class="sungai-rumput" d="M 62 560 Q 62 528 66 504" />
+    <path class="sungai-rumput" d="M 74 560 Q 80 532 92 516" />
+
+    <!-- Alang-alang kanan -->
+    <path class="sungai-rumput" d="M 590 556 Q 586 530 578 514" />
+    <path class="sungai-rumput" d="M 602 556 Q 604 526 610 508" />
+    <path class="sungai-rumput" d="M 614 556 Q 620 532 632 518" />
+  </g>
+
+  <!-- ==================== 7. DERMAGA KAYU KECIL (SMALL PIER) ==================== -->
+  <g id="sungai-dermaga">
+    <!-- Perspektif dermaga kayu menjorok ke air (Trapesium) -->
+    <polygon points="290,600 510,600 466,462 334,462" class="sungai-kayu" />
+
+    <!-- Garis papan kayu -->
+    <polygon points="332,478 468,478 466,483 334,483" class="sungai-kayu-gelap" />
+    <polygon points="322,500 478,500 475,506 325,506" class="sungai-kayu-gelap" />
+    <polygon points="312,526 488,526 484,533 316,533" class="sungai-kayu-gelap" />
+    <polygon points="301,556 499,556 494,564 306,564" class="sungai-kayu-gelap" />
+
+    <!-- Sisi samping/pinggiran kayu -->
+    <polygon points="290,600 302,600 342,462 334,462" class="sungai-kayu-gelap" />
+    <polygon points="510,600 498,600 458,462 466,462" class="sungai-kayu-gelap" />
+  </g>
+</svg>

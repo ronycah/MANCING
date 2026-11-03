@@ -189,3 +189,5 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 
 - Aturan dosen (WA, 3 Nov 2026): saat penilaian, tim minimal punya 40 gambar ikan yang mewakili 40 nama ikan, semuanya CC0 supaya tidak ada urusan atribusi. Tim berdelapan boleh menugaskan satu orang khusus mencari gambar. Selama development, berkas gambar lain (misalnya ikan1) boleh dipakai sebagai placeholder untuk ikan yang gambarnya belum ada. Menggantikan pendekatan satu gambar per kelas (VS8 butir b) dan blok 4 WebP tanggal 2 Nov 2026. Yang paling akhir menang.
 - Detail katalog ikan (jumlah, jalur gambar, placeholder, penambahan ikan) ada di `katalog-ikan.md`. Empat WebP yang sudah ada tetap dipakai sebagai gambar cadangan di sana.
+
+- Status pekerjaan gambar ikan dan handoff terbaru ada di `katalog-ikan.md` bagian 10.

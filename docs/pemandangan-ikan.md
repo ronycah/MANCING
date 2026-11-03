@@ -213,3 +213,23 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Ikan habis (x0): yang diredupkan hanya gambar dan teksnya; bingkai dan lencana kelas tetap jelas.
 - Batasan: tidak ada glow tambahan di belakang gambar, supaya tidak dobel dengan glow bawaan WebP. "Panggung" hanya berupa warna latar lembut.
 - Tidak bertentangan dengan blok sebelumnya (lencana kelas mengikuti yang sudah ada di popup). Alasan lain belum tercatat.
+
+### Handoff #3 | 2026-11-03 | [aik]
+
+**Selesai: VIS.05b (card "Dapat ikan!" dan kotak album lebih "wow", arahan dosen 3 Nov 2026).** Low-Risk. Sudah dicek lewat screenshot versi online dengan akun dummy; hasil sesuai arahan.
+
+- Berkas berubah (1): `public/style.css`, file utuh, blok baru "VIS.05b" ditambah di paling bawah (1054 jadi 1204 baris). Isi lama tidak dihapus. `tas.js`, `mancing.js`, dan `sw.js` tidak berubah; tidak ada berkas baru, jadi tidak ada yang perlu didaftarkan di `BERKAS_DASAR`.
+- Hasil: card punya gradasi, bayangan menyala sesuai kelas, panggung warna lembut, lencana kelas, dan gerak muncul (mati bila reduce-motion). Kotak album punya bingkai lebih tebal, bayangan, panggung, dan lencana. Ikan x0: hanya gambar dan teks nama/jumlah yang pudar, bingkai dan lencana tetap jelas. Kotak "???" tidak diubah. Tanpa glow tambahan di belakang gambar.
+- Gerak muncul card hanya dicek lewat screenshot diam; gerakannya dan reduce-motion belum dicek langsung di HP.
+
+**Catatan:**
+
+- Bercak abu-abu gelap di belakang ikan Common (misal Nyala Api, Si Gelembung) berasal dari glow bawaan WebP, bukan dari panggung. Dibiarkan sesuai aturan "tanpa glow tambahan". Bila dosen minta Common lebih hidup, cukup geser warna Common di blok VIS.05b.
+- ID di sheet ditulis `VIS.05b` (huruf kecil).
+- VIS.05 tercatat Selesai di sheet (3 Nov 2026). Dua catatan lama untuknya (jarak kosong antara danau dan hitung mundur di Handoff #1; pelampung kecil di HP sempit di Handoff #2) belum dipastikan sudah dicek atau sengaja dibiarkan. Diputuskan dibahas saat VIS.06.
+
+**Belum dikerjakan / saran giliran berikutnya:**
+
+- VIS.06 (cek visual ringan di beberapa HP, tanpa bukti). Sekalian cek gerak card, reduce-motion, dan dua catatan VIS.05 di atas.
+- VIS.07 (sungai), VIS.08 (laut), VIS.09 (pilih lokasi) sesuai TODO sheet.
+- Blok ini disusun dari sesi dan screenshot, tanpa log tes panjang.

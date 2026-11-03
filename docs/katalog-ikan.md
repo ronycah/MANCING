@@ -136,3 +136,52 @@ Bukti (KAT.05): jumlah ikan aktif per kelas sesuai KT1, semua `kode_gambar` berb
 ## 10. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### Handoff #1 | 2026-11-03 | [nama PIC]
+
+- **Tugas selesai:** sesi strategi katalog ikan (tanpa perubahan data). Satu bagian kode dikirim dan belum dicek, lihat "Belum beres".
+- **Berkas yang dibuat atau diubah:**
+  - `docs/katalog-ikan.md` (baru): rujukan tunggal untuk jumlah ikan, gambar CC0, dan penambahan katalog.
+  - `public/tas.js`, `public/mancing.js`, `public/style.css`: versi gambar per kelas (VIS.04) dikirim, empat gambar WebP pengganti emoji. `public/sw.js`: empat berkas gambar kelas ditambahkan oleh tim.
+  - `docs/pemandangan-ikan.md`: blok "Satu nama ikan, satu gambar" ditambahkan dan butir jumlah ikan dipindah ke dokumen ini.
+- **Keputusan baru:**
+  - Aturan dosen (WA, 3 Nov 2026): saat penilaian minimal 40 gambar ikan untuk 40 nama ikan, semuanya CC0. Selama development, gambar placeholder boleh dipakai. Menggantikan pendekatan satu gambar per kelas.
+  - Keputusan ketua (3 Nov 2026): katalog 40 ikan, sebaran Common 16, Rare 12, Epic 8, Legendary 4. Menggantikan "16 ikan" di `mancing.md` dan `tas-jual.md`.
+  - Pilihan bawaan penulis, belum ditanyakan ke tim: jalur gambar `public/img/ikan/`, empat gambar kelas lama tetap jadi cadangan, ukuran sekitar 40 KB per berkas. Alasan lain belum tercatat.
+- **Pertentangan dengan isi lama:** blok 4 WebP (2 Nov 2026) di `pemandangan-ikan.md` menyebut satu gambar per kelas; sekarang satu gambar per ikan. Yang paling akhir menang. Kode yang terpasang sekarang masih versi per kelas dan berfungsi sebagai cadangan, bukan hasil akhir.
+- **Strategi menuju hasil akhir (urutan KAT.01 sampai KAT.06):**
+  1. Tim memutuskan 24 nama ikan baru dan mulai mencari 40 gambar CC0 (satu anggota ditugaskan). Dikerjakan paralel.
+  2. Kode game diubah supaya gambar diambil dari data ikan, dengan cadangan gambar kelas lalu emoji. Bisa dikerjakan sebelum gambar lengkap karena tampilan tetap normal. Berkas yang disentuh: `tas.js`, `mancing.js`, `style.css`.
+  3. Satu SQL utuh untuk isi jalur gambar 16 ikan yang ada dan tambah 24 ikan baru. Tanpa perubahan struktur tabel dan tanpa deploy. Butuh penjelasan dampak dan "OK" ketua.
+  4. Berkas gambar didaftarkan bertahap di `sw.js` (dikerjakan tim, AI memandu).
+- **Bukti:** query isi tabel ikan (3 Nov 2026) menunjukkan 16 ikan, semuanya aktif, kolom gambar masih berupa kunci pendek, belum jalur. Hasil cek visual gambar per kelas belum dikonfirmasi.
+- **Belum beres:**
+  1. Cek visual gambar per kelas (kartu hasil, album, popup, cache offline) belum dilaporkan. Setelah lolos, centang VIS.04 di sheet.
+  2. Sheet baris KAT.01 sampai KAT.06: urutan harus sama dengan `katalog-ikan.md` bagian 6 (KAT.04 kode game, KAT.05 SQL).
+  3. Strategi ini akan dibahas dulu di rapat tim; keputusan rapat belum tercatat.
+  4. 24 nama ikan baru, pencari gambar, dan batas waktu belum ditentukan.
+- **Saran giliran berikutnya:** (1) catat hasil rapat sebagai blok baru. (2) Kerjakan KAT.04 dengan melampirkan `AGENTS.md`, `katalog-ikan.md`, `tas.js`, `mancing.js`, `style.css`, dan `sw.js` dari repo. (3) Setelah nama final, susun SQL (KAT.05) dengan melampirkan hasil query isi tabel ikan terbaru dan berkas SQL katalog lama. (4) Jangan menjalankan undian lemparan berulang di production.
+
+### Handoff #2 | 2026-11-03 | [RAC]
+
+- **Tugas selesai:** KAT.05, SQL katalog 40 ikan, dijalankan di SQL Editor Supabase setelah "OK" ketua (3 Nov 2026). Isinya: `kode_gambar` 16 ikan lama diganti dari kunci pendek menjadi jalur lengkap, dan 24 ikan baru ditambahkan (12 Common, 8 Rare, 4 Epic). Tanpa perubahan struktur tabel, hak akses, pengaturan, maupun fungsi.
+- **Asal pekerjaan:** SQL disusun oleh PIC sebelumnya di sesi lain. Sesi itu berhenti sebelum SQL dijalankan dan handoff-nya belum sempat dibuat, jadi pekerjaan diteruskan oleh PIC ini. Isi SQL dicocokkan dulu dengan bagian 3 dokumen ini dan dengan 40 berkas gambar di `public/img/ikan/` sebelum dijalankan.
+- **Berkas yang dibuat atau diubah:**
+  - `supabase/migrations/2026-11-03_katalog-ikan-40.sql` (baru): salinan SQL katalog beserta query cek dan skrip pemulihan.
+  - Data tabel `ikan` di Supabase: 40 baris, semuanya aktif.
+- **Keputusan baru:**
+  - Nama dan kelas 24 ikan baru kini final (tercantum di berkas SQL di atas). Menjawab butir "belum diputuskan" di bagian 9. Alasan pemilihan nama belum tercatat.
+  - "OK" ketua untuk menjalankan SQL diterima lewat WhatsApp, 3 Nov 2026.
+- **Pertentangan dengan isi lama:** bagian 3 menyebut katalog sekarang 16 ikan, `kode_gambar` masih kunci pendek, dan nama 24 ikan baru belum diputuskan. Sejak SQL ini dijalankan, keadaannya 40 ikan dengan jalur lengkap. Yang paling akhir menang.
+- **Bukti (hasil query baca-saja, 3 Nov 2026):**
+  1. Sebaran ikan aktif: Common 16, Epic 8, Legendary 4, Rare 12 (total 40).
+  2. Seluruh katalog: 40 baris, id 1 sampai 40, semua aktif, semua `kode_gambar` berbentuk `img/ikan/nama.webp`.
+  3. Jalur yang salah: 0 baris. Nama kembar: 0 baris.
+  4. Hak tabel `ikan`: `anon` dan `authenticated` semuanya false; `service_role` hanya select.
+     Tidak ada undian lemparan yang dijalankan di production.
+- **Belum beres:**
+  1. Cek visual di game (album 40 kotak, gambar per ikan tampil, popup, cache offline) belum dilakukan. Cukup visual sanity check dengan akun dummy.
+  2. Pastikan berkas SQL di `supabase/migrations/` sudah di-commit dan di-push.
+  3. Sheet: centang KAT.05 (tanggal 3 Nov 2026).
+  4. Cek visual gambar per kelas dari Handoff #1 (VIS.04) belum tercatat hasilnya.
+- **Saran giliran berikutnya:** (1) lakukan cek visual di game; bila ada gambar tidak muncul, periksa nama berkas dan `sw.js` (KAT.06). (2) Bila lolos, kerjakan siluet album untuk ikan yang belum didapat (VIS.05). (3) Jangan menjalankan undian lemparan berulang di production.

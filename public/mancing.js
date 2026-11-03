@@ -14,6 +14,8 @@
 // Murni tampilan: hasil sudah ditentukan server (aksi "lempar"), animasi tidak mempengaruhinya.
 // VIS.04: emoji ikan di kartu hasil diganti gambar WebP per kelas. Emoji tetap jadi cadangan
 // bila gambar gagal dimuat. Hanya tampilan.
+// KAT.04: tiap ikan memakai gambarnya sendiri dari kode_gambar yang dikirim server (jalur img/ikan/...);
+// bila tidak ada atau gagal dimuat, dipakai gambar kelas, lalu emoji.
 (function () {
   "use strict";
 
@@ -38,9 +40,9 @@
     legendary: "Legendary",
   };
 
-  // VIS.04: gambar ikan berupa 4 berkas WebP, satu per kelas (lihat pemandangan-ikan.md, bagian 9).
-  // Hanya tampilan; kelas tetap berasal dari server. Bila kelas tidak dikenal atau gambar gagal
-  // dimuat, emoji sementara tampil sebagai cadangan.
+  // VIS.04 dan KAT.04: gambar ikan. Tiap ikan punya gambar sendiri (kolom kode_gambar di tabel ikan,
+  // berisi jalur seperti "img/ikan/sisik-pasir.webp"). Urutan tampil: (1) gambar ikan itu sendiri,
+  // (2) gambar per kelas (4 berkas cadangan), (3) emoji. Hanya tampilan; kelas tetap dari server.
   const GAMBAR_KELAS = {
     common: "img/sisikpasir.webp",
     rare: "img/birumungil.webp",
@@ -48,10 +50,21 @@
     legendary: "img/golddragon.webp",
   };
 
-  // Isi wadah dengan gambar ikan sesuai kelas (kunci huruf kecil, misal "rare").
-  function isiGambarIkan(wadah, kunci) {
-    const berkas = GAMBAR_KELAS[kunci];
-    if (!berkas) {
+  // Jalur dari server diterima hanya bila bentuknya wajar (img/ikan/nama-huruf-kecil.webp).
+  // Selain itu (misal kunci pendek lama seperti "sisik-pasir") diabaikan dan gambar kelas dipakai.
+  function jalurGambar(kode) {
+    if (typeof kode !== "string") return null;
+    return /^img\/ikan\/[a-z0-9-]+\.webp$/.test(kode) ? kode : null;
+  }
+
+  // Isi wadah dengan gambar ikan. kunci = kelas huruf kecil (misal "rare"), kode = kode_gambar dari server,
+  // tunda = true untuk memuat gambar belakangan (dipakai di album yang panjang).
+  function isiGambarIkan(wadah, kunci, kode, tunda) {
+    const daftar = [];
+    const jalur = jalurGambar(kode);
+    if (jalur) daftar.push(jalur);
+    if (GAMBAR_KELAS[kunci]) daftar.push(GAMBAR_KELAS[kunci]);
+    if (daftar.length === 0) {
       wadah.textContent = "🐟";
       return;
     }
@@ -59,11 +72,19 @@
     const gambar = document.createElement("img");
     gambar.alt = "";
     gambar.decoding = "async";
+    if (tunda) gambar.loading = "lazy";
+    let urutan = 0;
+    // Gagal dimuat: coba gambar berikutnya; bila habis, kembali ke emoji.
     gambar.addEventListener("error", function () {
-      wadah.classList.remove("ada-gambar");
-      wadah.textContent = "🐟";
+      urutan += 1;
+      if (urutan < daftar.length) {
+        gambar.src = daftar[urutan];
+      } else {
+        wadah.classList.remove("ada-gambar");
+        wadah.textContent = "🐟";
+      }
     });
-    gambar.src = berkas;
+    gambar.src = daftar[0];
     wadah.appendChild(gambar);
   }
 
@@ -296,7 +317,7 @@
       kartuIkan.appendChild(ctx.buatEl("p", "judul-hasil", PESAN.dapatIkan));
       // VIS.04: gambar WebP sesuai kelas (emoji sebagai cadangan).
       const gambarHasil = ctx.buatEl("div", "gambar-ikan", "");
-      isiGambarIkan(gambarHasil, dikenal ? k : "");
+      isiGambarIkan(gambarHasil, dikenal ? k : "", ikan.kode_gambar); // KAT.04
       kartuIkan.appendChild(gambarHasil);
       kartuIkan.appendChild(
         ctx.buatEl("p", "nama-ikan", String(ikan.nama || "")),

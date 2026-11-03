@@ -1040,3 +1040,15 @@ button.kotak-ikan:focus-visible {
     padding: 8px;
     box-sizing: border-box;
 }
+
+/* ===== Penyesuaian ukuran gambar ikan per ikan (KAT.04) ===== */
+/* Gambar ikan kini berbeda-beda rasio (dari sangat lebar sampai tinggi). Kotak dibuat sedikit lebih tinggi
+   supaya gambar tidak terlalu kecil. Aturan ini menimpa nilai di bagian "Gambar ikan WebP (VIS.04)". */
+
+.gambar-ikan.ada-gambar {
+    height: 120px;
+}
+
+.gambar-kotak.ada-gambar {
+    height: 84px;
+}

@@ -185,3 +185,15 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
   3. Sheet: centang KAT.05 (tanggal 3 Nov 2026).
   4. Cek visual gambar per kelas dari Handoff #1 (VIS.04) belum tercatat hasilnya.
 - **Saran giliran berikutnya:** (1) lakukan cek visual di game; bila ada gambar tidak muncul, periksa nama berkas dan `sw.js` (KAT.06). (2) Bila lolos, kerjakan siluet album untuk ikan yang belum didapat (VIS.05). (3) Jangan menjalankan undian lemparan berulang di production.
+
+### 2026-11-03: Susulan Handoff #2 (KAT.04 dan KAT.05 tayang, cek visual) | [RAC]
+
+Memperbarui butir "Belum beres" di Handoff #2; yang paling akhir menang.
+
+- **KAT.04 baru tayang malam ini.** Kode game versi KAT.04 (`public/tas.js`, `public/mancing.js`, `public/style.css`) ternyata belum ter-push saat SQL dijalankan, sehingga game masih menampilkan gambar kelas. Setelah commit `566ac01` (bersama berkas SQL di `supabase/migrations/`) di-push dan terbit, tiap ikan tampil dengan gambarnya sendiri. Tidak ada perubahan di SQL maupun Edge Function; server sudah mengirim `kode_gambar` sejak TAS.02.
+- **Cek visual (akun dummy) lolos:** album menampilkan 40 kotak (ikan yang belum didapat tampil "???" sesuai warna kelas), gambar per ikan tampil di album dan di kartu "Dapat ikan!". Satu lemparan menghasilkan ikan baru (Kilat Samudra, Rare), tersimpan di album dengan jumlah x1.
+- **Pelajaran:** SQL katalog dijalankan sebelum kode game terbit, jadi sempat ada selisih antara data dan tampilan. Urutan aman: push kode lebih dulu (cadangan gambar kelas membuat tampilan tetap normal), baru jalankan SQL. Alasan lain belum tercatat.
+- **Belum beres (menggantikan daftar di Handoff #2):**
+  1. Popup detail ikan belum dicek visual. Tes offline (cache gambar di `sw.js`, KAT.06) belum dicek.
+  2. Gambar Pari Kristal dan Perak Bulan kemungkinan tertukar (Pari Kristal tampil sebagai ikan biasa, Perak Bulan sebagai pari). Bila tim setuju, cukup tukar nama dua berkas `.webp` lalu push; tanpa SQL.
+  3. Sheet: centang KAT.05 (3 Nov 2026).

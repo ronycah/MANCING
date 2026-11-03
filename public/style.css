@@ -1052,3 +1052,153 @@ button.kotak-ikan:focus-visible {
 .gambar-kotak.ada-gambar {
     height: 84px;
 }
+
+/* ===== Card "Dapat ikan!" dan kotak album lebih menarik (VIS.05b) ===== */
+/* Arahan dosen 3 Nov 2026. Hanya tampilan; ditambah di paling bawah, aturan lama tidak dihapus.
+   --rgb-kelas = warna kelas dalam bentuk angka R, G, B supaya bisa dipakai di rgba() untuk
+   gradasi dan bayangan. Nilainya sama dengan --warna-kelas di atas.
+   "Panggung" di belakang gambar hanya warna latar lembut, TANPA blur atau bayangan, supaya tidak
+   dobel dengan glow bawaan WebP. Kotak "???" (.terkunci) sengaja tidak disentuh. */
+
+.kartu-ikan,
+.kotak-ikan {
+    --rgb-kelas: 108, 142, 164;
+}
+
+.kartu-ikan.kelas-common,
+.kotak-ikan.kelas-common {
+    --rgb-kelas: 108, 142, 164;
+}
+
+.kartu-ikan.kelas-rare,
+.kotak-ikan.kelas-rare {
+    --rgb-kelas: 47, 128, 237;
+}
+
+.kartu-ikan.kelas-epic,
+.kotak-ikan.kelas-epic {
+    --rgb-kelas: 142, 68, 173;
+}
+
+.kartu-ikan.kelas-legendary,
+.kotak-ikan.kelas-legendary {
+    --rgb-kelas: 224, 161, 0;
+}
+
+/* --- Card "Dapat ikan!" --- */
+
+.kartu-ikan {
+    background: linear-gradient(
+        165deg,
+        #ffffff 0%,
+        var(--latar-kelas) 50%,
+        rgba(var(--rgb-kelas), 0.3) 100%
+    );
+    box-shadow:
+        0 8px 22px rgba(var(--rgb-kelas), 0.45),
+        0 0 16px rgba(var(--rgb-kelas), 0.35);
+    animation: kartu-ikan-muncul 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+/* Panggung: warna latar lembut di belakang gambar (hanya bila gambar WebP tampil). */
+.kartu-ikan .gambar-ikan.ada-gambar {
+    box-sizing: border-box;
+    padding: 6px;
+    border-radius: 24px;
+    background: radial-gradient(
+        ellipse at 50% 60%,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(var(--rgb-kelas), 0.28) 100%
+    );
+}
+
+/* Lencana kelas, gayanya sama dengan popup. */
+.kartu-ikan .kelas-ikan {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 3px 14px;
+    border-radius: 999px;
+    background: var(--warna-kelas);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.kartu-ikan.kelas-legendary .kelas-ikan {
+    color: #4a3200;
+}
+
+/* Muncul: membesar sedikit lalu mantap. */
+@keyframes kartu-ikan-muncul {
+    0% {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Kotak album (kotak "???" tidak ikut) --- */
+
+.kotak-ikan:not(.terkunci) {
+    border-width: 5px;
+    background: linear-gradient(
+        165deg,
+        #ffffff 0%,
+        var(--latar-kelas) 60%,
+        rgba(var(--rgb-kelas), 0.25) 100%
+    );
+    box-shadow: 0 6px 14px rgba(var(--rgb-kelas), 0.4);
+}
+
+/* Panggung warna lembut di belakang gambar. */
+.kotak-ikan:not(.terkunci) .gambar-kotak.ada-gambar {
+    box-sizing: border-box;
+    padding: 4px;
+    border-radius: 16px;
+    background: radial-gradient(
+        ellipse at 50% 60%,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(var(--rgb-kelas), 0.28) 100%
+    );
+}
+
+/* Lencana kelas di kotak album. */
+.kotak-ikan:not(.terkunci) .kelas-kotak {
+    padding: 2px 12px;
+    border-radius: 999px;
+    background: var(--warna-kelas);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.kotak-ikan.kelas-legendary:not(.terkunci) .kelas-kotak {
+    color: #4a3200;
+}
+
+/* Ikan habis (x0): hanya gambar dan teks yang diredupkan; bingkai, bayangan, dan lencana tetap jelas. */
+.kotak-ikan.kosong {
+    opacity: 1;
+}
+
+.kotak-ikan.kosong .gambar-kotak,
+.kotak-ikan.kosong .nama-kotak,
+.kotak-ikan.kosong .jumlah-kotak {
+    opacity: 0.45;
+}
+
+/* Bila HP mengaktifkan reduce-motion, gerak card dimatikan. */
+@media (prefers-reduced-motion: reduce) {
+    .kartu-ikan {
+        animation: none;
+    }
+}

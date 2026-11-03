@@ -204,3 +204,12 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Keputusan tim (3 Nov 2026): ikan yang belum didapat tetap tampil sebagai "???" sesuai warna kelas seperti sekarang. Siluet gelap bentuk ikan tidak dikerjakan. Menggantikan butir siluet di VS9, bagian 4 (komponen "Siluet album"), dan langkah VIS.05. Yang paling akhir menang.
 - Alasan (kata user): belum ada perintah dosen untuk mengubahnya. Alasan lain belum tercatat.
 - VIS.05 menyisakan penyesuaian tampilan di HP. Dari handoff sebelumnya, ada dua catatan: jarak kosong antara danau dan hitung mundur di layar utama (Handoff #1), dan pelampung yang kecil di HP sempit (Handoff #2).
+
+### 2026-11-03: Dosen minta card dan album lebih "wow" (dikerjakan sebelum VIS.06)
+
+- Arahan dosen (3 Nov 2026, pagi): tampilan card "Dapat ikan!" dan kotak album dibuat lebih menarik, dikerjakan **sebelum VIS.06**. Butir baru di sheet (usulan ID VIS.05b), Low-Risk, hanya CSS dan tampilan; tidak ada perubahan server, database, atau `sw.js`.
+- Card "Dapat ikan!": latar gradasi lembut dan bayangan menyala sesuai warna kelas; gambar ikan di atas "panggung" cahaya lembut; teks kelas menjadi lencana berwarna seperti di popup; card muncul dengan gerak singkat (membesar sedikit lalu mantap) dan gerak itu ikut mati bila HP mengaktifkan reduce-motion.
+- Kotak album: bingkai lebih tebal dengan bayangan sesuai kelas; panggung cahaya di belakang gambar dan lencana kelas. Kotak "???" dibiarkan seperti sekarang.
+- Ikan habis (x0): yang diredupkan hanya gambar dan teksnya; bingkai dan lencana kelas tetap jelas.
+- Batasan: tidak ada glow tambahan di belakang gambar, supaya tidak dobel dengan glow bawaan WebP. "Panggung" hanya berupa warna latar lembut.
+- Tidak bertentangan dengan blok sebelumnya (lencana kelas mengikuti yang sudah ada di popup). Alasan lain belum tercatat.

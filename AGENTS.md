@@ -175,3 +175,7 @@ Permintaan dosen: lokasi bertambah menjadi danau, sungai, dan laut, murni tampil
 ### 2026-11-03: Menambah berkas ke BERKAS_DASAR di sw.js dikerjakan tim sendiri
 
 Keputusan ketua (3 Nov 2026): untuk menambah nama berkas baru ke daftar `BERKAS_DASAR` di `sw.js`, tim mengerjakan sendiri dan AI hanya memandu (baris yang dicari, baris yang ditambah, cara mengecek), tanpa mengirim ulang berkas utuh. Alasan (kata ketua): lebih efektif daripada mengirim bolak-balik berkas utuh untuk perubahan yang hanya beberapa baris. Menggantikan "kode selalu file utuh" untuk perubahan jenis ini saja. Berlaku hanya untuk menambah nama berkas yang sudah ada di `public/`; menghapus atau mengubah entri lama, mengganti `NAMA_CACHE`, dan perubahan lain di `sw.js` tetap butuh penjelasan dan "OK" ketua. Alasan lain belum tercatat.
+
+### 2026-11-03: Aturan tambahan cara share code
+
+AI share code bukan di jendela chat. Langsung kirim file utuh, dan bisa dilihat di box sebelah kanan (artifak)

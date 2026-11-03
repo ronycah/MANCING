@@ -191,3 +191,16 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
 - Detail katalog ikan (jumlah, jalur gambar, placeholder, penambahan ikan) ada di `katalog-ikan.md`. Empat WebP yang sudah ada tetap dipakai sebagai gambar cadangan di sana.
 
 - Status pekerjaan gambar ikan dan handoff terbaru ada di `katalog-ikan.md` bagian 10.
+
+### 2026-11-03: VIS.04 digantikan KAT.04 (gambar ikan sudah terpasang)
+
+- VIS.04 di bagian 5 ("integrasi script SVG ikan") tidak dikerjakan sebagai butir sendiri. Rencana script SVG sudah gugur sejak blok 2 Nov 2026 (yang diterima WebP jadi), lalu aturan dosen 3 Nov 2026 mengubahnya menjadi satu gambar per ikan. Pemasangan gambar di layar hasil dan album dikerjakan lewat KAT.04 (`tas.js`, `mancing.js`, `style.css`); lihat `katalog-ikan.md` bagian 10. Yang paling akhir menang.
+- Cek visual dengan akun dummy (3 Nov 2026) lolos: album menampilkan 40 kotak, gambar per ikan tampil di album, di kartu "Dapat ikan!", dan di popup detail ikan.
+- Diketahui, sengaja dibiarkan dulu: gambar Pari Kristal dan Perak Bulan kemungkinan tertukar. Menunggu teman tim yang paham detail ikan; perbaikannya cukup tukar nama dua berkas `.webp` lalu push, tanpa SQL.
+- Berikutnya: VIS.05. Album sekarang menampilkan "???" berwarna sesuai kelas untuk ikan yang belum didapat; belum diputuskan apakah itu cukup atau tetap memakai siluet gelap. Alasan lain belum tercatat.
+
+### 2026-11-03: Album tetap memakai "???" berwarna kelas, tanpa siluet
+
+- Keputusan tim (3 Nov 2026): ikan yang belum didapat tetap tampil sebagai "???" sesuai warna kelas seperti sekarang. Siluet gelap bentuk ikan tidak dikerjakan. Menggantikan butir siluet di VS9, bagian 4 (komponen "Siluet album"), dan langkah VIS.05. Yang paling akhir menang.
+- Alasan (kata user): belum ada perintah dosen untuk mengubahnya. Alasan lain belum tercatat.
+- VIS.05 menyisakan penyesuaian tampilan di HP. Dari handoff sebelumnya, ada dua catatan: jarak kosong antara danau dan hitung mundur di layar utama (Handoff #1), dan pelampung yang kecil di HP sempit (Handoff #2).

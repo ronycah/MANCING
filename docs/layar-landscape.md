@@ -190,3 +190,28 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
   - Album Tas Ikan di landscape masih dua kolom sempit (LAY.08a).
   - Efek samping lama masih berlaku: tombol Keluar tertutup saat HP tegak. iPhone tidak bisa dites.
 - **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `password.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.05 dan LAY.06 bersama: ikon gerigi ⚙️ dan ikon keluar di kanan atas, panel berisi ganti nama, ganti password, dan Ganti lokasi (fungsi lama dipakai ulang; butuh ubah `nama.js` dan `mancing.js`, dan tombol Ganti lokasi pindah ke panel). Lanjut LAY.07 (Tas Ikan 🎒 di kiri tombol Lempar), LAY.08 (animasi hasil), lalu LAY.08a (album).
+
+### 2026-11-04: Ikon pengaturan, panel, dan ikon keluar selesai (LAY.05 dan LAY.06)
+
+- Dikerjakan sesuai blok "Layar mancing penuh seperti game pada umumnya". Di layar mancing landscape, kanan atas berisi tombol Tas Ikan (masih teks sementara, menunggu LAY.07), ikon gerigi ⚙️, dan ikon keluar ❌. Ketuk gerigi membuka panel Pengaturan berisi **Ganti nama, Ganti password, dan Ganti lokasi** (KL5, KL9). Panel menutup lewat ketuk di luar panel, tombol Esc, atau ketuk area gerigi lagi. Tombol Keluar menjadi ikon saja (KL6) dan juga tampil di kanan atas layar pilih lokasi; gerigi disembunyikan di layar pilih lokasi (LAY.01).
+- Cara kerja: Ganti nama dan Ganti password memakai tombol lama yang dipindah ke panel, jadi fungsinya tidak ditulis ulang. Ganti lokasi menekan tombol milik `mancing.js` (class `tombol-ganti-lokasi`) yang disembunyikan lewat CSS di layar mancing landscape. Dengan begitu aturan "tidak bisa ganti lokasi saat lemparan berjalan" tetap berlaku (Ganti lokasi di panel ikut mati selama lemparan). `mancing.js` tidak diubah. Yang berubah hanya `public/nama.js` dan `public/style.css`; CSS ditambah di paling bawah, blok lama tidak dihapus.
+- Ikon keluar memakai emoji silang ❌ (bukan pintu 🚪), dan ukuran emoji dinaikkan menjadi 1.7rem karena versi awal terlalu kecil dan kurang menarik. Keputusan penguji (AIK) setelah tes di HP, 4 Nov 2026; belum dikonfirmasi anggota tim lain. Urutan ikon (gerigi, lalu keluar paling kanan) adalah pilihan bawaan penulis.
+- Kejadian di lapangan: kenaikan ukuran emoji awalnya tidak berpengaruh di layar mancing, karena aturan tombol akun lama (`.aksi .tombol`, 0.8rem) lebih kuat daripada aturan ikon yang baru. Diperbaiki dengan selector `.tombol.tombol-ikon.sekunder` di blok landscape paling bawah. Pelajaran: bila aturan CSS baru tidak mempan, cek dulu apakah ada aturan lama yang lebih kuat di blok layar penuh LAY.03 (revisi). Terpisah dari itu, setelah push berkas lama bisa tertahan di cache; paksa muat ulang sebelum menyimpulkan kodenya salah.
+- Tidak ada pertentangan dengan catatan sebelumnya. Blok ini melengkapi blok "Lokasi dilupakan setiap pemain baru masuk (LAY.01)" (Keluar menjadi ikon, seperti yang dijanjikan di sana) dan blok "Layar mancing penuh seperti game pada umumnya".
+- Hasil tes (AIK): ikon, panel, dan Keluar berjalan di browser komputer dan HP Android. iPhone tidak dites (KL10).
+- Alasan keputusan selain di atas belum tercatat.
+
+### Handoff #5 | 2026-11-04 | [AIK]
+
+- **Tugas:** LAY.05 dan LAY.06 selesai dan sudah dites (browser komputer dan HP Android). LAY.04 tampilannya sudah OK menurut tim, centangnya menunggu LAY.07 dan layar utuh terlihat. LAY.07 sampai LAY.09 belum dikerjakan.
+- **File yang diubah:** `public/nama.js` dan `public/style.css` (blok "LAY.05 dan LAY.06" ditambah di paling bawah). `mancing.js`, `tas.js`, `password.js`, `index.html`, `sw.js`, dan `manifest.json` tidak diubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` tidak perlu diubah. Di `nama.js` hanya tiga baris lama yang disentuh (tanda tangan `buatTombolKeluar`, daftar `bagianUtama`, pemanggilan Keluar), tanpa penghapusan; baris lama yang diganti penguji dibiarkan sebagai komentar.
+- **Keputusan baru:** lihat blok "Ikon pengaturan, panel, dan ikon keluar selesai (LAY.05 dan LAY.06)" di atas.
+- **Masalah yang belum beres:**
+  - Tas Ikan masih tombol teks di kanan atas (menunggu LAY.07).
+  - Dua blok landscape lama (dua kolom) masih ada di `style.css` dan tertimpa blok baru. Menghapusnya butuh penjelasan bagian mana dan "OK" ketua (`AGENTS.md` bagian 2).
+  - Layar pilih lokasi masih memakai tata letak lama (kartu putih, tiga tombol berjajar).
+  - Album Tas Ikan di landscape masih dua kolom sempit (LAY.08a).
+  - Panel pengaturan tidak menutup otomatis saat lemparan mulai (hanya Ganti lokasi di dalamnya yang mati). Menutup otomatis butuh ubah `mancing.js`.
+  - Ukuran ikon (1.7rem) serta ukuran dan transparan tombol Lempar Kail (88px, 55%) masih boleh disetel di HP.
+  - Efek samping lama masih berlaku: Keluar tertutup saat HP tegak, dan glitch fokus sekali setelah rotasi (pantau). iPhone tidak bisa dites.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.07 (Tas Ikan 🎒 jadi tombol ikon di kiri tombol Lempar Kail, kanan bawah; tombolnya dibuat di `nama.js` dalam kelompok `.aksi`, jadi kemungkinan perlu ubah `nama.js` dan CSS). Lanjut LAY.08 (animasi hasil di tengah gambar), LAY.08a (album), lalu LAY.09 (penutup, paling akhir). Setelah LAY.07, LAY.04 bisa dicentang.

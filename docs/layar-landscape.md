@@ -233,3 +233,28 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
   - Panel pengaturan tidak menutup otomatis saat lemparan mulai (hanya Ganti lokasi di dalamnya yang mati); menutup otomatis butuh ubah `mancing.js`.
   - Efek samping lama masih berlaku: Keluar tertutup saat HP tegak, dan glitch fokus sekali setelah rotasi (pantau). iPhone tidak bisa dites.
 - **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.08 (animasi ikan tertangkap atau lepas di tengah layar, di atas gambar lokasi; kartu hasil sudah di tengah versi dasar, tinggal animasinya, murni tampilan). Lanjut LAY.08a (album Tas Ikan di landscape, misal 4 kolom; butuh `tas.js` dan `style.css`), lalu LAY.09 (penutup, paling akhir setelah BNS.10, BNS.11, dan BNS.13).
+
+<!-- Tempel di PALING BAWAH docs/layar-landscape.md (setelah Handoff #6). Dua blok, urut dari atas ke bawah. Baris komentar ini tidak perlu ikut ditempel. -->
+
+### 2026-11-04: Animasi hasil lemparan dan album Tas Ikan landscape selesai (LAY.08 dan LAY.08a)
+
+- Dikerjakan sesuai KL7 dan blok "Layar mancing penuh seperti game pada umumnya". Hanya `public/style.css` yang berubah (dua blok ditambah di paling bawah, "LAY.08" lalu "LAY.08a"). `mancing.js` dan `tas.js` tidak diubah. Blok lama tidak dihapus.
+- **LAY.08 (animasi hasil di tengah gambar):** posisi kartu di tengah layar sudah ada sejak LAY.03 (revisi), jadi yang ditambah hanya gerak. Ikan tertangkap: gambar ikan melompat naik dari bawah lalu mendarat di kartu (sekitar 0,7 detik, sedikit tertunda); kartu tetap memakai animasi muncul lama. Ikan lepas: tulisan "Ikan lepas!" bergoyang sebentar, lalu turun sedikit dan memudar sampai sekitar 85% (sekitar 1,3 detik), berhenti di keadaan akhir supaya tetap terbaca. Bila HP mengaktifkan reduce-motion, gerak dimatikan dan hasil tetap tampil. Efek khusus Epic dan Legendary tidak disentuh (jatah BNS.11). Hasil dan kelas ikan tidak terpengaruh (murni tampilan).
+- **Keputusan:** kartu hasil dan tulisan "Ikan lepas!" **tetap tampil sampai pemain melempar lagi** (seperti sebelumnya), tidak hilang otomatis. Alasan: belum ada instruksi dari dosen untuk menghilangkannya (kata penguji). Menghilangkan otomatis butuh ubah `mancing.js`; bila nanti diminta, jadi butir baru. Pilihan ini ditanyakan ke penguji dan disetujui sebelum dikerjakan.
+- **LAY.08a (album Tas Ikan landscape):** penyebab album sempit adalah kartu layar Tas Ikan terkunci selebar 360px (batas layar akun). Di landscape, kartu `.kartu-tas` dilebarkan sampai 960px, album menjadi **4 kolom** (sebelumnya 2), dan kotak dipadatkan (gambar, tulisan, padding sedikit lebih kecil), judul dan koin dipadatkan. Warna kelas, bingkai, dan lencana kotak tidak berubah. Isi album, popup detail, dan fungsi jual tidak berubah. Pilihan 4 kolom mengikuti contoh di sheet ("misal 4 kolom"); angka ukuran kotak adalah pilihan bawaan penulis dan boleh disetel.
+- Tidak ada pertentangan dengan catatan sebelumnya. Blok ini melengkapi Alur Pemain no. 5 dan menjawab temuan tes LAY.03 di HP pada blok "Layar mancing penuh seperti game pada umumnya" (album satu kolom sempit).
+- Hasil tes: dites di HP oleh penguji, tampilan sesuai. iPhone tidak dites (KL10).
+- Alasan keputusan selain di atas belum tercatat.
+
+### Handoff #7 | 2026-11-04 | [baby]
+
+- **Tugas:** LAY.08 dan LAY.08a selesai dan sudah dites di HP. LAY.09 belum dikerjakan (menunggu BNS.10, BNS.11, dan BNS.13).
+- **File yang diubah:** hanya `public/style.css` (blok "LAY.08" dan "LAY.08a" ditambah di paling bawah). `mancing.js`, `nama.js`, `tas.js`, `password.js`, `index.html`, `sw.js`, dan `manifest.json` tidak diubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` tidak perlu diubah.
+- **Keputusan baru:** lihat blok "Animasi hasil lemparan dan album Tas Ikan landscape selesai (LAY.08 dan LAY.08a)" di atas (kartu hasil tetap tampil sampai lempar berikutnya; album 4 kolom).
+- **Masalah yang belum beres:**
+  - Popup detail ikan di Tas Ikan (landscape) tingginya mepet; masih bisa digulir karena sudah ada batas tinggi 90% layar. Belum dites khusus dan di luar cakupan LAY.08a. Bila terasa tidak nyaman di HP, jadikan butir baru di sheet.
+  - Dua blok landscape lama (dua kolom) masih ada di `style.css` dan tertimpa blok baru. Menghapusnya butuh penjelasan bagian mana dan "OK" ketua (`AGENTS.md` bagian 2).
+  - Layar pilih lokasi masih memakai tata letak lama (kartu putih, tiga tombol berjajar).
+  - Panel pengaturan tidak menutup otomatis saat lemparan mulai (hanya Ganti lokasi di dalamnya yang mati); menutup otomatis butuh ubah `mancing.js`.
+  - Efek samping lama masih berlaku: Keluar tertutup saat HP tegak, dan glitch fokus sekali setelah rotasi (pantau). iPhone tidak bisa dites.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `bonus.md` (beserta catatan susulan BNS), `style.css` terbaru, `mancing.js`, `tas.js`, dan `index.html`. Kerjakan BNS.10 (filter dan urutan album; kemungkinan ubah `tas.js` dan `style.css`, data di memori tanpa panggilan server baru), BNS.11 (efek Epic dan Legendary saat tertangkap; hanya tampilan, boleh menumpang pada kartu hasil yang sudah beranimasi dari LAY.08), dan BNS.13 (cuaca di pemandangan; hanya tampilan, tanpa data luar dan tanpa CDN). Setelah ketiganya, kerjakan LAY.09 (penutup: visual sanity check landscape di beberapa HP dan cek PWA versi baru muncul setelah update; bila ada berkas baru, cek sudah masuk `BERKAS_DASAR`).

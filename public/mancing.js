@@ -19,6 +19,8 @@
 // VIS.09: layar pilih lokasi (Danau, Sungai, Laut) sebelum mulai mancing, plus tombol Ganti lokasi.
 // Pilihan lokasi hanya diingat selama halaman terbuka (variabel di bawah), tidak disimpan di server.
 // Murni tampilan: lokasi tidak mempengaruhi ikan, umpan, maupun hasil lemparan.
+// LAY.01: saat layar pilih lokasi tampil atau tertutup, nama.js diberi tahu lewat ctx.saatLayarPilih(tampil)
+// supaya bagian layar utama (Halo, umpan, koin, tombol) disembunyikan selama pemain memilih lokasi.
 (function () {
   "use strict";
 
@@ -312,6 +314,10 @@
       bagianMancing.forEach(function (e) {
         e.hidden = tampilPilihan;
       });
+      // LAY.01: beri tahu layar utama (nama.js) agar bagiannya ikut disembunyikan atau ditampilkan.
+      if (typeof ctx.saatLayarPilih === "function") {
+        ctx.saatLayarPilih(tampilPilihan);
+      }
     }
 
     function tampilPilih() {

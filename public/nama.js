@@ -4,6 +4,7 @@
 // AKN.06c: tombol Ganti password di layar utama (layarnya ada di password.js).
 // MCG.03: layar utama memasang tombol Lempar Kail dari mancing.js bila termuat.
 // TAS.03: layar utama punya tombol Tas Ikan (layarnya ada di tas.js) dan koin ikut diperbarui setelah jual.
+// LAY.01: selama layar pilih lokasi tampil (dari mancing.js), judul Halo, umpan, koin, dan tombol selain Keluar disembunyikan.
 // Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama; id jenis dan pilihan untuk jual); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
@@ -236,9 +237,23 @@
   function tampilUtama(ctx, status, pesanAwal) {
     ctx.kosongkan();
     const kartu = ctx.buatEl("div", "kartu");
-    kartu.appendChild(
-      ctx.buatEl("h2", "judul", "Halo, " + String(status.nama_tampilan || "")),
+    const judulHalo = ctx.buatEl(
+      "h2",
+      "judul",
+      "Halo, " + String(status.nama_tampilan || ""),
     );
+    kartu.appendChild(judulHalo);
+
+    // LAY.01: bagian layar utama yang disembunyikan selama layar pilih lokasi tampil.
+    // Dideklarasikan di sini karena mancing.js memanggil saatLayarPilih saat dipasang,
+    // sebelum tombol-tombol di bawah dibuat; keadaannya diterapkan lagi setelah tombol ada.
+    const bagianUtama = [judulHalo];
+    let layarPilihAktif = false;
+    function terapkanLayarPilih() {
+      bagianUtama.forEach(function (e) {
+        e.hidden = layarPilihAktif;
+      });
+    }
 
     const info = ctx.buatEl("div", "statistik");
     // MCG.03: disimpan di variabel supaya angka umpan bisa diperbarui setelah lemparan.
@@ -252,6 +267,7 @@
     const teksKoin = ctx.buatEl("p", "petunjuk", "Koin: " + status.koin);
     info.appendChild(teksKoin);
     kartu.appendChild(info);
+    bagianUtama.push(info); // LAY.01
 
     // MCG.03: pasang layar lempar bila mancing.js termuat; bila tidak, tampil teks lama.
     const modulLempar = window.MANCING_LEMPAR;
@@ -273,6 +289,11 @@
         },
         sesiHabis: function () {
           sesiHabis(ctx);
+        },
+        // LAY.01: dipanggil mancing.js saat layar pilih lokasi tampil (true) atau tertutup (false).
+        saatLayarPilih: function (tampilPilihan) {
+          layarPilihAktif = !!tampilPilihan;
+          terapkanLayarPilih();
         },
       });
     } else {
@@ -359,6 +380,10 @@
       });
     });
     aksi.appendChild(gantiPass);
+
+    // LAY.01: tiga tombol ini ikut disembunyikan saat layar pilih lokasi; Keluar sengaja tetap tampil.
+    bagianUtama.push(tas, ganti, gantiPass);
+    terapkanLayarPilih();
 
     aksi.appendChild(buatTombolKeluar(ctx, pesan));
     kartu.appendChild(aksi);

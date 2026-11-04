@@ -2052,7 +2052,9 @@ button.kotak-ikan:focus-visible {
         overflow: hidden;
     }
 
-    /* SVG 4:3 diperbesar sampai menutup layar, dipusatkan; kelebihannya terpotong. */
+    /* SVG 4:3 diperbesar sampai menutup layar; kelebihannya terpotong. Potongan dibuat condong ke
+       bawah (80% dari atas, bukan 50% tengah) supaya dermaga di bagian bawah gambar tetap terlihat
+       di HP yang sangat lebar; yang lebih banyak terpotong adalah langit paling atas (matahari). */
     html
         body.wajib-landscape
         .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
@@ -2060,14 +2062,14 @@ button.kotak-ikan:focus-visible {
         > :is(.danau, .sungai, .laut)
         > svg {
         position: absolute;
-        top: 50%;
+        top: 80%;
         left: 50%;
         width: max(100vw, 133.334vh);
         width: max(100vw, 133.334dvh);
         height: max(75vw, 100vh);
         height: max(75vw, 100dvh);
         max-width: none;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -80%);
     }
 
     /* ---- Info kiri atas: nama, lalu umpan dan koin (sementara, dirapikan di LAY.04) ---- */

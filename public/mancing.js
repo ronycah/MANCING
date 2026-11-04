@@ -577,5 +577,11 @@
     return bagian;
   }
 
-  window.MANCING_LEMPAR = { pasang: pasang };
+  // LAY.01: dipanggil nama.js tiap kali pemain baru masuk, supaya lokasi pemain sebelumnya
+  // (di tab yang sama) tidak terbawa dan pemain selalu memilih lokasi dulu (KL2).
+  function lupakanLokasi() {
+    lokasiTerpilih = null;
+  }
+
+  window.MANCING_LEMPAR = { pasang: pasang, lupakanLokasi: lupakanLokasi };
 })();

@@ -267,7 +267,9 @@
     const teksKoin = ctx.buatEl("p", "petunjuk", "Koin: " + status.koin);
     info.appendChild(teksKoin);
     kartu.appendChild(info);
-    bagianUtama.push(info); // LAY.01
+    // LAY.01: tulisan Umpan dan Koin disembunyikan langsung, karena CSS kotak .statistik
+    // menimpa atribut hidden sehingga menyembunyikan kotaknya saja tidak cukup.
+    bagianUtama.push(info, teksUmpan, teksKoin);
 
     // MCG.03: pasang layar lempar bila mancing.js termuat; bila tidak, tampil teks lama.
     const modulLempar = window.MANCING_LEMPAR;
@@ -392,6 +394,11 @@
 
   // ===== Mulai: dipanggil sekali setelah masuk =====
   async function mulai(ctx) {
+    // LAY.01: pemain yang baru masuk selalu memilih lokasi dulu; lokasi pemain sebelumnya dilupakan.
+    const modulLokasi = window.MANCING_LEMPAR;
+    if (modulLokasi && typeof modulLokasi.lupakanLokasi === "function") {
+      modulLokasi.lupakanLokasi();
+    }
     tampilMuat(ctx);
     const hasil = await panggil(ctx, "status");
     if (!hasil.ok) {

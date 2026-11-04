@@ -185,3 +185,7 @@ AI share code bukan di jendela chat. Langsung kirim file utuh, dan bisa dilihat 
 Arahan dosen (Zoom, 4 Nov 2026), dikerjakan di versi pertama: game berbasis **landscape**. Setelah login pemain langsung memilih lokasi, lalu layar dipaksa landscape. Layar login boleh tetap seperti sekarang. Tombol-tombol disatukan: info nama, koin, dan jumlah umpan di kiri atas; ikon pengaturan (ganti nama dan password, juga Ganti lokasi) serta ikon keluar di kanan atas. Menggantikan tampilan portrait yang dipakai sebelumnya. Alasan dari dosen: tombol-tombol yang berserakan membuat salah fokus. Hanya tampilan; aturan permainan, server, dan database tidak berubah. Pemaksaan landscape memakai dua lapis (kunci orientasi dan layar Putar HP), disetujui tim. Rincian di `docs/layar-landscape.md` (prefix sheet LAY).
 
 Arahan tambahan dosen di hari yang sama: butir `bonus.md` yang terkait aspek visual dikerjakan di versi 1 dan md-nya digabungkan. Tim mencatatnya sebagai blok catatan susulan di `docs/bonus.md` (sheet prefix BNS), tanpa membuat md baru. Layar bonus yang dikerjakan nanti (pencapaian, hadiah harian, Cara Main dan Tentang) juga memakai landscape.
+
+### 2026-11-04: Gambar ikan memakai WebP, satu gambar per nama ikan
+
+Gambar ikan berupa berkas WebP statis (bukan satu SVG yang diwarnai script), satu gambar per nama ikan sesuai aturan dosen 3 Nov 2026. Menggantikan butir "Ikan digambar dari satu SVG dasar" di bagian 1. Rincian di blok 2 Nov dan 3 Nov 2026 pada `docs/pemandangan-ikan.md` dan di `docs/katalog-ikan.md`. Alasan lain belum tercatat.

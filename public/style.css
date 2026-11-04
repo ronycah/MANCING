@@ -2670,3 +2670,71 @@ button.kotak-ikan:focus-visible {
         animation: none;
     }
 }
+
+/* ===== LAY.08a: album Tas Ikan memakai mode landscape (4 kolom) ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus. Hanya style.css yang berubah
+   (tas.js tidak disentuh): isi album, popup detail, dan fungsi jual tetap seperti semula.
+   Berlaku hanya saat HP mendatar di layar permainan (body.wajib-landscape). Layar Tas Ikan
+   dikenali dari kartu .kartu-tas (dibuat tas.js). Layar HP tegak tidak berubah (ada layar "Putar HP").
+   Sebelumnya: kartu selebar 360px dengan album 2 kolom yang sempit dan memanjang ke bawah.
+   Sekarang: kartu melebar sampai 960px, album 4 kolom, kotak dipadatkan supaya 16 jenis ikan
+   lebih sedikit gulir. Warna kelas, bingkai, dan lencana kotak tidak diubah. */
+
+@media (orientation: landscape) {
+    /* Kartu Tas Ikan melebar (sebelumnya mengikuti batas 360px layar akun). */
+    html body.wajib-landscape .akun:has(.kartu-tas) {
+        max-width: min(100%, 960px);
+        margin-top: 0;
+    }
+
+    html body.wajib-landscape .kartu-tas {
+        padding: 10px 12px;
+    }
+
+    /* Judul dan koin dipadatkan supaya album naik ke atas. */
+    html body.wajib-landscape .kartu-tas > .judul {
+        margin-bottom: 4px;
+        font-size: 1.15rem;
+    }
+
+    html body.wajib-landscape .kartu-tas > .petunjuk {
+        margin-bottom: 6px;
+        text-align: center;
+    }
+
+    /* Album: 4 kolom. */
+    html body.wajib-landscape .kartu-tas .album {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    /* Kotak lebih ringkas. */
+    html body.wajib-landscape .kartu-tas .album .kotak-ikan {
+        gap: 2px;
+        padding: 8px 6px;
+    }
+
+    html body.wajib-landscape .kartu-tas .album .gambar-kotak {
+        width: 48px;
+        height: 48px;
+        font-size: 1.6rem;
+    }
+
+    html body.wajib-landscape .kartu-tas .album .gambar-kotak.ada-gambar {
+        width: 100%;
+        height: 64px;
+    }
+
+    html body.wajib-landscape .kartu-tas .album .nama-kotak {
+        font-size: 0.9rem;
+    }
+
+    html body.wajib-landscape .kartu-tas .album .kelas-kotak {
+        font-size: 0.75rem;
+    }
+
+    html body.wajib-landscape .kartu-tas .album .jumlah-kotak {
+        font-size: 0.85rem;
+    }
+}

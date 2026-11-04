@@ -2499,3 +2499,59 @@ button.kotak-ikan:focus-visible {
         margin: 0;
     }
 }
+
+/* ===== LAY.07: tombol Tas Ikan (ikon) di kanan bawah, di sebelah kiri tombol Lempar Kail ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus, hanya ditimpa.
+   Tombol dibuat di nama.js dan menjadi anak langsung .kartu (yang display: contents di layar mancing),
+   jadi bisa melayang (fixed) sendiri. Lempar Kail: 88px, right 16px, bottom 16px. Tas: 56px, jarak 12px
+   di kirinya (right = 16 + 88 + 12 = 116px) dan sejajar tengah dengan Lempar (bottom = 16 + (88 - 56) / 2 = 32px).
+   Bentuk, ukuran, dan transparan masih bayangan tim; boleh disetel setelah dilihat di HP.
+   Disembunyikan saat layar pilih lokasi lewat atribut hidden (LAY.01). */
+@media (orientation: landscape) {
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .tombol-tas {
+        position: fixed;
+        z-index: 20;
+        right: calc(116px + env(safe-area-inset-right, 0px));
+        bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 56px;
+        height: 56px;
+        min-height: 0;
+        padding: 0;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        background: rgba(42, 157, 143, 0.55);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        font-size: 1.9rem;
+        line-height: 1;
+        opacity: 1;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .tombol-tas:hover {
+        background: rgba(33, 134, 122, 0.7);
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .tombol-tas:active {
+        transform: scale(0.94);
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .tombol-tas:focus-visible {
+        outline: 3px solid #ffffff;
+        outline-offset: 2px;
+    }
+}

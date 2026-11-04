@@ -12,6 +12,8 @@
 // Tombol-tombol lama dipakai ulang (dipindah tempat, fungsinya tidak ditulis ulang). Ganti lokasi memakai
 // tombol milik mancing.js (disembunyikan lewat CSS), jadi mancing.js tidak diubah.
 // LAY.06: tombol Keluar di layar utama menjadi ikon saja (pintu). Di layar lain tetap bertulisan.
+// LAY.07: tombol Tas Ikan jadi ikon tas (sejajar tombol Lempar Kail, kanan bawah, di sebelah kirinya). Dibuat di sini,
+// ditaruh langsung di kartu (bukan di .aksi); letak dan gayanya diatur CSS blok LAY.07. Fungsi klik tidak berubah.
 // Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama; id jenis dan pilihan untuk jual); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
@@ -409,8 +411,15 @@
     const aksi = ctx.buatEl("div", "aksi");
 
     // TAS.03: tombol Tas Ikan (album koleksi dan jual). Layarnya ada di tas.js.
-    const tas = ctx.buatEl("button", "tombol", "Tas Ikan");
+    //const tas = ctx.buatEl("button", "tombol", "Tas Ikan"); // LAY.07: diganti ikon di bawah
+    const tas = ctx.buatEl(
+      "button",
+      "tombol sekunder tombol-ikon tombol-tas",
+      "\uD83C\uDF92",
+    ); // LAY.07: ikon tas
     tas.type = "button";
+    tas.setAttribute("aria-label", "Tas Ikan");
+    tas.title = "Tas Ikan";
     tas.addEventListener("click", function () {
       const modul = window.MANCING_TAS;
       if (!modul || typeof modul.tampil !== "function") {
@@ -441,7 +450,7 @@
         },
       });
     });
-    aksi.appendChild(tas);
+    //aksi.appendChild(tas); // LAY.07: Tas Ikan dipasang langsung di kartu (lihat bawah)
 
     const ganti = ctx.buatEl("button", "tombol sekunder", "Ganti nama");
     ganti.type = "button";
@@ -557,6 +566,7 @@
 
     aksi.appendChild(buatTombolKeluar(ctx, pesan, true)); // LAY.06: ikon saja
     kartu.appendChild(aksi);
+    kartu.appendChild(tas); // LAY.07
     kartu.appendChild(latarMenu); // LAY.05
     kartu.appendChild(menu); // LAY.05
     ctx.wadah.appendChild(kartu);

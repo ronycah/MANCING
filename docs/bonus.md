@@ -123,3 +123,17 @@ Catatan risiko:
 ## 8. Catatan susulan dan Handoff
 
 _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lapangan, atau saat user meminta handoff. Format blok: `### YYYY-MM-DD: topik` atau `### Handoff #N | tanggal | nama PIC`, ditempel di bawah (append-only). Bila blok baru bertentangan dengan isi di atas, yang paling akhir menang dan AI menyebut pertentangannya ke user.)_
+
+### 2026-11-04: Butir bonus visual dikerjakan di versi 1
+
+Arahan dosen (Zoom, 4 Nov 2026): butir bonus yang terkait aspek visual dikerjakan di versi 1, dan md-nya digabungkan. Keputusan tim: tidak membuat md baru dan tidak menggabung ke dokumen lain; revisi ditambahkan di bagian bawah berkas ini sebagai catatan susulan.
+
+- **Dikerjakan di versi 1:** BNS.10, BNS.11, BNS.13. Ini menggantikan aturan bagian 1 dan 3 (bonus hanya setelah fitur inti stabil), khusus tiga butir ini. BNS.13 (cuaca) dikonfirmasi tim sebagai visual. BNS.10 dihitung visual berdasarkan pilihan bawaan penulis, belum dikonfirmasi tim.
+- **BNS.15 (tampilan mendatar) pindah ke inti** dan dikerjakan di `docs/layar-landscape.md`. Tidak lagi menunggu jawaban dosen (bagian 7): dosen meminta landscape.
+- **Tetap bonus, belum dikerjakan:** pencapaian (BNS.04), hadiah harian (BNS.05), Cara Main dan Tentang (BNS.14), suara (BNS.12), ikon aplikasi (BNS.22), dan butir lain. Bila dikerjakan nanti, layarnya memakai landscape dan dibuka lewat tombol ikon tambahan; letak dan bentuk ikon belum diputuskan.
+  **Urutan pekerjaan** (semua Low-Risk, hanya tampilan, prefix sheet BNS):
+
+1. **BNS.10 Filter dan urutan album.** Memakai data yang sudah ada di memori game, tanpa panggilan server baru. Setelah LAY.03. Sumber awal: `tas-jual.md` bag. 8.
+2. **BNS.11 Efek khusus Epic dan Legendary.** Hanya tampilan dan tidak mengubah rarity (diputuskan server). Setelah LAY.08 (animasi hasil di tengah layar). Sumber awal: `pemandangan-ikan.md` VS6.
+3. **BNS.13 Cuaca.** Hanya hiasan: tanpa data cuaca dari luar, tanpa CDN, tidak dipakai menghitung apa pun. Setelah LAY.03. Sumber awal: `pemandangan-ikan.md` bag. 8.
+   Berkas baru wajib didaftarkan di `BERKAS_DASAR` di `sw.js` (aturan bagian 3 butir 4). Alasan lain belum tercatat.

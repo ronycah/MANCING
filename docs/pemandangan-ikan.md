@@ -292,3 +292,7 @@ Keputusan tim (4 Nov 2026): pilihan bawaan di blok "Pilihan lokasi di awal manci
 4. Gerak card hasil dan album, serta reduce-motion (pengaturan "kurangi gerakan" di HP).
 5. Kotak gambar ikan kosong (lihat di atas) dan dua catatan VIS.05. Glitch kecil langsung diperbaiki (aturan 9).
 6. Pengetesan tidak bisa di iPhone (aturan 9 butir 7).
+
+### 2026-11-04: Letak animasi ikan tertangkap atau lepas
+
+Arahan dosen (Zoom, 4 Nov 2026): animasi ikan tertangkap atau lepas tampil **di tengah layar, di atas gambar lokasi**, bukan di bawah gambar seperti pada tampilan portrait. Ini mengubah letak animasi pada VIS.03 dan VIS.05b; hanya tampilan, tidak mempengaruhi hasil tangkapan. Bila bertentangan dengan blok lama tentang letak animasi atau card hasil, blok ini yang menang. Pekerjaannya dicatat sebagai LAY.08 di `docs/layar-landscape.md`. Efek khusus Epic dan Legendary (VS6) dan cuaca, yang tadinya ditunda ke bonus, ikut dikerjakan di versi 1 sebagai BNS.11 dan BNS.13 (dicatat di `docs/bonus.md`). Alasan lain belum tercatat.

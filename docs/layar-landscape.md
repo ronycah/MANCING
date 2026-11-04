@@ -103,3 +103,11 @@ Semua butir **Low-Risk**. Status awal **Belum**. Kolom "Sumber" di sheet diisi `
 ## Catatan Susulan
 
 _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-MM-DD: topik`. Bila bertentangan dengan isi di atas, yang paling akhir menang.)_
+
+### 2026-11-04: Lokasi dilupakan setiap pemain baru masuk (LAY.01)
+
+- Kejadian di lapangan: saat tes LAY.01, akun baru yang masuk di tab yang sama langsung tiba di danau tanpa layar pilih lokasi. Penyebabnya, lokasi yang dipilih disimpan di variabel `lokasiTerpilih` (`mancing.js`) dan tidak dikosongkan saat Keluar, sehingga terbawa ke akun berikutnya.
+- Keputusan: lokasi dikosongkan setiap kali pemain masuk (`mulai()` di `nama.js` memanggil `lupakanLokasi()` dari `mancing.js`). Setelah login pemain selalu memilih lokasi dulu, sesuai KL2. Membuka Tas Ikan lalu kembali tetap mengingat lokasi.
+- Bertentangan dengan catatan 2 Nov 2026 di `AGENTS.md` ("lokasi hanya diingat selama game terbuka") untuk kasus pergantian akun di tab yang sama. Yang paling akhir menang: lokasi tetap diingat selama satu sesi login, tapi tidak terbawa ke login berikutnya. Tidak ada perubahan database.
+- Tambahan LAY.01: selama layar pilih lokasi tampil, judul Halo, Umpan, Koin, serta tombol Tas Ikan, Ganti nama, dan Ganti password disembunyikan. Tombol Keluar tetap tampil sampai LAY.06 mengubahnya menjadi ikon.
+- Alasan keputusan selain di atas belum tercatat.

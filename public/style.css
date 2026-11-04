@@ -1711,3 +1711,87 @@ button.kotak-ikan:focus-visible {
     display: block;
     width: 100%;
 }
+
+/* ===== PAKSA LANDSCAPE: layar "Putar HP" (LAY.02) ===== */
+/* Hanya tampilan. Elemen .putar-hp dibuat oleh nama.js dan ditaruh langsung di body.
+   Kelas wajib-landscape dipasang di body oleh nama.js selama pemain berada di layar permainan
+   (layar login dan layar Pilih nama untuk akun baru tidak ikut). Layar ini hanya tampil bila
+   kelas itu ada DAN HP sedang tegak (portrait). Sengaja tidak memakai atribut hidden, karena
+   aturan [hidden] di atas hanya berlaku di dalam .mancing. */
+
+.putar-hp {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    background: var(--warna-teks);
+    color: #ffffff;
+    text-align: center;
+}
+
+@media (orientation: portrait) {
+    body.wajib-landscape .putar-hp {
+        display: flex;
+    }
+}
+
+/* Gambar HP sederhana dari CSS, berputar dari tegak ke mendatar. */
+.putar-hp-ikon {
+    position: relative;
+    width: 56px;
+    height: 96px;
+    box-sizing: border-box;
+    border: 6px solid #ffffff;
+    border-radius: 14px;
+    animation: putar-hp-putar 2.4s ease-in-out infinite;
+}
+
+.putar-hp-ikon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 14px;
+    height: 4px;
+    margin-left: -7px;
+    border-radius: 2px;
+    background: #ffffff;
+}
+
+.putar-hp-judul {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.putar-hp-teks {
+    margin: 0;
+    font-size: 1rem;
+}
+
+@keyframes putar-hp-putar {
+    0%,
+    20% {
+        transform: rotate(0deg);
+    }
+    60%,
+    100% {
+        transform: rotate(-90deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .putar-hp-ikon {
+        animation: none;
+        transform: rotate(-90deg);
+    }
+}

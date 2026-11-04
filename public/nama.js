@@ -5,6 +5,9 @@
 // MCG.03: layar utama memasang tombol Lempar Kail dari mancing.js bila termuat.
 // TAS.03: layar utama punya tombol Tas Ikan (layarnya ada di tas.js) dan koin ikut diperbarui setelah jual.
 // LAY.01: selama layar pilih lokasi tampil (dari mancing.js), judul Halo, umpan, koin, dan tombol selain Keluar disembunyikan.
+// LAY.02: selama pemain di layar permainan (layar utama, pilih lokasi, Tas, Ganti nama, Ganti password),
+// orientasi dikunci landscape bila perangkat mendukung, dan layar "Putar HP" menutup game saat HP tegak.
+// Dilepas saat pemain kembali ke layar Masuk (Keluar, sesi habis, atau keluar dari tab lain).
 // Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama; id jenis dan pilihan untuk jual); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
@@ -24,6 +27,76 @@
     tunggu: "Mohon tunggu...",
     passwordBerhasil: "Password berhasil diganti",
   };
+
+  // ===== LAY.02: paksa landscape =====
+  // Dua lapis (KL10): (a) kunci orientasi bila didukung, (b) layar "Putar HP" lewat CSS saat tegak.
+  // Kunci orientasi di browser biasa sering ditolak (butuh layar penuh atau PWA terpasang);
+  // itu wajar, layar "Putar HP" yang jadi cadangannya. Galat kunci diabaikan.
+  let layarPutarHp = null;
+  let pendengarKeluarTerpasang = false;
+
+  function buatLayarPutarHp() {
+    if (layarPutarHp) return layarPutarHp;
+    const el = document.createElement("div");
+    el.className = "putar-hp";
+    el.setAttribute("role", "alert");
+    const ikon = document.createElement("div");
+    ikon.className = "putar-hp-ikon";
+    ikon.setAttribute("aria-hidden", "true");
+    const judul = document.createElement("p");
+    judul.className = "putar-hp-judul";
+    judul.textContent = "Putar HP ke posisi landscape";
+    const teks = document.createElement("p");
+    teks.className = "putar-hp-teks";
+    teks.textContent = "Game ini dimainkan dengan layar mendatar.";
+    el.appendChild(ikon);
+    el.appendChild(judul);
+    el.appendChild(teks);
+    layarPutarHp = el;
+    return el;
+  }
+
+  function aktifkanLandscape(ctx) {
+    const layar = buatLayarPutarHp();
+    if (!layar.parentNode) document.body.appendChild(layar);
+    document.body.classList.add("wajib-landscape");
+
+    // Jaga-jaga: sesi berakhir dari tab lain tidak lewat tombol Keluar di sini.
+    if (!pendengarKeluarTerpasang && ctx && ctx.klien) {
+      pendengarKeluarTerpasang = true;
+      try {
+        ctx.klien.auth.onAuthStateChange(function (kejadian) {
+          if (kejadian === "SIGNED_OUT") matikanLandscape();
+        });
+      } catch (e) {
+        pendengarKeluarTerpasang = false;
+      }
+    }
+
+    try {
+      if (window.screen && screen.orientation && screen.orientation.lock) {
+        const janji = screen.orientation.lock("landscape");
+        if (janji && typeof janji.catch === "function") {
+          janji.catch(function () {
+            // Ditolak browser: layar "Putar HP" tetap bekerja.
+          });
+        }
+      }
+    } catch (e) {
+      // Tidak didukung: layar "Putar HP" tetap bekerja.
+    }
+  }
+
+  function matikanLandscape() {
+    document.body.classList.remove("wajib-landscape");
+    try {
+      if (window.screen && screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock();
+      }
+    } catch (e) {
+      // Diabaikan: tidak ada kunci yang perlu dilepas.
+    }
+  }
 
   function alamatFungsi() {
     const c = window.MANCING_CONFIG;
@@ -77,6 +150,7 @@
 
   // Sesi tidak sah: keluar dan kembali ke layar Masuk.
   async function sesiHabis(ctx) {
+    matikanLandscape(); // LAY.02
     try {
       await ctx.klien.auth.signOut();
     } catch (e) {
@@ -98,6 +172,7 @@
           ctx.aturPesan(pesan, PESAN.keluarGagal, true);
           return;
         }
+        matikanLandscape(); // LAY.02
         ctx.keMasuk();
       } catch (e) {
         keluar.disabled = false;
@@ -139,6 +214,8 @@
 
   // Layar Pilih nama (mode "baru") dan Ganti nama (mode "ganti").
   function tampilNama(ctx, mode, status) {
+    // LAY.02: layar Pilih nama untuk akun baru boleh tegak (belum layar permainan).
+    if (mode === "baru") matikanLandscape();
     ctx.kosongkan();
     const kartu = ctx.buatEl("div", "kartu");
     kartu.appendChild(
@@ -235,6 +312,7 @@
   // Layar utama sederhana: nama, umpan, koin, tombol Lempar Kail, menu akun.
   // pesanAwal (opsional): pesan info singkat, misal setelah password berhasil diganti.
   function tampilUtama(ctx, status, pesanAwal) {
+    aktifkanLandscape(ctx); // LAY.02
     ctx.kosongkan();
     const kartu = ctx.buatEl("div", "kartu");
     const judulHalo = ctx.buatEl(
@@ -394,6 +472,7 @@
 
   // ===== Mulai: dipanggil sekali setelah masuk =====
   async function mulai(ctx) {
+    matikanLandscape(); // LAY.02: login baru mulai dari keadaan bersih
     // LAY.01: pemain yang baru masuk selalu memilih lokasi dulu; lokasi pemain sebelumnya dilupakan.
     const modulLokasi = window.MANCING_LEMPAR;
     if (modulLokasi && typeof modulLokasi.lupakanLokasi === "function") {

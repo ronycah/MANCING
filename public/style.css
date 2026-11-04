@@ -2738,3 +2738,97 @@ button.kotak-ikan:focus-visible {
         font-size: 0.85rem;
     }
 }
+
+/* ===== BNS.10: filter dan urutan album Tas Ikan ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus. Dipakai oleh tas.js
+   (baris .filter-album di atas album). Memakai warna dan radius yang sudah ada di :root. */
+
+.filter-album {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: var(--jarak);
+}
+
+.filter-chip-baris {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+.chip-filter {
+    min-height: 36px;
+    padding: 6px 12px;
+    border: 2px solid var(--warna-utama);
+    border-radius: 999px;
+    background: var(--warna-kartu);
+    color: var(--warna-utama);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.chip-filter.aktif {
+    background: var(--warna-utama);
+    color: #ffffff;
+}
+
+.chip-filter:focus-visible,
+.urut-album:focus-visible {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 2px;
+}
+
+.filter-urut {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.urut-album {
+    min-height: 36px;
+    padding: 4px 8px;
+    border: 2px solid var(--warna-garis);
+    border-radius: var(--radius);
+    background: var(--warna-kartu);
+    color: var(--warna-teks);
+    font: inherit;
+    font-size: 0.9rem;
+}
+
+/* Landscape: filter dan urutan sebaris supaya album tetap dekat ke atas. */
+@media (orientation: landscape) {
+    html body.wajib-landscape .kartu-tas .filter-album {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    html body.wajib-landscape .kartu-tas .filter-chip-baris {
+        justify-content: flex-start;
+        gap: 4px;
+    }
+
+    html body.wajib-landscape .kartu-tas .chip-filter {
+        min-height: 32px;
+        padding: 4px 10px;
+        font-size: 0.8rem;
+    }
+
+    html body.wajib-landscape .kartu-tas .urut-album {
+        min-height: 32px;
+        font-size: 0.8rem;
+    }
+
+    html body.wajib-landscape .kartu-tas .filter-urut {
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+}

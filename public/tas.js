@@ -18,6 +18,9 @@
 // bila tidak ada atau gagal dimuat, dipakai gambar kelas, lalu emoji.
 // TAS.06: "Jual semua jenis ini" meminta konfirmasi dulu di dalam popup (Ya, jual / Batal) yang
 // menyebut nama ikan dan jumlahnya. "Jual 1" tetap langsung. Hanya tampilan; server tidak berubah.
+// BNS.10: filter (Semua, Dimiliki, per kelas) dan urutan (bawaan, nama, kelas, jumlah) di atas album.
+// Memakai data album yang sudah ada di memori: tanpa panggilan server baru, tanpa mengubah data.
+// Pilihan filter dan urutan hanya diingat selama layar Tas Ikan terbuka. Hanya tampilan.
 (function () {
   "use strict";
 
@@ -31,6 +34,7 @@
     petunjukPilih: "Ketuk ikan di album untuk melihat detail dan menjualnya.",
     habis: "Kamu belum punya ikan jenis ini sekarang.",
     berhasil: "Berhasil dijual",
+    kosongFilter: "Tidak ada ikan yang cocok dengan filter ini.",
   };
 
   // Kelas yang dikenal, dipakai untuk warna kotak.
@@ -41,6 +45,23 @@
     epic: "Epic",
     legendary: "Legendary",
   };
+
+  // BNS.10: pilihan filter dan urutan. Hanya mengatur tampilan daftar di layar.
+  const PILIHAN_FILTER = [
+    { kunci: "semua", teks: "Semua" },
+    { kunci: "dimiliki", teks: "Dimiliki" },
+    { kunci: "common", teks: "Common" },
+    { kunci: "rare", teks: "Rare" },
+    { kunci: "epic", teks: "Epic" },
+    { kunci: "legendary", teks: "Legendary" },
+  ];
+  const PILIHAN_URUT = [
+    { kunci: "bawaan", teks: "Urutan album" },
+    { kunci: "nama", teks: "Nama A-Z" },
+    { kunci: "kelas-naik", teks: "Kelas: Common dulu" },
+    { kunci: "kelas-turun", teks: "Kelas: Legendary dulu" },
+    { kunci: "jumlah", teks: "Jumlah terbanyak" },
+  ];
 
   // VIS.04 dan KAT.04: gambar ikan. Tiap ikan punya gambar sendiri (kolom kode_gambar di tabel ikan,
   // berisi jalur seperti "img/ikan/sisik-pasir.webp"). Urutan tampil: (1) gambar ikan itu sendiri,
@@ -131,6 +152,57 @@
 
     const teksKoin = ctx.buatEl("p", "petunjuk", "Koin: " + status.koin);
     kartu.appendChild(teksKoin);
+
+    // BNS.10: baris filter dan urutan di atas album.
+    let filterAktif = "semua";
+    let urutAktif = "bawaan";
+    const barFilter = ctx.buatEl("div", "filter-album");
+    const kelompokChip = ctx.buatEl("div", "filter-chip-baris");
+    kelompokChip.setAttribute("role", "group");
+    kelompokChip.setAttribute("aria-label", "Filter album");
+    const tombolChip = [];
+    PILIHAN_FILTER.forEach(function (p) {
+      const chip = ctx.buatEl("button", "chip-filter", p.teks);
+      chip.type = "button";
+      chip.addEventListener("click", function () {
+        filterAktif = p.kunci;
+        tandaiChip();
+        gambarGrid();
+      });
+      tombolChip.push({ kunci: p.kunci, el: chip });
+      kelompokChip.appendChild(chip);
+    });
+    barFilter.appendChild(kelompokChip);
+
+    const kelompokUrut = ctx.buatEl("div", "filter-urut");
+    const labelUrut = ctx.buatEl("label", "", "Urutkan");
+    labelUrut.htmlFor = "urut-album";
+    const pilihUrut = document.createElement("select");
+    pilihUrut.id = "urut-album";
+    pilihUrut.className = "urut-album";
+    PILIHAN_URUT.forEach(function (p) {
+      const opsi = document.createElement("option");
+      opsi.value = p.kunci;
+      opsi.textContent = p.teks;
+      pilihUrut.appendChild(opsi);
+    });
+    pilihUrut.addEventListener("change", function () {
+      urutAktif = pilihUrut.value;
+      gambarGrid();
+    });
+    kelompokUrut.appendChild(labelUrut);
+    kelompokUrut.appendChild(pilihUrut);
+    barFilter.appendChild(kelompokUrut);
+    kartu.appendChild(barFilter);
+
+    function tandaiChip() {
+      tombolChip.forEach(function (t) {
+        const aktif = t.kunci === filterAktif;
+        t.el.classList.toggle("aktif", aktif);
+        t.el.setAttribute("aria-pressed", aktif ? "true" : "false");
+      });
+    }
+    tandaiChip();
 
     const pesan = ctx.buatEl("p", "pesan");
     pesan.setAttribute("role", "alert");
@@ -390,11 +462,55 @@
       gambarDetail();
     }
 
+    // BNS.10: daftar yang tampil setelah filter dan urutan. Data album tidak diubah (salinan).
+    // Ikan terkunci ("???") tidak ikut diurutkan menurut nama atau jumlah; ditaruh di akhir menurut id.
+    function daftarTampil() {
+      const lolos = album.filter(function (e) {
+        if (filterAktif === "semua") return true;
+        if (filterAktif === "dimiliki") {
+          return e.terbuka === true && jumlahDari(e) >= 1;
+        }
+        return kelasDari(e).kunci === filterAktif;
+      });
+      if (urutAktif === "bawaan") return lolos;
+
+      const urutanKelas = { common: 0, rare: 1, epic: 2, legendary: 3 };
+      function peringkat(e) {
+        const k = kelasDari(e).kunci;
+        return k in urutanKelas ? urutanKelas[k] : 4;
+      }
+      const terbuka = lolos.filter(function (e) {
+        return e.terbuka === true;
+      });
+      const terkunci = lolos.filter(function (e) {
+        return e.terbuka !== true;
+      });
+      terbuka.sort(function (a, b) {
+        let beda = 0;
+        if (urutAktif === "nama") {
+          beda = String(a.nama || "").localeCompare(String(b.nama || ""), "id");
+        } else if (urutAktif === "kelas-naik") {
+          beda = peringkat(a) - peringkat(b);
+        } else if (urutAktif === "kelas-turun") {
+          beda = peringkat(b) - peringkat(a);
+        } else if (urutAktif === "jumlah") {
+          beda = jumlahDari(b) - jumlahDari(a);
+        }
+        return beda !== 0 ? beda : a.id - b.id;
+      });
+      return terbuka.concat(terkunci);
+    }
+
     // 16 kotak: terbuka (gambar, nama, kelas, jumlah) atau siluet terkunci "???".
     function gambarGrid() {
       kosongkanElemen(grid);
       if (!album) return;
-      album.forEach(function (e) {
+      const tampilkan = daftarTampil();
+      if (tampilkan.length === 0) {
+        grid.appendChild(ctx.buatEl("p", "petunjuk", PESAN.kosongFilter));
+        return;
+      }
+      tampilkan.forEach(function (e) {
         const k = kelasDari(e);
         if (e.terbuka === true) {
           const n = jumlahDari(e);

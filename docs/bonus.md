@@ -137,3 +137,11 @@ Arahan dosen (Zoom, 4 Nov 2026): butir bonus yang terkait aspek visual dikerjaka
 2. **BNS.11 Efek khusus Epic dan Legendary.** Hanya tampilan dan tidak mengubah rarity (diputuskan server). Setelah LAY.08 (animasi hasil di tengah layar). Sumber awal: `pemandangan-ikan.md` VS6.
 3. **BNS.13 Cuaca.** Hanya hiasan: tanpa data cuaca dari luar, tanpa CDN, tidak dipakai menghitung apa pun. Setelah LAY.03. Sumber awal: `pemandangan-ikan.md` bag. 8.
    Berkas baru wajib didaftarkan di `BERKAS_DASAR` di `sw.js` (aturan bagian 3 butir 4). Alasan lain belum tercatat.
+
+### 2026-11-04: BNS.10 dikonfirmasi tim dan selesai dikerjakan
+
+- Tim mengonfirmasi bahwa BNS.10 (filter dan urutan album) dihitung sebagai butir visual dan dikerjakan di versi 1. Ini menggantikan keterangan "belum dikonfirmasi tim" di blok 2026-11-04 di atas. Alasan lain belum tercatat.
+- Dikerjakan sebagai butir pertama dari urutan pekerjaan di blok tersebut. Hanya `public/tas.js` dan `public/style.css` yang berubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` di `sw.js` tidak berubah.
+- Hasilnya: di atas album Tas Ikan ada tombol filter (Semua, Dimiliki, Common, Rare, Epic, Legendary) dan pilihan urutan (urutan album, nama A-Z, kelas, jumlah terbanyak). Memakai data album yang sudah ada di memori game, tanpa panggilan server baru. Isi album, popup detail, dan fungsi jual tidak berubah. Pilihan filter dan urutan hanya diingat selama layar Tas Ikan terbuka.
+- Pilihan bawaan penulis kode, belum ditanyakan ke tim: bentuk tombol filter dan isi daftar urutan di atas. Ikan yang masih terkunci ("???") ditaruh di akhir daftar saat diurutkan, supaya nama aslinya tidak terbaca dari urutannya.
+- Sisa urutan pekerjaan: BNS.11, lalu BNS.13.

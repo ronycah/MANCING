@@ -1998,3 +1998,382 @@ button.kotak-ikan:focus-visible {
         margin-top: 2px;
     }
 }
+
+/* ===== LAY.03 (revisi 4 Nov 2026): layar mancing penuh, tombol melayang ===== */
+/* Hanya tampilan, ditambah di paling bawah; blok LAY.03 dua kolom di atas TIDAK dihapus, hanya
+   ditimpa. Menggantikan tata letak dua kolom (lihat catatan susulan "Layar mancing penuh seperti
+   game pada umumnya" di layar-landscape.md).
+   Berlaku hanya di landscape, di layar permainan, dan hanya saat gambar lokasi sudah dipasang
+   (ada .danau, .sungai, atau .laut di dalam .mancing). Layar pilih lokasi, Tas Ikan, Ganti nama,
+   dan Ganti password tidak ikut berubah.
+   Cara kerja: kartu utama dibuat display: contents (kotak putihnya hilang), gambar lokasi
+   dipasang fixed memenuhi layar dengan cara "cover" (gambar 4:3 diperbesar sampai menutup layar,
+   sisanya terpotong di tengah; pelampung ada di tengah gambar jadi tetap terlihat), dan semua
+   tombol serta info dipasang fixed di atasnya.
+   Sementara (sampai LAY.04 sampai LAY.07): info kiri atas dan tombol akun (Tas Ikan, Ganti nama,
+   Ganti password, Keluar) serta Ganti lokasi masih berupa teks kecil melayang di pojok.
+   Ukuran dan transparan tombol Lempar Kail (88px, 55%) bayangan tim, disetel setelah dilihat di HP. */
+
+@media (orientation: landscape) {
+    /* Layar penuh tanpa gulir. */
+    html body.wajib-landscape:has(.mancing > :is(.danau, .sungai, .laut)) {
+        padding: 0;
+        overflow: hidden;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+    }
+
+    /* Kartu putih hilang; anak-anaknya melayang sendiri-sendiri. */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut)) {
+        display: contents;
+    }
+
+    /* Gambar lokasi: memenuhi layar (cover). */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .mancing
+        > :is(.danau, .sungai, .laut) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100vw;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        max-width: none;
+        aspect-ratio: auto;
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    /* SVG 4:3 diperbesar sampai menutup layar, dipusatkan; kelebihannya terpotong. */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .mancing
+        > :is(.danau, .sungai, .laut)
+        > svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: max(100vw, 133.334vh);
+        width: max(100vw, 133.334dvh);
+        height: max(75vw, 100vh);
+        height: max(75vw, 100dvh);
+        max-width: none;
+        transform: translate(-50%, -50%);
+    }
+
+    /* ---- Info kiri atas: nama, lalu umpan dan koin (sementara, dirapikan di LAY.04) ---- */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .judul {
+        position: fixed;
+        z-index: 10;
+        top: calc(8px + env(safe-area-inset-top, 0px));
+        left: calc(8px + env(safe-area-inset-left, 0px));
+        box-sizing: border-box;
+        display: block;
+        height: 28px;
+        max-width: 45vw;
+        margin: 0;
+        padding: 4px 12px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--warna-teks);
+        font-size: 0.9rem;
+        line-height: 20px;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        order: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .statistik {
+        position: fixed;
+        z-index: 10;
+        top: calc(40px + env(safe-area-inset-top, 0px));
+        left: calc(8px + env(safe-area-inset-left, 0px));
+        box-sizing: border-box;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 12px;
+        margin: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--warna-teks);
+        order: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .statistik
+        .petunjuk {
+        font-size: 0.9rem;
+        line-height: 20px;
+        white-space: nowrap;
+    }
+
+    /* ---- Tombol akun kanan atas (sementara, jadi ikon di LAY.05 dan LAY.06) ---- */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .aksi {
+        position: fixed;
+        z-index: 10;
+        top: calc(8px + env(safe-area-inset-top, 0px));
+        right: calc(8px + env(safe-area-inset-right, 0px));
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+        max-width: 58vw;
+        margin: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .aksi
+        .tombol {
+        flex: 0 0 auto;
+        min-height: 32px;
+        padding: 0 10px;
+        font-size: 0.8rem;
+        opacity: 0.92;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .aksi
+        .tombol:disabled {
+        opacity: 0.6;
+    }
+
+    /* ---- Ganti lokasi (sementara, masuk panel pengaturan di LAY.05) ---- */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-ganti-lokasi {
+        position: fixed;
+        z-index: 10;
+        top: calc(48px + env(safe-area-inset-top, 0px));
+        right: calc(8px + env(safe-area-inset-right, 0px));
+        display: block;
+        width: auto;
+        min-height: 32px;
+        padding: 0 10px;
+        font-size: 0.8rem;
+        opacity: 0.92;
+        order: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-ganti-lokasi:disabled {
+        opacity: 0.6;
+    }
+
+    /* ---- Tombol Lempar Kail: bulat, transparan, kanan bawah ---- */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-lempar {
+        position: fixed;
+        z-index: 20;
+        right: calc(16px + env(safe-area-inset-right, 0px));
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 88px;
+        height: 88px;
+        min-height: 0;
+        padding: 0;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        background: rgba(42, 157, 143, 0.55);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        color: #ffffff;
+        font-size: 0.85rem;
+        line-height: 1.15;
+        text-align: center;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+        order: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-lempar:hover {
+        background: rgba(33, 134, 122, 0.7);
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-lempar:active {
+        transform: scale(0.94);
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-lempar:disabled {
+        background: rgba(90, 100, 110, 0.5);
+        opacity: 0.75;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-lempar:focus-visible {
+        outline: 3px solid #ffffff;
+        outline-offset: 2px;
+    }
+
+    /* ---- Hitung mundur umpan (kiri bawah) dan pesan (tengah bawah) ---- */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hitung-mundur {
+        position: fixed;
+        z-index: 10;
+        left: calc(8px + env(safe-area-inset-left, 0px));
+        bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+        min-height: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--warna-teks);
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: left;
+        order: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .pesan {
+        position: fixed;
+        z-index: 30;
+        left: 50%;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        max-width: 46vw;
+        min-height: 0;
+        margin: 0;
+        padding: 4px 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        text-align: center;
+        transform: translateX(-50%);
+        order: 0;
+    }
+
+    /* Pesan dari layar utama (misal "Password berhasil diganti"), sedikit di atas pesan mancing. */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .pesan {
+        position: fixed;
+        z-index: 30;
+        left: 50%;
+        bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+        max-width: 46vw;
+        min-height: 0;
+        margin: 0;
+        padding: 4px 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        text-align: center;
+        transform: translateX(-50%);
+    }
+
+    /* Yang kosong tidak tampil sama sekali (tanpa kotak putih kosong). */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .hitung-mundur:empty,
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .pesan:empty,
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .hasil-lempar:empty {
+        display: none;
+    }
+
+    /* ---- Hasil lemparan: di tengah gambar (versi dasar LAY.08, animasi menyusul) ---- */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar {
+        position: fixed;
+        z-index: 20;
+        top: 50%;
+        left: 50%;
+        width: min(70vw, 340px);
+        min-height: 0;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        order: 0;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar
+        > .petunjuk {
+        padding: 6px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.85);
+        color: var(--warna-teks);
+        font-weight: 700;
+        text-align: center;
+    }
+
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar
+        > .ikan-lepas {
+        padding: 10px 22px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--warna-teks);
+    }
+}

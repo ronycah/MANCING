@@ -121,3 +121,24 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
   - Rencana LAY.02, pilihan bawaan penulis, belum dikonfirmasi tim: (1) kunci orientasi lewat JS setelah masuk layar permainan, dilepas saat keluar; (2) layar "Putar HP" lewat CSS `orientation: portrait`; (3) layar Pilih nama untuk akun baru boleh tetap tegak; (4) `manifest.json` tidak diubah supaya login tidak ikut terkunci landscape (KL11).
 - **Masalah yang belum beres:** tidak ada untuk LAY.01. Catatan untuk LAY.02: aturan sembunyi `[hidden]` di `style.css` hanya berlaku di dalam `.mancing`, jadi elemen di luar itu tidak mempan disembunyikan lewat `hidden`. Kunci orientasi di browser biasa sering gagal (butuh layar penuh atau PWA terpasang), itulah alasan layar "Putar HP". iPhone tidak bisa dites.
 - **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta catatan susulan), `nama.js`, `akun.js`, `style.css`, dan `index.html` terbaru. `akun.js` wajib dibaca dulu untuk menemukan semua jalan kembali ke layar login (Keluar, sesi habis, reset password), supaya layar "Putar HP" dan kunci orientasi pasti dilepas di semua jalan itu. Setelah LAY.02, lanjut LAY.03.
+
+### 2026-11-04: Cara paksa landscape bekerja (LAY.02)
+
+- Keputusan (pilihan bawaan penulis dari Handoff #1, dipakai tanpa perubahan): kunci orientasi dicoba lewat JS (`screen.orientation.lock`), dan layar "Putar HP" menutup game lewat CSS saat HP tegak (KL10). `manifest.json` tidak diubah supaya layar login tidak ikut terkunci (KL11).
+- Cakupan: landscape wajib berlaku selama pemain di layar permainan, yaitu layar utama (termasuk pilih lokasi), Tas Ikan, Ganti nama, dan Ganti password. Layar login dan layar Pilih nama untuk akun baru boleh tegak. Tempatnya di `nama.js` (kelas `wajib-landscape` di body, layar `.putar-hp` dibuat dari JS); gayanya di akhir `style.css`. Tidak ada berkas baru.
+- Dilepas saat kembali ke layar Masuk: tombol Keluar, sesi habis, login baru (`mulai()`), dan sesi berakhir dari tab lain (pendengar `SIGNED_OUT`). `akun.js` tidak diubah.
+- Efek samping yang diketahui: saat HP tegak, layar "Putar HP" menutup seluruh layar, termasuk tombol Keluar. Pemain harus memutar HP dulu untuk keluar.
+- Hasil tes: browser komputer (emulasi iPhone 16, tegak dan mendatar) sesuai harapan. HP Android: layar "Putar HP" dan Keluar berjalan. Sekali muncul glitch sesaat setelah Keluar lalu memutar HP ke tegak (tombol sempat hilang, fokus ketikan lepas tiap huruf), hilang sendiri dan tidak muncul pada percobaan ulang; dianggap kebiasaan Chrome saat rotasi, bukan kesalahan kode. iPhone tidak dites (KL10).
+- Alasan keputusan selain di atas belum tercatat.
+
+### Handoff #2 | 2026-11-04 | [KEN]
+
+- **Tugas:** LAY.02 selesai dan sudah dites (browser komputer dan HP Android). LAY.03 belum dikerjakan.
+- **File yang diubah:** `public/nama.js` dan `public/style.css`. `akun.js`, `index.html`, `sw.js`, dan `manifest.json` tidak diubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` tidak perlu diubah.
+- **Keputusan baru:** lihat blok "Cara paksa landscape bekerja (LAY.02)" di atas.
+- **Masalah yang belum beres:**
+  - Di landscape, layar pilih lokasi dan layar mancing masih tampil bertumpuk satu kolom dan harus digulir. Itu pekerjaan LAY.03.
+  - Kunci orientasi di tab Chrome biasa sering ditolak; yang bekerja layar "Putar HP". Hasil di PWA terpasang belum dilaporkan.
+  - Tombol Keluar tertutup saat HP tegak (lihat efek samping di atas). Ubah hanya bila tim memutuskan lain.
+  - Glitch fokus sekali setelah rotasi (lihat hasil tes di atas): pantau, kejar hanya bila sering muncul.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta catatan susulan), `nama.js`, `style.css`, `index.html`, `mancing.js`, `lokasi-danau.js`, `lokasi-sungai.js`, dan `lokasi-laut.js` terbaru. Lanjut LAY.03 (tata letak pilih lokasi dan layar mancing di landscape), lalu LAY.04.

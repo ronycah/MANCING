@@ -2978,3 +2978,202 @@ button.kotak-ikan:focus-visible {
         filter: drop-shadow(0 0 6px rgba(var(--rgb-kelas), 0.8));
     }
 }
+
+/* ===== BNS.13: cuaca di pemandangan (cerah, berawan, hujan) ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus. mancing.js menaruh satu
+   elemen hiasan div.cuaca (kelas cuaca-berawan atau cuaca-hujan) di dalam wadah danau, sungai,
+   atau laut. Cerah = tanpa elemen. Tanpa gambar, tanpa data luar, tanpa CDN: semua digambar CSS.
+   Gerak memakai transform saja supaya ringan di HP. Tidak bisa diketuk dan tidak mempengaruhi hasil. */
+
+/* Wadah perlu jadi acuan posisi. Di landscape wadah sudah position: fixed (aturan lain lebih kuat). */
+:is(.danau, .sungai, .laut):has(> .cuaca) {
+    position: relative;
+}
+
+.cuaca {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Malam: hiasan cuaca ikut redup supaya tidak terang sendiri. */
+:is(.danau, .sungai, .laut).malam > .cuaca {
+    filter: brightness(0.55);
+}
+
+/* ---- Berawan: dua lapis awan tipis bergeser pelan ke kiri ---- */
+.cuaca-berawan::before,
+.cuaca-berawan::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 200%;
+    background-repeat: repeat-x;
+    background-size: 50% 100%;
+}
+
+.cuaca-berawan::before {
+    top: 2%;
+    height: 34%;
+    background-image:
+        radial-gradient(
+            ellipse 70px 24px at 18% 46%,
+            rgba(255, 255, 255, 0.85) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 46px 22px at 14% 36%,
+            rgba(255, 255, 255, 0.85) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 52px 20px at 23% 38%,
+            rgba(255, 255, 255, 0.85) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 80px 26px at 68% 70%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 50px 22px at 63% 60%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 56px 22px at 73% 62%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        );
+    animation: cuaca-awan-geser 90s linear infinite;
+}
+
+.cuaca-berawan::after {
+    top: 16%;
+    height: 30%;
+    opacity: 0.7;
+    background-image:
+        radial-gradient(
+            ellipse 54px 18px at 42% 50%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 36px 16px at 38% 42%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 40px 16px at 46% 44%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 60px 20px at 90% 30%,
+            rgba(255, 255, 255, 0.8) 55%,
+            rgba(255, 255, 255, 0) 100%
+        );
+    animation: cuaca-awan-geser 140s linear infinite;
+}
+
+@keyframes cuaca-awan-geser {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* ---- Hujan: langit sedikit redup, dua lapis garis hujan miring yang jatuh ---- */
+/* Lapisan hujan lebih besar dari layar dan dimiringkan; gerak turun sejauh 240px (kelipatan tinggi
+   semua petak: 60, 80, 120) supaya putarannya mulus. */
+.cuaca-hujan {
+    background: rgba(35, 55, 80, 0.18);
+}
+
+.cuaca-hujan::before,
+.cuaca-hujan::after {
+    content: "";
+    position: absolute;
+    top: -240px;
+    left: -30%;
+    width: 160%;
+    height: calc(100% + 480px);
+    transform: rotate(10deg);
+}
+
+.cuaca-hujan::before {
+    background-image:
+        radial-gradient(
+            ellipse 1.5px 11px at 22px 18px,
+            rgba(255, 255, 255, 0.65),
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 1.5px 11px at 70px 52px,
+            rgba(255, 255, 255, 0.65),
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 1.5px 12px at 40px 30px,
+            rgba(255, 255, 255, 0.55),
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 1.5px 12px at 100px 85px,
+            rgba(255, 255, 255, 0.55),
+            rgba(255, 255, 255, 0) 100%
+        );
+    background-size:
+        97px 80px,
+        97px 80px,
+        131px 120px,
+        131px 120px;
+    animation: cuaca-hujan-turun 0.7s linear infinite;
+}
+
+.cuaca-hujan::after {
+    background-image:
+        radial-gradient(
+            ellipse 1px 7px at 15px 20px,
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 1px 7px at 50px 40px,
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0) 100%
+        ),
+        radial-gradient(
+            ellipse 1px 8px at 90px 60px,
+            rgba(255, 255, 255, 0.4),
+            rgba(255, 255, 255, 0) 100%
+        );
+    background-size:
+        61px 60px,
+        89px 60px,
+        149px 120px;
+    animation: cuaca-hujan-turun 0.5s linear infinite;
+}
+
+@keyframes cuaca-hujan-turun {
+    from {
+        transform: rotate(10deg) translateY(0);
+    }
+    to {
+        transform: rotate(10deg) translateY(240px);
+    }
+}
+
+/* Bila HP mengaktifkan reduce-motion, gerak dimatikan; awan dan garis hujan tampil diam. */
+@media (prefers-reduced-motion: reduce) {
+    .cuaca-berawan::before,
+    .cuaca-berawan::after,
+    .cuaca-hujan::before,
+    .cuaca-hujan::after {
+        animation: none;
+    }
+}

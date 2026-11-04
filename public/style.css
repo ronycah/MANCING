@@ -2453,7 +2453,11 @@ button.kotak-ikan:focus-visible {
 
 @media (orientation: landscape) {
     /* Ikon tetap bulat 40px; menimpa aturan tombol akun kecil (LAY.03 dua kolom dan revisinya). */
-    html body.wajib-landscape .kartu:has(> .mancing) > .aksi .tombol-ikon {
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing)
+        > .aksi
+        .tombol.tombol-ikon.sekunder {
         flex: 0 0 auto;
         width: 40px;
         height: 40px;

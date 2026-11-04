@@ -111,3 +111,13 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
 - Bertentangan dengan catatan 2 Nov 2026 di `AGENTS.md` ("lokasi hanya diingat selama game terbuka") untuk kasus pergantian akun di tab yang sama. Yang paling akhir menang: lokasi tetap diingat selama satu sesi login, tapi tidak terbawa ke login berikutnya. Tidak ada perubahan database.
 - Tambahan LAY.01: selama layar pilih lokasi tampil, judul Halo, Umpan, Koin, serta tombol Tas Ikan, Ganti nama, dan Ganti password disembunyikan. Tombol Keluar tetap tampil sampai LAY.06 mengubahnya menjadi ikon.
 - Alasan keputusan selain di atas belum tercatat.
+
+### Handoff #1 | 2026-11-04 | [fren]
+
+- **Tugas:** LAY.01 selesai dan sudah dites (akun lama langsung ke pilih lokasi, akun baru isi nama lalu pilih lokasi, Keluar lalu masuk akun lain, buka Tas Ikan lalu kembali). LAY.02 belum dikerjakan, baru direncanakan.
+- **File yang diubah:** `public/nama.js` dan `public/mancing.js`. `style.css`, `sw.js`, dan `manifest.json` tidak diubah.
+- **Keputusan baru:**
+  - Lokasi dilupakan setiap pemain baru masuk (lihat blok 2026-11-04 di Catatan Susulan).
+  - Rencana LAY.02, pilihan bawaan penulis, belum dikonfirmasi tim: (1) kunci orientasi lewat JS setelah masuk layar permainan, dilepas saat keluar; (2) layar "Putar HP" lewat CSS `orientation: portrait`; (3) layar Pilih nama untuk akun baru boleh tetap tegak; (4) `manifest.json` tidak diubah supaya login tidak ikut terkunci landscape (KL11).
+- **Masalah yang belum beres:** tidak ada untuk LAY.01. Catatan untuk LAY.02: aturan sembunyi `[hidden]` di `style.css` hanya berlaku di dalam `.mancing`, jadi elemen di luar itu tidak mempan disembunyikan lewat `hidden`. Kunci orientasi di browser biasa sering gagal (butuh layar penuh atau PWA terpasang), itulah alasan layar "Putar HP". iPhone tidak bisa dites.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta catatan susulan), `nama.js`, `akun.js`, `style.css`, dan `index.html` terbaru. `akun.js` wajib dibaca dulu untuk menemukan semua jalan kembali ke layar login (Keluar, sesi habis, reset password), supaya layar "Putar HP" dan kunci orientasi pasti dilepas di semua jalan itu. Setelah LAY.02, lanjut LAY.03.

@@ -2572,3 +2572,101 @@ button.kotak-ikan:focus-visible {
         outline-offset: 2px;
     }
 }
+
+/* ===== LAY.08: animasi ikan tertangkap dan ikan lepas di tengah layar ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus. Hanya style.css yang berubah
+   (mancing.js tidak disentuh). Posisi di tengah gambar sudah dikerjakan di LAY.03 (revisi).
+   Tertangkap: gambar ikan melompat naik dari bawah, lalu mendarat di kartu (kartu tetap memakai
+   animasi muncul lama). Lepas: tulisan "Ikan lepas!" bergoyang kaget, lalu agak turun dan memudar.
+   Kartu dan tulisan tetap tampil sampai pemain melempar lagi (mancing.js mengosongkan area hasil).
+   Efek khusus Epic dan Legendary bukan di sini (BNS.11). Hasil dan kelas ikan tidak terpengaruh. */
+
+@keyframes ikan-lompat {
+    0% {
+        opacity: 0;
+        transform: translateY(46px) scale(0.6) rotate(-12deg);
+    }
+    45% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.12) rotate(6deg);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(4px) scale(0.97) rotate(-2deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+@keyframes ikan-lepas-kabur {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.8) rotate(0deg);
+    }
+    12% {
+        opacity: 1;
+        transform: translateY(0) scale(1.06) rotate(-4deg);
+    }
+    26% {
+        transform: translateY(0) scale(1) rotate(4deg);
+    }
+    40% {
+        transform: translateY(0) scale(1) rotate(-3deg);
+    }
+    54% {
+        transform: translateY(0) scale(1) rotate(2deg);
+    }
+    66% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0.85;
+        transform: translateY(14px) scale(0.97) rotate(0deg);
+    }
+}
+
+@media (orientation: landscape) {
+    /* Tertangkap: gambar ikan melompat, sedikit tertunda supaya kartu sudah mulai muncul. */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar
+        > .kartu-ikan
+        > .gambar-ikan {
+        animation: ikan-lompat 0.7s cubic-bezier(0.25, 0.8, 0.35, 1) 0.12s
+            backwards;
+    }
+
+    /* Lepas: bergoyang lalu memudar turun, berhenti di keadaan akhir (tetap terbaca). */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar
+        > .ikan-lepas {
+        animation: ikan-lepas-kabur 1.3s ease-out forwards;
+    }
+}
+
+/* Bila HP mengaktifkan reduce-motion, gerak dimatikan (hasil tetap tampil). */
+@media (prefers-reduced-motion: reduce) {
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar
+        > .kartu-ikan
+        > .gambar-ikan,
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .hasil-lempar
+        > .ikan-lepas {
+        animation: none;
+    }
+}

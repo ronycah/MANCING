@@ -166,3 +166,27 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
   - Bentuk bulat, ukuran, dan tingkat transparan tombol Lempar Kail masih bayangan tim; setel setelah dilihat langsung di HP (diputuskan tim: disetel belakangan).
   - Efek samping lama masih berlaku: tombol Keluar tertutup saat HP tegak (Handoff #2). iPhone tidak bisa dites.
 - **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `password.js`, `style.css`, dan `index.html` terbaru. Kerjakan berurutan: gambar layar penuh dan tombol Lempar bulat dulu (LAY.03 revisi), lalu info kiri atas (LAY.04), ikon gerigi dan panel (LAY.05), ikon keluar (LAY.06), Tas Ikan di samping Lempar (LAY.07), hasil di tengah gambar (LAY.08), lalu album (LAY.08a).
+
+<!-- Tempel di PALING BAWAH docs/layar-landscape.md (setelah Handoff #3). Dua blok, urut dari atas ke bawah. Ganti [NAMA] dengan nama PIC. -->
+
+### 2026-11-04: LAY.03 versi layar penuh selesai, potongan gambar condong ke bawah
+
+- Dikerjakan sesuai blok "Layar mancing penuh seperti game pada umumnya": di landscape, gambar lokasi (danau, sungai, laut) tampil **layar penuh**, kartu putih di layar mancing hilang, dan semua tombol serta info melayang di atas gambar. Tombol Lempar Kail bulat transparan di kanan bawah; hasil tangkapan tampil di tengah gambar (versi dasar, animasi masih LAY.08). Hanya `public/style.css` yang berubah (blok baru di paling bawah). Blok dua kolom lama tidak dihapus, hanya tertimpa.
+- Cara kerja gambar: SVG lokasi (4:3) diperbesar sampai menutup layar dan kelebihannya dipotong ("cover"). Berkas SVG dan `lokasi-*.js` tidak diubah.
+- Kejadian di lapangan (tes HP Android, layar sangat lebar sekitar 2,1:1): dengan potongan di tengah, dermaga di bagian bawah gambar nyaris tidak terlihat, paling parah di sungai (dermaga sungai mulai lebih rendah dari danau dan laut). Perbaikan: potongan dibuat **condong ke bawah** (gambar diposisikan 80% dari atas, bukan 50% tengah). Akibatnya dermaga dan pelampung terlihat, tetapi langit paling atas lebih banyak terpotong, sehingga **matahari atau bulan bisa tidak terlihat di HP yang sangat lebar**. Warna langit (pagi, siang, sore, malam) tetap terlihat. Ini pilihan bawaan penulis dan boleh disetel tim (misal 65% bila ingin matahari terlihat, dengan dermaga lebih sedikit).
+- Masih sementara (dikerjakan di butir berikutnya): info nama, umpan, dan koin di kiri atas serta tombol Tas Ikan, Ganti nama, Ganti password, Keluar, dan Ganti lokasi masih berupa teks kecil melayang di pojok (menunggu LAY.05 sampai LAY.07). Ukuran (88px) dan transparan (55%) tombol Lempar Kail masih bayangan tim, boleh disetel setelah dilihat di HP.
+- Hasil tes: browser komputer (emulasi Pixel 9 mendatar) untuk danau, sungai, dan laut sesuai: gambar penuh, pelampung muncul dan tersentak, kartu hasil di tengah, Ganti lokasi kembali ke layar pilih lokasi. HP Android: tampilan sesuai setelah perbaikan dermaga. iPhone tidak dites (KL10).
+- Alasan keputusan selain di atas belum tercatat.
+
+### Handoff #4 | 2026-11-04 | [antok]
+
+- **Tugas:** LAY.03 (versi layar penuh) selesai dan dites di browser komputer dan HP Android. LAY.04 secara tampilan sudah terpenuhi sementara (info kiri atas ada); tim yang memutuskan apakah dicentang atau menunggu perapian. LAY.05 sampai LAY.08a belum dikerjakan.
+- **File yang diubah:** hanya `public/style.css` (blok "LAY.03 (revisi 4 Nov 2026)" ditambah di paling bawah, sekitar 380 baris). `nama.js`, `mancing.js`, `tas.js`, `password.js`, `index.html`, `sw.js`, dan `manifest.json` tidak diubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` tidak perlu diubah.
+- **Keputusan baru:** lihat blok 2026-11-04 di atas (potongan gambar condong ke bawah).
+- **Masalah yang belum beres:**
+  - Tombol akun (Tas Ikan, Ganti nama, Ganti password, Keluar) dan Ganti lokasi masih teks kecil di kanan atas. Di HP kecil barisan atas bisa melipat jadi dua baris dan menimpa Ganti lokasi; hilang setelah LAY.05.
+  - Dua blok landscape lama (dua kolom) masih ada di `style.css` dan tertimpa blok baru. Dibiarkan; menghapusnya butuh penjelasan bagian mana dan "OK" (`AGENTS.md` bagian 2).
+  - Layar pilih lokasi masih memakai tata letak lama (kartu putih, tiga tombol berjajar), tidak diubah.
+  - Album Tas Ikan di landscape masih dua kolom sempit (LAY.08a).
+  - Efek samping lama masih berlaku: tombol Keluar tertutup saat HP tegak. iPhone tidak bisa dites.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `password.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.05 dan LAY.06 bersama: ikon gerigi ⚙️ dan ikon keluar di kanan atas, panel berisi ganti nama, ganti password, dan Ganti lokasi (fungsi lama dipakai ulang; butuh ubah `nama.js` dan `mancing.js`, dan tombol Ganti lokasi pindah ke panel). Lanjut LAY.07 (Tas Ikan 🎒 di kiri tombol Lempar), LAY.08 (animasi hasil), lalu LAY.08a (album).

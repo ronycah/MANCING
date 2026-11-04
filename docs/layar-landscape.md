@@ -215,3 +215,21 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
   - Ukuran ikon (1.7rem) serta ukuran dan transparan tombol Lempar Kail (88px, 55%) masih boleh disetel di HP.
   - Efek samping lama masih berlaku: Keluar tertutup saat HP tegak, dan glitch fokus sekali setelah rotasi (pantau). iPhone tidak bisa dites.
 - **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.07 (Tas Ikan 🎒 jadi tombol ikon di kiri tombol Lempar Kail, kanan bawah; tombolnya dibuat di `nama.js` dalam kelompok `.aksi`, jadi kemungkinan perlu ubah `nama.js` dan CSS). Lanjut LAY.08 (animasi hasil di tengah gambar), LAY.08a (album), lalu LAY.09 (penutup, paling akhir). Setelah LAY.07, LAY.04 bisa dicentang.
+
+<!-- Tempel di PALING BAWAH docs/layar-landscape.md (setelah Handoff #5). Ganti [NAMA] dengan nama PIC. -->
+
+### Handoff #6 | 2026-11-04 | [kevin]
+
+- **Tugas:** LAY.07 selesai dan sudah dites (browser komputer dan HP Android, juga dicek beberapa anggota tim). LAY.04 sudah bisa dicentang, karena syaratnya (layar utuh terlihat setelah LAY.07) terpenuhi. LAY.08 sampai LAY.09 belum dikerjakan.
+- **File yang diubah:** `public/nama.js` dan `public/style.css` (blok "LAY.07" ditambah di paling bawah). `mancing.js`, `tas.js`, `password.js`, `index.html`, `sw.js`, dan `manifest.json` tidak diubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` tidak perlu diubah. Di `nama.js` tidak ada yang dihapus: dua baris lama (pembuatan tombol teks "Tas Ikan" dan `aksi.appendChild(tas)`) dibiarkan sebagai komentar.
+- **Keputusan baru:**
+  - Tombol Tas Ikan menjadi ikon 🎒 (tanpa teks, dengan `aria-label` "Tas Ikan"). Tombolnya dipasang langsung di kartu utama (bukan di `.aksi`), kelas `tombol-tas`, supaya bisa melayang di kanan bawah. Fungsi kliknya tidak berubah. Saat layar pilih lokasi tampil, tombol tetap disembunyikan lewat daftar `bagianUtama` (LAY.01).
+  - Usulan ketua (4 Nov 2026, setelah dilihat di HP): Tas Ikan dan Lempar Kail **dibuat sama besar**, karena Tas versi awal (56px) terlihat jauh lebih kecil dari Lempar (88px). Ukuran akhir **72px** untuk keduanya, jarak 12px, rata bawah. Teks "Lempar Kail" turun jadi dua baris supaya muat. Ukuran 88px di blok LAY.03 (revisi) tidak dihapus, hanya ditimpa blok LAY.07 (menimpa catatan "88px" di blok LAY.03 revisi dan Handoff #3 sampai #5; yang paling akhir menang).
+  - Angka 72px dan transparan 55% dipilih setelah dilihat di HP dan dianggap sudah pas oleh penguji dan teman-teman. Alasan lain belum tercatat.
+- **Masalah yang belum beres:**
+  - Dua blok landscape lama (dua kolom) masih ada di `style.css` dan tertimpa blok baru. Menghapusnya butuh penjelasan bagian mana dan "OK" ketua (`AGENTS.md` bagian 2).
+  - Layar pilih lokasi masih memakai tata letak lama (kartu putih, tiga tombol berjajar).
+  - Album Tas Ikan di landscape masih dua kolom sempit (LAY.08a).
+  - Panel pengaturan tidak menutup otomatis saat lemparan mulai (hanya Ganti lokasi di dalamnya yang mati); menutup otomatis butuh ubah `mancing.js`.
+  - Efek samping lama masih berlaku: Keluar tertutup saat HP tegak, dan glitch fokus sekali setelah rotasi (pantau). iPhone tidak bisa dites.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.08 (animasi ikan tertangkap atau lepas di tengah layar, di atas gambar lokasi; kartu hasil sudah di tengah versi dasar, tinggal animasinya, murni tampilan). Lanjut LAY.08a (album Tas Ikan di landscape, misal 4 kolom; butuh `tas.js` dan `style.css`), lalu LAY.09 (penutup, paling akhir setelah BNS.10, BNS.11, dan BNS.13).

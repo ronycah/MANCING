@@ -21,6 +21,10 @@
 // Murni tampilan: lokasi tidak mempengaruhi ikan, umpan, maupun hasil lemparan.
 // LAY.01: saat layar pilih lokasi tampil atau tertutup, nama.js diberi tahu lewat ctx.saatLayarPilih(tampil)
 // supaya bagian layar utama (Halo, umpan, koin, tombol) disembunyikan selama pemain memilih lokasi.
+// BNS.13: cuaca di pemandangan (cerah, berawan, hujan). Hanya hiasan: dipilih acak di HP, tanpa data cuaca
+// dari luar, tanpa CDN, tidak dikirim ke server, dan tidak dipakai menghitung apa pun (ikan, umpan, hasil).
+// Cuaca tetap sama selama pemain di lokasi yang sama dan diundi ulang saat pemain mengganti lokasi.
+// Gambarnya dibuat style.css dari satu elemen hiasan (div.cuaca) yang ditaruh di dalam wadah pemandangan.
 (function () {
   "use strict";
 
@@ -65,6 +69,16 @@
   // VIS.09: lokasi yang dipilih pemain. Di luar pasang() supaya tidak hilang saat pemain
   // pindah ke layar lain (misal Tas Ikan) lalu kembali. Hilang bila halaman ditutup (sengaja).
   let lokasiTerpilih = null;
+
+  // BNS.13: cuaca hiasan. Bobot = kemungkinan relatif undian. "cerah" = tanpa hiasan tambahan.
+  // Hanya tampilan; tidak ada hubungannya dengan peluang ikan.
+  const CUACA = [
+    { kunci: "cerah", bobot: 4 },
+    { kunci: "berawan", bobot: 3 },
+    { kunci: "hujan", bobot: 3 },
+  ];
+  // Cuaca yang sedang dipakai; null = belum diundi (diundi saat pemandangan pertama dipasang).
+  let cuacaTerpilih = null;
 
   function cariLokasi(kunci) {
     for (let i = 0; i < LOKASI.length; i++) {
@@ -181,6 +195,37 @@
     if (jam >= 10 && jam < 15) return "siang";
     if (jam >= 15 && jam < 18) return "sore";
     return "malam";
+  }
+
+  // BNS.13: undi cuaca sekali (bila belum), lalu pasang elemen hiasan di wadah pemandangan.
+  // "cerah" tidak menambah elemen. Elemen hiasan tidak bisa diketuk (pointer-events di CSS)
+  // dan disembunyikan dari pembaca layar.
+  function pasangCuaca(wadah) {
+    if (!wadah) return;
+    const lama = wadah.querySelectorAll(":scope > .cuaca");
+    for (let i = 0; i < lama.length; i++) {
+      wadah.removeChild(lama[i]);
+    }
+    if (cuacaTerpilih === null) {
+      let total = 0;
+      CUACA.forEach(function (c) {
+        total += c.bobot;
+      });
+      let undi = Math.random() * total;
+      cuacaTerpilih = CUACA[0].kunci;
+      for (let i = 0; i < CUACA.length; i++) {
+        if (undi < CUACA[i].bobot) {
+          cuacaTerpilih = CUACA[i].kunci;
+          break;
+        }
+        undi -= CUACA[i].bobot;
+      }
+    }
+    if (cuacaTerpilih === "cerah") return;
+    const hiasan = document.createElement("div");
+    hiasan.className = "cuaca cuaca-" + cuacaTerpilih;
+    hiasan.setAttribute("aria-hidden", "true");
+    wadah.appendChild(hiasan);
   }
 
   // Dipanggil dari nama.js. ctx berisi:
@@ -302,6 +347,7 @@
           wadahAktif = wadah;
           suasanaSekarang = null;
           terapkanSuasana();
+          pasangCuaca(wadah); // BNS.13: hiasan cuaca (hanya tampilan)
         }
       });
     }
@@ -322,6 +368,7 @@
 
     function tampilPilih() {
       lokasiTerpilih = null;
+      cuacaTerpilih = null; // BNS.13: ganti lokasi = cuaca diundi ulang
       lepasPemandangan();
       kosongkanElemen(area);
       ctx.aturPesan(pesan, "", false);
@@ -581,6 +628,7 @@
   // (di tab yang sama) tidak terbawa dan pemain selalu memilih lokasi dulu (KL2).
   function lupakanLokasi() {
     lokasiTerpilih = null;
+    cuacaTerpilih = null; // BNS.13
   }
 
   window.MANCING_LEMPAR = { pasang: pasang, lupakanLokasi: lupakanLokasi };

@@ -145,3 +145,22 @@ Arahan dosen (Zoom, 4 Nov 2026): butir bonus yang terkait aspek visual dikerjaka
 - Hasilnya: di atas album Tas Ikan ada tombol filter (Semua, Dimiliki, Common, Rare, Epic, Legendary) dan pilihan urutan (urutan album, nama A-Z, kelas, jumlah terbanyak). Memakai data album yang sudah ada di memori game, tanpa panggilan server baru. Isi album, popup detail, dan fungsi jual tidak berubah. Pilihan filter dan urutan hanya diingat selama layar Tas Ikan terbuka.
 - Pilihan bawaan penulis kode, belum ditanyakan ke tim: bentuk tombol filter dan isi daftar urutan di atas. Ikan yang masih terkunci ("???") ditaruh di akhir daftar saat diurutkan, supaya nama aslinya tidak terbaca dari urutannya.
 - Sisa urutan pekerjaan: BNS.11, lalu BNS.13.
+
+### 2026-11-04: BNS.11 dan BNS.13 selesai dikerjakan
+
+- **BNS.11 (efek Epic dan Legendary):** hanya `public/style.css` yang berubah. Efek menumpang pada kelas `kelas-epic` dan `kelas-legendary` yang sudah dibawa kartu hasil lemparan dari balasan server, jadi rarity tidak dipengaruhi apa pun. Epic: cahaya ungu berdenyut di tepi kartu, kilau lewat 3 kali, gambar ikan bercahaya. Legendary: kilau emas berulang, titik berkelip di tepi kartu, cahaya ikan lebih kuat. Common dan Rare tidak berubah. Bila HP mengaktifkan reduce-motion, gerak dimatikan dan cahaya tampil diam. Epic sudah dites di HP; efek Legendary belum sempat terlihat dan dites di sesi test.
+- **BNS.13 (cuaca):** `public/mancing.js` dan `public/style.css` berubah. Cuaca (cerah, berawan, hujan) diundi acak di HP saat pemain memilih lokasi dan tetap sama selama pemain di lokasi yang sama; diundi ulang saat pemain mengganti lokasi atau login ulang. Cerah dapat peluang paling besar. Hanya hiasan: tanpa data cuaca dari luar, tanpa CDN, tidak dikirim ke server, tidak dipakai menghitung apa pun. Berawan dan hujan digambar CSS dari satu elemen hiasan di dalam wadah pemandangan, tidak bisa diketuk. Sudah dites di browser, hujan tampil di laut.
+- Tidak ada berkas baru, jadi `BERKAS_DASAR` di `sw.js` tidak berubah. Tidak ada perubahan database atau aturan permainan.
+- Pilihan bawaan penulis kode, belum ditanyakan ke tim: peluang cuaca (cerah 4, berawan 3, hujan 3), kecepatan dan tampilan efek, serta cuaca yang ikut redup saat malam. Alasan lain belum tercatat.
+- Dengan ini ketiga butir BNS visual (BNS.10, BNS.11, BNS.13) selesai. Sisa: LAY.09 (penutup) di `layar-landscape.md`.
+
+### Handoff #1 | 2026-11-04 | [porek]
+
+- **Tugas:** BNS.10 (filter dan urutan album), BNS.11 (efek Epic dan Legendary), dan BNS.13 (cuaca) selesai dikerjakan. Ketiganya hanya tampilan (Low-Risk). BNS.10 dan BNS.13 sudah dites di browser, BNS.11 sudah dites untuk Epic. LAY.09 belum dikerjakan.
+- **File yang diubah:** `public/tas.js` (BNS.10), `public/mancing.js` (BNS.13), dan `public/style.css` (blok BNS.10, BNS.11, dan BNS.13 ditambah di paling bawah). Tidak ada berkas baru, jadi `BERKAS_DASAR` di `sw.js` tidak berubah. Tidak ada perubahan database, server, atau aturan permainan.
+- **Keputusan baru:** BNS.10 dikonfirmasi tim sebagai butir visual. Cuaca diundi acak di HP, tetap sama selama pemain di lokasi yang sama, dan diundi ulang saat ganti lokasi. Rincian di tiga blok catatan susulan 2026-11-04 di atas.
+- **Masalah yang belum beres:**
+  - Efek Legendary (BNS.11) belum sempat terlihat dan dites. Dites di sesi test.
+  - Cuaca dan efek Epic belum dicek di HP yang lemot. Bila terasa berat, jadikan butir baru di sheet.
+  - Butir baru **BNS.13** sempat tidak muncul karena `mancing.js` belum dicopas. Pencegahan: setelah copas, cek `grep -c "BNS.13" public/mancing.js` (harus 5 atau lebih) sebelum push.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `bonus.md`, `tas.js`, `mancing.js`, `style.css` terbaru, dan `index.html`. Kerjakan LAY.09 (penutup): visual sanity check landscape di beberapa HP (termasuk album dengan filter, kartu Epic dan Legendary, dan hujan atau awan), dan cek PWA versi baru muncul setelah update. Setelah itu TES.01 (cek skala 100 user) dan DOK.01 (perapian md fase 2).

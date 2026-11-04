@@ -16,6 +16,9 @@
 // bila gambar gagal dimuat. Hanya tampilan.
 // KAT.04: tiap ikan memakai gambarnya sendiri dari kode_gambar yang dikirim server (jalur img/ikan/...);
 // bila tidak ada atau gagal dimuat, dipakai gambar kelas, lalu emoji.
+// VIS.09: layar pilih lokasi (Danau, Sungai, Laut) sebelum mulai mancing, plus tombol Ganti lokasi.
+// Pilihan lokasi hanya diingat selama halaman terbuka (variabel di bawah), tidak disimpan di server.
+// Murni tampilan: lokasi tidak mempengaruhi ikan, umpan, maupun hasil lemparan.
 (function () {
   "use strict";
 
@@ -29,7 +32,44 @@
     umpanTidakTerbaca: "Umpan belum terbaca. Muat ulang halaman",
     ikanLepas: "Ikan lepas!",
     dapatIkan: "Dapat ikan!",
+    pilihLokasi: "Mau mancing di mana?",
   };
+
+  // VIS.09: daftar lokasi. "modul" = nama objek global dari lokasi-*.js, "kelas" = kelas CSS wadah pemandangan.
+  const LOKASI = [
+    {
+      kunci: "danau",
+      nama: "Danau",
+      ikon: "🏞️",
+      modul: "LokasiDanau",
+      kelas: "danau",
+    },
+    {
+      kunci: "sungai",
+      nama: "Sungai",
+      ikon: "🌿",
+      modul: "LokasiSungai",
+      kelas: "sungai",
+    },
+    {
+      kunci: "laut",
+      nama: "Laut",
+      ikon: "🌊",
+      modul: "LokasiLaut",
+      kelas: "laut",
+    },
+  ];
+
+  // VIS.09: lokasi yang dipilih pemain. Di luar pasang() supaya tidak hilang saat pemain
+  // pindah ke layar lain (misal Tas Ikan) lalu kembali. Hilang bila halaman ditutup (sengaja).
+  let lokasiTerpilih = null;
+
+  function cariLokasi(kunci) {
+    for (let i = 0; i < LOKASI.length; i++) {
+      if (LOKASI[i].kunci === kunci) return LOKASI[i];
+    }
+    return null;
+  }
 
   // Kelas yang dikenal, dipakai untuk warna kotak gambar sementara.
   const KELAS_DIKENAL = ["common", "rare", "epic", "legendary"];
@@ -206,28 +246,105 @@
       }
     }
 
-    // VIS.01: pemandangan danau di bagian paling atas. Dilewati bila lokasi-danau.js tidak termuat.
-    // Tempat sementara (kelas "danau") menjaga tinggi layar sampai gambar selesai dimuat.
-    const modulDanau = window.LokasiDanau;
-    if (modulDanau && typeof modulDanau.buat === "function") {
-      const tempatDanau = ctx.buatEl("div", "danau");
-      bagian.appendChild(tempatDanau);
-      modulDanau.buat().then(function (wadahDanau) {
-        // Bila layar sudah berganti sebelum gambar selesai, tidak perlu dipasang.
-        if (tempatDanau.parentNode === bagian) {
-          bagian.replaceChild(wadahDanau, tempatDanau);
+    // VIS.09: tombol Ganti lokasi, di bawah tombol Lempar Kail.
+    const tombolGanti = ctx.buatEl(
+      "button",
+      "tombol sekunder tombol-ganti-lokasi",
+      "Ganti lokasi",
+    );
+    tombolGanti.type = "button";
+
+    // VIS.09: layar pilih lokasi (tiga tombol besar).
+    const layarPilih = ctx.buatEl("div", "pilih-lokasi");
+    layarPilih.appendChild(ctx.buatEl("p", "judul-lokasi", PESAN.pilihLokasi));
+    const daftarLokasi = ctx.buatEl("div", "daftar-lokasi");
+    LOKASI.forEach(function (l) {
+      const b = ctx.buatEl("button", "tombol tombol-lokasi");
+      b.type = "button";
+      b.appendChild(ctx.buatEl("span", "ikon-lokasi", l.ikon));
+      b.appendChild(ctx.buatEl("span", "nama-lokasi", l.nama));
+      b.addEventListener("click", function () {
+        pilihLokasi(l.kunci);
+      });
+      daftarLokasi.appendChild(b);
+    });
+    layarPilih.appendChild(daftarLokasi);
+
+    // VIS.01 dan VIS.09: pemandangan di bagian atas layar mancing, sesuai lokasi terpilih.
+    // Dilewati bila berkas lokasi-*.js tidak termuat. Tempat sementara (kelas lokasi) menjaga
+    // tinggi layar sampai gambar selesai dimuat.
+    let pemandanganEl = null; // VIS.09: elemen pemandangan yang sedang terpasang (tempat sementara atau wadah)
+
+    function lepasPemandangan() {
+      if (pemandanganEl && pemandanganEl.parentNode === bagian) {
+        bagian.removeChild(pemandanganEl);
+      }
+      pemandanganEl = null;
+      wadahAktif = null;
+      suasanaSekarang = null;
+    }
+
+    function pasangPemandangan(def) {
+      lepasPemandangan();
+      const modul = window[def.modul];
+      if (!modul || typeof modul.buat !== "function") return;
+      const tempat = ctx.buatEl("div", def.kelas);
+      bagian.insertBefore(tempat, area);
+      pemandanganEl = tempat;
+      modul.buat().then(function (wadah) {
+        // Bila layar atau lokasi sudah berganti sebelum gambar selesai, tidak perlu dipasang.
+        if (pemandanganEl === tempat && tempat.parentNode === bagian) {
+          bagian.replaceChild(wadah, tempat);
           // VIS.02: wadah baru belum punya kelas suasana, pasang sesuai jam server.
-          wadahAktif = wadahDanau;
+          pemandanganEl = wadah;
+          wadahAktif = wadah;
           suasanaSekarang = null;
           terapkanSuasana();
         }
       });
     }
 
+    // VIS.09: bagian layar mancing yang disembunyikan saat layar pilih lokasi tampil.
+    const bagianMancing = [area, hitung, pesan, tombol, tombolGanti];
+
+    function aturLayar(tampilPilihan) {
+      layarPilih.hidden = !tampilPilihan;
+      bagianMancing.forEach(function (e) {
+        e.hidden = tampilPilihan;
+      });
+    }
+
+    function tampilPilih() {
+      lokasiTerpilih = null;
+      lepasPemandangan();
+      kosongkanElemen(area);
+      ctx.aturPesan(pesan, "", false);
+      aturLayar(true);
+    }
+
+    function pilihLokasi(kunci) {
+      const def = cariLokasi(kunci);
+      if (!def) {
+        tampilPilih();
+        return;
+      }
+      lokasiTerpilih = kunci;
+      aturLayar(false);
+      pasangPemandangan(def);
+      perbaruiTampilan();
+    }
+
+    tombolGanti.addEventListener("click", function () {
+      if (sibuk) return; // jangan ganti saat lemparan berjalan
+      tampilPilih();
+    });
+
+    bagian.appendChild(layarPilih);
     bagian.appendChild(area);
     bagian.appendChild(hitung);
     bagian.appendChild(pesan);
     bagian.appendChild(tombol);
+    bagian.appendChild(tombolGanti);
     ctx.induk.appendChild(bagian);
 
     let sibuk = false; // menunggu jawaban lempar (MC10)
@@ -250,6 +367,7 @@
     function perbaruiTampilan() {
       const ada = Number(status.umpan) > 0;
       tombol.disabled = sibuk || !ada;
+      tombolGanti.disabled = sibuk; // VIS.09
       let teks = "";
       if (akhir !== null) {
         const sisa = (akhir - performance.now()) / 1000;
@@ -422,6 +540,14 @@
       aturAcuanWaktu(status.jam_server);
     }
     perbaruiTampilan();
+
+    // VIS.09: bila pemain sudah memilih lokasi sebelumnya (kembali dari layar lain), langsung mancing;
+    // bila belum, tampilkan layar pilih lokasi.
+    if (cariLokasi(lokasiTerpilih)) {
+      pilihLokasi(lokasiTerpilih);
+    } else {
+      tampilPilih();
+    }
 
     // Pewaktu berhenti sendiri bila layar sudah berganti.
     pewaktu = setInterval(function () {

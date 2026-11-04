@@ -2404,7 +2404,8 @@ button.kotak-ikan:focus-visible {
     height: 40px;
     padding: 0;
     border-radius: 50%;
-    font-size: 1.25rem;
+    /*font-size: 1.25rem;*/
+    font-size: 1.7rem;
     line-height: 1;
 }
 
@@ -2458,7 +2459,8 @@ button.kotak-ikan:focus-visible {
         height: 40px;
         min-height: 40px;
         padding: 0;
-        font-size: 1.25rem;
+        /*font-size: 1.25rem;*/
+        font-size: 1.7rem;
     }
 
     /* Di layar mancing penuh, kelompok tombol kanan atas rata kanan dan sejajar tengah. */

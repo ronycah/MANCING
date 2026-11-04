@@ -8,6 +8,10 @@
 // LAY.02: selama pemain di layar permainan (layar utama, pilih lokasi, Tas, Ganti nama, Ganti password),
 // orientasi dikunci landscape bila perangkat mendukung, dan layar "Putar HP" menutup game saat HP tegak.
 // Dilepas saat pemain kembali ke layar Masuk (Keluar, sesi habis, atau keluar dari tab lain).
+// LAY.05: ikon pengaturan (gerigi) di kanan atas membuka panel berisi Ganti nama, Ganti password, dan Ganti lokasi.
+// Tombol-tombol lama dipakai ulang (dipindah tempat, fungsinya tidak ditulis ulang). Ganti lokasi memakai
+// tombol milik mancing.js (disembunyikan lewat CSS), jadi mancing.js tidak diubah.
+// LAY.06: tombol Keluar di layar utama menjadi ikon saja (pintu). Di layar lain tetap bertulisan.
 // Aplikasi hanya mengirim nama aksi (dan nama untuk ganti_nama; id jenis dan pilihan untuk jual); identitas dibaca server dari token.
 // Semua teks lewat textContent (tanpa innerHTML). Galat mentah tidak ditampilkan.
 (function () {
@@ -160,9 +164,16 @@
   }
 
   // ===== Tombol Keluar (dipakai di beberapa layar) =====
-  function buatTombolKeluar(ctx, pesan) {
+  // LAY.06: sebagaiIkon = true membuat tombolnya ikon saja (tanpa teks), dengan label untuk pembaca layar.
+  function buatTombolKeluar(ctx, pesan, sebagaiIkon) {
     const keluar = ctx.buatEl("button", "tombol sekunder", "Keluar");
     keluar.type = "button";
+    if (sebagaiIkon) {
+      keluar.classList.add("tombol-ikon");
+      keluar.textContent = "\uD83D\uDEAA"; // pintu
+      keluar.setAttribute("aria-label", "Keluar");
+      keluar.title = "Keluar";
+    }
     keluar.addEventListener("click", async function () {
       keluar.disabled = true;
       try {
@@ -327,10 +338,13 @@
     // sebelum tombol-tombol di bawah dibuat; keadaannya diterapkan lagi setelah tombol ada.
     const bagianUtama = [judulHalo];
     let layarPilihAktif = false;
+    // LAY.05: diisi di bawah setelah panel pengaturan dibuat; null selama belum ada.
+    let tutupMenuPengaturan = null;
     function terapkanLayarPilih() {
       bagianUtama.forEach(function (e) {
         e.hidden = layarPilihAktif;
       });
+      if (layarPilihAktif && tutupMenuPengaturan) tutupMenuPengaturan();
     }
 
     const info = ctx.buatEl("div", "statistik");
@@ -461,12 +475,89 @@
     });
     aksi.appendChild(gantiPass);
 
+    // LAY.05: ikon pengaturan (gerigi) dan panelnya. Tombol Ganti nama dan Ganti password di atas
+    // dipindah ke panel (appendChild memindahkan elemen yang sama, fungsinya tetap). Ganti lokasi
+    // menekan tombol milik mancing.js (class tombol-ganti-lokasi) supaya aturan lama (tidak bisa
+    // ganti saat lemparan berjalan) tetap berlaku.
+    const gerigi = ctx.buatEl(
+      "button",
+      "tombol sekunder tombol-ikon",
+      "\u2699\uFE0F",
+    );
+    gerigi.type = "button";
+    gerigi.setAttribute("aria-label", "Pengaturan");
+    gerigi.setAttribute("aria-expanded", "false");
+    gerigi.title = "Pengaturan";
+
+    const latarMenu = ctx.buatEl("div", "menu-latar");
+    latarMenu.hidden = true;
+    const menu = ctx.buatEl("div", "menu-pengaturan");
+    menu.setAttribute("role", "dialog");
+    menu.setAttribute("aria-label", "Pengaturan");
+    menu.hidden = true;
+    menu.appendChild(ctx.buatEl("p", "judul-menu", "Pengaturan"));
+
+    const gantiLokasi = ctx.buatEl("button", "tombol sekunder", "Ganti lokasi");
+    gantiLokasi.type = "button";
+
+    menu.appendChild(ganti);
+    menu.appendChild(gantiPass);
+    menu.appendChild(gantiLokasi);
+
+    function tombolLokasiMancing() {
+      return kartu.querySelector(".tombol-ganti-lokasi");
+    }
+
+    function tutupMenu() {
+      menu.hidden = true;
+      latarMenu.hidden = true;
+      gerigi.setAttribute("aria-expanded", "false");
+    }
+    tutupMenuPengaturan = tutupMenu;
+
+    function bukaMenu() {
+      // Ganti lokasi mati bila tombol milik mancing.js tidak ada atau sedang mati (lemparan berjalan).
+      const t = tombolLokasiMancing();
+      gantiLokasi.disabled = !t || t.disabled;
+      menu.hidden = false;
+      latarMenu.hidden = false;
+      gerigi.setAttribute("aria-expanded", "true");
+      ganti.focus();
+    }
+
+    gerigi.addEventListener("click", function () {
+      if (menu.hidden) {
+        bukaMenu();
+      } else {
+        tutupMenu();
+      }
+    });
+    latarMenu.addEventListener("click", tutupMenu);
+    function saatTombolMenu(ev) {
+      if (ev.key === "Escape" && !menu.hidden) {
+        tutupMenu();
+        gerigi.focus();
+      }
+    }
+    gerigi.addEventListener("keydown", saatTombolMenu);
+    menu.addEventListener("keydown", saatTombolMenu);
+
+    gantiLokasi.addEventListener("click", function () {
+      tutupMenu();
+      const t = tombolLokasiMancing();
+      if (t && !t.disabled) t.click();
+    });
+
+    aksi.appendChild(gerigi);
+
     // LAY.01: tiga tombol ini ikut disembunyikan saat layar pilih lokasi; Keluar sengaja tetap tampil.
-    bagianUtama.push(tas, ganti, gantiPass);
+    bagianUtama.push(tas, ganti, gantiPass, gerigi);
     terapkanLayarPilih();
 
-    aksi.appendChild(buatTombolKeluar(ctx, pesan));
+    aksi.appendChild(buatTombolKeluar(ctx, pesan, true)); // LAY.06: ikon saja
     kartu.appendChild(aksi);
+    kartu.appendChild(latarMenu); // LAY.05
+    kartu.appendChild(menu); // LAY.05
     ctx.wadah.appendChild(kartu);
   }
 

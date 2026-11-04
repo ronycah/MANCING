@@ -2379,3 +2379,117 @@ button.kotak-ikan:focus-visible {
         color: var(--warna-teks);
     }
 }
+
+/* ===== LAY.05 dan LAY.06: ikon pengaturan (gerigi), panel pengaturan, ikon keluar ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus, hanya ditimpa.
+   Ikon gerigi dan ikon keluar bulat dan sejajar di kanan atas (di dalam .aksi, bersama tombol Tas Ikan
+   yang masih berupa teks sampai LAY.07). Panel pengaturan melayang di bawah ikon; isinya Ganti nama,
+   Ganti password, dan Ganti lokasi. Tombol Ganti lokasi lama milik mancing.js tetap ada di halaman
+   tetapi disembunyikan di layar mancing landscape, karena sekarang dipicu dari panel. */
+
+/* Atribut hidden harus menang atas display milik kelas-kelas ini. */
+.tombol-ikon[hidden],
+.menu-pengaturan[hidden],
+.menu-latar[hidden] {
+    display: none !important;
+}
+
+.tombol-ikon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 40px;
+    min-height: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+/* Lapisan transparan di belakang panel: ketuk di luar panel untuk menutup. */
+.menu-latar {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: transparent;
+}
+
+.menu-pengaturan {
+    position: fixed;
+    z-index: 40;
+    top: calc(56px + env(safe-area-inset-top, 0px));
+    right: calc(8px + env(safe-area-inset-right, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+    width: min(240px, 60vw);
+    max-height: calc(100vh - 72px);
+    max-height: calc(100dvh - 72px);
+    overflow-y: auto;
+    padding: 12px;
+    border-radius: var(--radius);
+    background: var(--warna-kartu);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.menu-pengaturan .judul-menu {
+    margin: 0;
+    color: var(--warna-teks);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.menu-pengaturan .tombol {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 10px;
+    font-size: 0.95rem;
+}
+
+@media (orientation: landscape) {
+    /* Ikon tetap bulat 40px; menimpa aturan tombol akun kecil (LAY.03 dua kolom dan revisinya). */
+    html body.wajib-landscape .kartu:has(> .mancing) > .aksi .tombol-ikon {
+        flex: 0 0 auto;
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+        padding: 0;
+        font-size: 1.25rem;
+    }
+
+    /* Di layar mancing penuh, kelompok tombol kanan atas rata kanan dan sejajar tengah. */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        > .aksi {
+        align-items: center;
+    }
+
+    /* Ganti lokasi pindah ke panel pengaturan; tombol lama milik mancing.js disembunyikan
+       (tetap ada di halaman supaya panel bisa menekannya). */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > :is(.danau, .sungai, .laut))
+        .mancing
+        > .tombol-ganti-lokasi {
+        display: none;
+    }
+
+    /* Layar pilih lokasi: ikon keluar juga di kanan atas (KL4), sejajar dengan posisi di layar mancing. */
+    html
+        body.wajib-landscape
+        .kartu:has(> .mancing > .pilih-lokasi:not([hidden]))
+        > .aksi {
+        position: fixed;
+        z-index: 10;
+        top: calc(8px + env(safe-area-inset-top, 0px));
+        right: calc(8px + env(safe-area-inset-right, 0px));
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+    }
+}

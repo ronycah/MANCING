@@ -259,3 +259,36 @@ _(Kosong. Diisi hanya di sesi kode, bila ada keputusan baru atau kejadian di lap
   - Pilihan bawaan di blok "Pilihan lokasi di awal mancing" (2 Nov 2026): lokasi hanya diingat selama game terbuka, tanpa perubahan database. Belum ditanyakan ke tim.
 - **VIS.06** setelah VIS.09, sekalian cek tiga lokasi di HP, gerak card, dan reduce-motion.
 - Blok ini disusun dari sesi, bukan dari log tes di HP. Isi persis `mancing.js` yang akan diubah di VIS.09 sebaiknya dibaca dari berkas yang ada, bukan ditebak.
+
+### 2026-11-04: Tim setuju lokasi tidak diingat setelah game ditutup
+
+Keputusan tim (4 Nov 2026): pilihan bawaan di blok "Pilihan lokasi di awal mancing" (2 Nov 2026) disetujui. Lokasi hanya diingat selama halaman game terbuka dan tidak disimpan di server. Setelah game ditutup lalu dibuka lagi, pemain memilih lokasi lagi. Alasan (kata tim): belum ada arahan dosen yang spesifik soal ini. Menjawab butir "belum ditanyakan ke tim" di Handoff #1 sampai #4. Alasan lain belum tercatat.
+
+### Handoff #5 | 2026-11-04 | [miemoe]
+
+**Selesai: VIS.09 (pilih lokasi di layar utama).** Low-Risk, hanya tampilan. Dicek lewat screenshot di browser Mac (layar pilih lokasi, pemandangan sungai, tombol Ganti lokasi), belum dicek di HP.
+
+- Berkas berubah (3, semuanya file utuh): `public/mancing.js`, `public/index.html`, `public/style.css`. Tidak ada berkas baru, `sw.js` tidak diubah.
+- `mancing.js`: ditambah daftar `LOKASI`, variabel `lokasiTerpilih` (di luar `pasang()`, supaya tetap ada saat pemain ke Tas Ikan lalu kembali), layar pilih lokasi, tombol Ganti lokasi, dan fungsi `pasangPemandangan()` yang menggantikan blok pemasangan danau saja (`modulDanau` dan `tempatDanau`). Komentar VIS.01 dan VIS.02 dipertahankan; logika suasana dan animasi tidak berubah.
+- `index.html`: tambah tag `lokasi-sungai.js` dan `lokasi-laut.js` sebelum `mancing.js`.
+- `style.css`: blok baru PILIH LOKASI di paling bawah (1665 jadi 1713 baris). Isi lama tidak dihapus. Termasuk aturan `.mancing [hidden] { display: none !important; }`.
+- Perilaku: tombol Ganti lokasi nonaktif saat lemparan berjalan; menekannya menghapus hasil lemparan lama; pelampung dan suasana WIB bekerja di ketiga lokasi.
+
+**Pilihan bawaan penulis, belum ditanyakan ke tim:**
+
+- Tombol Ganti lokasi di bawah Lempar Kail (bentuk sekunder). Ikon tombol pilih: Danau 🏞️, Sungai 🌿, Laut 🌊. Teks judul "Mau mancing di mana?".
+- Lokasi tidak direset saat pemain menekan Keluar lalu masuk dengan akun lain di tab yang sama (variabel hanya hilang bila halaman ditutup atau dimuat ulang). Bila tim ingin direset, perubahannya kecil dan ada di `mancing.js` dan/atau `nama.js`.
+
+**Masalah yang belum beres:**
+
+- Di screenshot, kotak gambar ikan di kartu hasil ("Nyala Api") tampak kosong. Kemungkinan gambar belum selesai dimuat saat tangkapan layar, belum dipastikan. Kode gambar ikan tidak diubah di VIS.09. Cek ulang di VIS.06.
+- Dua catatan lama VIS.05 masih terbuka: jarak kosong antara pemandangan dan hitung mundur (terlihat jelas di screenshot sungai), dan pelampung kecil di HP sempit.
+
+**Saran giliran berikutnya: VIS.06** (cek visual ringan di beberapa HP, tanpa bukti, P2). Yang dicek:
+
+1. Layar pilih lokasi rapi dan tombol mudah ditekan di HP kecil.
+2. Danau, sungai, dan laut tampil benar; suasana pagi, siang, sore, malam; pelampung jatuh dan tersentak.
+3. Ganti lokasi: hasil lama hilang, tombol nonaktif saat lemparan, kembali dari Tas Ikan tanpa ditanya lokasi lagi.
+4. Gerak card hasil dan album, serta reduce-motion (pengaturan "kurangi gerakan" di HP).
+5. Kotak gambar ikan kosong (lihat di atas) dan dua catatan VIS.05. Glitch kecil langsung diperbaiki (aturan 9).
+6. Pengetesan tidak bisa di iPhone (aturan 9 butir 7).

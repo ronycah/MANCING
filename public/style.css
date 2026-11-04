@@ -1914,3 +1914,87 @@ button.kotak-ikan:focus-visible {
         padding: 0 10px;
     }
 }
+
+/* ===== LAY.03 (lanjutan): tombol Lempar Kail selalu terlihat, kartu hasil diringkas ===== */
+/* Kejadian di lapangan: di HP asli tombol Lempar Kail terdorong ke bawah layar setelah dapat ikan.
+   Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus. Berlaku di landscape saja.
+   Pilihan penulis, boleh diubah tim: tombol Lempar Kail dinaikkan tepat di bawah info (lewat order),
+   jadi posisinya tetap dan tidak ikut bergeser oleh hasil; kartu hasil dibuat mendatar
+   (gambar ikan di kiri, nama dan kelas di kanan); pesan kosong tidak memakan tempat. */
+
+@media (orientation: landscape) {
+    /* Urutan kolom kanan: Halo, info, tombol Lempar Kail, hasil, sisanya. */
+    body.wajib-landscape .kartu:has(> .mancing) > .judul,
+    body.wajib-landscape .kartu:has(> .mancing) > .statistik {
+        order: -2;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > .tombol-lempar {
+        order: -1;
+    }
+
+    /* Tinggi tempat hasil dijaga supaya layar tidak lompat saat kartu muncul. */
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > .hasil-lempar {
+        min-height: 128px;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) .pesan:empty {
+        min-height: 0;
+    }
+
+    body.wajib-landscape .mancing > .tombol-ganti-lokasi {
+        min-height: 38px;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) > .aksi .tombol {
+        min-height: 36px;
+        font-size: 0.9rem;
+    }
+
+    /* Kartu hasil mendatar. */
+    body.wajib-landscape .kartu-ikan {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        column-gap: 10px;
+        row-gap: 2px;
+        align-items: center;
+        padding: 6px 8px;
+        text-align: left;
+    }
+
+    body.wajib-landscape .kartu-ikan > .judul-hasil {
+        grid-column: 1 / -1;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    body.wajib-landscape .kartu-ikan > .gambar-ikan {
+        grid-column: 1;
+        grid-row: 2 / span 3;
+        justify-self: center;
+        margin: 0;
+    }
+
+    body.wajib-landscape .kartu-ikan .gambar-ikan.ada-gambar {
+        width: 100%;
+        max-width: none;
+        height: 84px;
+    }
+
+    body.wajib-landscape .kartu-ikan > .nama-ikan,
+    body.wajib-landscape .kartu-ikan > .kelas-ikan,
+    body.wajib-landscape .kartu-ikan > .jumlah-ikan {
+        grid-column: 2;
+        justify-self: start;
+        margin: 0;
+        text-align: left;
+    }
+
+    body.wajib-landscape .kartu-ikan > .nama-ikan {
+        font-size: 1.05rem;
+    }
+
+    body.wajib-landscape .kartu-ikan > .jumlah-ikan {
+        margin-top: 2px;
+    }
+}

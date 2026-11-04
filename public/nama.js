@@ -170,7 +170,8 @@
     keluar.type = "button";
     if (sebagaiIkon) {
       keluar.classList.add("tombol-ikon");
-      keluar.textContent = "\uD83D\uDEAA"; // pintu
+      //keluar.textContent = "\uD83D\uDEAA"; // pintu
+      keluar.textContent = "\u274C"; // silang
       keluar.setAttribute("aria-label", "Keluar");
       keluar.title = "Keluar";
     }

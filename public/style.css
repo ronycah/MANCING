@@ -1795,3 +1795,122 @@ button.kotak-ikan:focus-visible {
         transform: rotate(-90deg);
     }
 }
+
+/* ===== TATA LETAK LANDSCAPE: layar pilih lokasi dan layar mancing (LAY.03) ===== */
+/* Hanya tampilan, ditambah di paling bawah; aturan lama tidak dihapus. Berlaku hanya saat pemain
+   di layar permainan (body.wajib-landscape, dipasang nama.js) dan HP mendatar. Layar login, Pilih
+   nama, Tas Ikan, Ganti nama, dan Ganti password tidak ikut berubah.
+   Cara kerja: .mancing dibuat display: contents supaya semua anaknya ikut jadi sel grid milik
+   kartu utama. Gambar lokasi di kolom kiri (tingginya mengikuti tinggi layar, rasio tetap 4:3),
+   semua yang lain bertumpuk di kolom kanan. Pilih lokasi memakai lebar penuh dengan tiga tombol
+   berjajar. Tinggi gambar memakai vh dulu sebagai cadangan, lalu dvh bila didukung browser.
+   Tata letak info kiri atas dan ikon kanan atas dikerjakan di LAY.04 sampai LAY.06; hasil
+   tangkapan di tengah gambar dikerjakan di LAY.08. */
+
+@media (orientation: landscape) {
+    /* Judul dan tulisan pembuka halaman disembunyikan supaya tinggi layar tidak terbuang. */
+    body.wajib-landscape > h1,
+    body.wajib-landscape > p {
+        display: none;
+    }
+
+    body.wajib-landscape {
+        justify-content: flex-start;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 8px;
+    }
+
+    /* Lebar penuh hanya untuk layar utama (yang berisi .mancing). */
+    body.wajib-landscape .akun:has(.mancing) {
+        max-width: none;
+        margin-top: 0;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: repeat(9, auto) 1fr;
+        column-gap: 12px;
+        row-gap: 6px;
+        align-content: start;
+        padding: 8px;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) > .mancing {
+        display: contents;
+    }
+
+    /* Semua yang bukan gambar lokasi dan bukan layar pilih lokasi: kolom kanan. */
+    body.wajib-landscape .kartu:has(> .mancing) > :not(.mancing),
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > * {
+        grid-column: 2;
+    }
+
+    /* Gambar lokasi: kolom kiri, membentang di semua baris. */
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > .danau,
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > .sungai,
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > .laut {
+        grid-column: 1;
+        grid-row: 1 / span 10;
+        align-self: start;
+        width: auto;
+        height: calc(100vh - 44px);
+        height: calc(100dvh - 44px);
+        min-height: 200px;
+        max-width: 64vw;
+        aspect-ratio: 4 / 3;
+    }
+
+    /* Layar pilih lokasi: lebar penuh, tiga tombol berjajar. */
+    body.wajib-landscape .kartu:has(> .mancing) .mancing > .pilih-lokasi {
+        grid-column: 1 / -1;
+    }
+
+    body.wajib-landscape .pilih-lokasi .daftar-lokasi {
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    body.wajib-landscape .pilih-lokasi .tombol-lokasi {
+        flex: 1;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 120px;
+        min-height: min(160px, 40dvh);
+    }
+
+    /* Bagian atas kolom kanan dibuat ringkas (nanti dipindah ke kiri atas oleh LAY.04). */
+    body.wajib-landscape .kartu:has(> .mancing) > .judul {
+        margin: 0;
+        font-size: 1.05rem;
+        text-align: left;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) > .statistik {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        margin: 0;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) > .pesan {
+        margin-bottom: 0;
+    }
+
+    body.wajib-landscape .mancing > .tombol-lempar {
+        min-height: 48px;
+    }
+
+    /* Tombol akun jadi baris kecil di bawah kolom kanan (nanti jadi ikon oleh LAY.05 dan LAY.06). */
+    body.wajib-landscape .kartu:has(> .mancing) > .aksi {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    body.wajib-landscape .kartu:has(> .mancing) > .aksi .tombol {
+        flex: 1 1 auto;
+        min-height: 40px;
+        padding: 0 10px;
+    }
+}

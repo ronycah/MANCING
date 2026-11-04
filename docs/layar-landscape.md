@@ -142,3 +142,27 @@ _(Bagian ini hanya ditambah di akhir, tidak ada yang dihapus. Format: `### YYYY-
   - Tombol Keluar tertutup saat HP tegak (lihat efek samping di atas). Ubah hanya bila tim memutuskan lain.
   - Glitch fokus sekali setelah rotasi (lihat hasil tes di atas): pantau, kejar hanya bila sering muncul.
 - **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta catatan susulan), `nama.js`, `style.css`, `index.html`, `mancing.js`, `lokasi-danau.js`, `lokasi-sungai.js`, dan `lokasi-laut.js` terbaru. Lanjut LAY.03 (tata letak pilih lokasi dan layar mancing di landscape), lalu LAY.04.
+
+### 2026-11-04: Layar mancing penuh seperti game pada umumnya (revisi tata letak LAY.03 sampai LAY.08)
+
+- Keputusan: gambar lokasi tampil **layar penuh** di landscape, dan semua tombol berada **di atas gambar itu** (melayang), bukan di kolom terpisah. Menggantikan tata letak dua kolom (gambar kiri, kontrol kanan) yang dibuat di LAY.03, dan menggantikan "gambar di tengah" di Alur Pemain no. 4.
+- Tombol **Lempar Kail** menjadi tombol **bulat, transparan, di kanan bawah**. Info nama, koin, dan umpan tetap di kiri atas (KL3). Ikon pengaturan dan keluar tetap di kanan atas (KL4). Tombol lain disimpan di dalam panel pengaturan, mirip game pada umumnya. Kartu hasil tetap muncul di tengah gambar (KL7).
+- Tombol **Tas Ikan tidak masuk panel pengaturan**: tetap terlihat di layar, sejajar dengan tombol Lempar Kail (di sebelah kirinya, kanan bawah), berbentuk ikon emoji tas. Sesuai KL9 (tombol utama permainan tetap terlihat). Keputusan tim, 4 Nov 2026. Letak persisnya (di kiri tombol Lempar) adalah tafsiran penulis atas "sejajar dengan Lempar".
+- Sumber: ingatan anggota tim dari Zoom dosen 4 Nov 2026, dikonfirmasi ketua. Tidak ada rekaman atau screenshot. Pemicu: kelompok lain yang sudah landscape tetapi gambar lokasinya tidak penuh diminta revisi.
+- Dikonfirmasi tim (4 Nov 2026): panel pengaturan berisi **ganti nama, ganti password, dan Ganti lokasi** (KL9), dibuka lewat ikon/emoji gerigi. Ikon **keluar** sejajar dengan ikon pengaturan di kanan atas. Bentuk bulat dan transparan tombol Lempar Kail serta letak Tas Ikan dianggap sesuai, tetapi masih berupa bayangan tim; tingkat transparan dan ukurannya boleh disesuaikan setelah dilihat langsung di HP.
+- Temuan tes LAY.03 di HP (4 Nov 2026): album Tas Ikan di landscape masih satu kolom sempit (2 kotak per baris) dan memanjang ke bawah. Ditambahkan butir baru **LAY.08a** (ubah tampilan album di landscape, misal 4 kolom), hanya tampilan; isi album dan aturan jual (`tas-jual.md`) tidak berubah.
+- Dampak: LAY.03 versi dua kolom diganti; LAY.04 sampai LAY.08 dikerjakan dengan gaya melayang ini. Tetap hanya tampilan, tanpa perubahan database atau aturan permainan (KL12).
+- Alasan keputusan selain di atas belum tercatat.
+
+### Handoff #3 | 2026-11-04 | [RAC]
+
+- **Tugas:** LAY.03 versi dua kolom (gambar lokasi di kiri, kontrol di kanan) dikerjakan dan dites di browser komputer dan HP. Hasilnya berjalan, tetapi **arah tata letak berubah** setelah tim mengonfirmasi arahan Zoom (lihat blok "Layar mancing penuh seperti game pada umumnya" di atas), jadi LAY.03 belum dicentang dan versi dua kolom hanya tahap antara. Belum ada kode untuk tata letak baru.
+- **File yang diubah:** hanya `public/style.css` (dua blok ditambah di paling bawah: "TATA LETAK LANDSCAPE ... (LAY.03)" dan "LAY.03 (lanjutan)"). `nama.js`, `mancing.js`, `index.html`, `sw.js`, dan `manifest.json` tidak diubah. Tidak ada berkas baru, jadi `BERKAS_DASAR` tidak perlu diubah.
+- **Keputusan baru:** gambar lokasi layar penuh dengan semua tombol melayang di atasnya; Lempar Kail bulat transparan di kanan bawah dengan Tas Ikan 🎒 di sebelah kirinya; ikon gerigi ⚙️ (isi: ganti nama, ganti password, Ganti lokasi) dan ikon keluar di kanan atas; info nama, koin, dan umpan di kiri atas. Rincian di blok catatan susulan 2026-11-04. Butir baru LAY.08a (album Tas Ikan di landscape) sudah ditambah ke sheet.
+- **Masalah yang belum beres:**
+  - Dua blok landscape di `style.css` memakai tata letak dua kolom. Giliran berikutnya cukup menimpanya dengan blok baru di bawahnya; menghapus blok lama butuh penjelasan bagian mana dan "OK" (`AGENTS.md` bagian 2).
+  - Pembuatan ikon gerigi, panel pengaturan, dan tombol melayang hampir pasti butuh mengubah `nama.js` dan `mancing.js` (letak tombol), bukan CSS saja.
+  - Diputuskan tim (4 Nov 2026, rapat 4 anggota, mengikuti saran penulis): layar Tas Ikan, Ganti nama, dan Ganti password **tetap berupa kartu putih** seperti sekarang; hanya layar mancing dan layar pilih lokasi yang penuh. Alasan lain belum tercatat.
+  - Bentuk bulat, ukuran, dan tingkat transparan tombol Lempar Kail masih bayangan tim; setel setelah dilihat langsung di HP (diputuskan tim: disetel belakangan).
+  - Efek samping lama masih berlaku: tombol Keluar tertutup saat HP tegak (Handoff #2). iPhone tidak bisa dites.
+- **Saran giliran berikutnya:** lampirkan `AGENTS.md`, `layar-landscape.md` (beserta semua catatan susulan), `nama.js`, `mancing.js`, `tas.js`, `password.js`, `style.css`, dan `index.html` terbaru. Kerjakan berurutan: gambar layar penuh dan tombol Lempar bulat dulu (LAY.03 revisi), lalu info kiri atas (LAY.04), ikon gerigi dan panel (LAY.05), ikon keluar (LAY.06), Tas Ikan di samping Lempar (LAY.07), hasil di tengah gambar (LAY.08), lalu album (LAY.08a).
